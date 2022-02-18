@@ -33,9 +33,8 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Compile module
       run: |
-        g++11 --version
         g++ --version
-        make CXX=g++11
+        make CXX=g++
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
