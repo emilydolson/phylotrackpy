@@ -1,7 +1,7 @@
 import systematics
 
 
-class TestOrg:
+class ExampleOrg:
     def __init__(self, genotype):
         self.genotype = genotype
 
@@ -19,5 +19,5 @@ def test_world_position():
 def test_systematics():
     sys = systematics.Systematics(taxon_info_fun)
     wp = systematics.WorldPosition(1, 0)
-    org = TestOrg("hello")
+    org = ExampleOrg("hello")
     sys.addOrg(org, wp)
