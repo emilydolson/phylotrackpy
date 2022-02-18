@@ -19,7 +19,9 @@ jobs:
       with:
         submodules: "recursive"
     - name: Set up GCC
-      uses: egor-tensin/setup-gcc@v1        
+      uses: egor-tensin/setup-gcc@v1
+      with:
+        version: 11
     - name: Set up Python 3.10
       uses: actions/setup-python@v2
       with:
@@ -32,6 +34,7 @@ jobs:
     - name: Compile module
       run: |
         g++11 --version
+        g++ --version
         make CXX=g++11
     - name: Lint with flake8
       run: |
