@@ -1,0 +1,4 @@
+[submodule "Empirical"]
+	path = Empirical
+	url = git@github.com:devosoft/Empirical.git
+	branch = mabe-systematics
