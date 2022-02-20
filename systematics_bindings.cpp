@@ -31,6 +31,11 @@ PYBIND11_MODULE(systematics, m) {
         .def("isActive", &emp::WorldPosition::IsActive)
         .def("isValid", &emp::WorldPosition::IsValid);
 
+    // The py::nodelete here might cause memory leaks if someone tries to construct
+    // a taxon without putting it in a systematics manager, but it seems necessary to
+    // avoid a segfault on destruction of the systematics manager. There's also
+    // not really any reason to ever make a taxon that you don't put in a systematics
+    // manager
     py::class_<taxon_t, std::unique_ptr<taxon_t, py::nodelete> >(m, "Taxon")
         .def(py::init<size_t, taxon_info_t>())
         .def(py::init<size_t, taxon_info_t, taxon_t*>())
