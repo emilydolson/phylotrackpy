@@ -2,8 +2,16 @@
 
 CXX := g++
 INCLUDE := $(shell python3 -m pybind11 --includes)
-FLAG := -O3 -Wall -shared -std=c++17 -fPIC
+FLAG := -Wall -shared -std=c++17 -fPIC
 SUFFIX := $(shell python3-config --extension-suffix)
+DEBUG_flags := -DEMP_TRACK_MEM -g
+OPT_flags := -O3 -DNDEBUG
 
-default:
-	$(CXX) $(FLAG) $(INCLUDE) systematics_bindings.cpp -o systematics$(SUFFIX)
+
+default: opt
+
+opt:
+	$(CXX) $(FLAG) $(OPT_flags) $(INCLUDE) systematics_bindings.cpp -o systematics$(SUFFIX)
+
+debug:
+	$(CXX) $(FLAG) $(DEBUG_flags) $(INCLUDE) systematics_bindings.cpp -o systematics$(SUFFIX)
