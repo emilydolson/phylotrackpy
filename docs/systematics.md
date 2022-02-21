@@ -6,6 +6,7 @@
     :special-members: __init__
     :members:
     :undoc-members:
+    :private-members:
 .. autoclass:: Taxon
     :special-members: __init__
     :members:
