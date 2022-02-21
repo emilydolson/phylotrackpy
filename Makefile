@@ -2,7 +2,7 @@
 
 CXX := g++
 INCLUDE := $(shell python3 -m pybind11 --includes)
-FLAG := -Wall -shared -std=c++17 -fPIC
+FLAG := -Wall -shared -std=c++17 -fPIC -fvisibility=hidden
 SUFFIX := $(shell python3-config --extension-suffix)
 DEBUG_flags := -DEMP_TRACK_MEM -g
 OPT_flags := -O3 -DNDEBUG
