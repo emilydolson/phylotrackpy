@@ -26,9 +26,9 @@ sphinx:
 # Optionally declare the Python requirements required to build your docs
 python:
    install:
-   - requirements: requirements.txt
-   - method: setuptools
-      path: package
+    - method: setuptools
+      path: ..
+      requirements: requirements.txt
 
 submodules:
   include: all
