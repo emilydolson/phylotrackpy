@@ -31,7 +31,6 @@ setup(
     author_email="emilyldolson@gmail.com",
     url="https://github.com/emilydolson/python-phylogeny-tracker",
     description="A python phylogeny tracking module",
-    long_description="",
     ext_modules=ext_modules,
     extras_require={"test": "pytest"},
     # Currently, build_ext only provides an optional "highest supported C++
