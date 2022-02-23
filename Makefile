@@ -16,3 +16,6 @@ opt:
 debug:
 
 	$(CXX) $(FLAG) $(DEBUG_flags) $(INCLUDE) systematics_bindings.cpp -o phylotrackpy/systematics$(SUFFIX)
+
+clean:
+	rm -rf phylotrackpy/systematics$(SUFFIX)
