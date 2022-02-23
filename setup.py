@@ -25,7 +25,7 @@ ext_modules = [
 ]
 
 setup(
-    name="systematics",
+    name="phylotrackpy",
     version=__version__,
     author="Emily Dolson",
     author_email="emilyldolson@gmail.com",
