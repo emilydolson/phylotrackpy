@@ -32,6 +32,8 @@ name: deploy
 
 on:
   workflow_run:
+    branches:
+      - "*"
     workflows:
       - test
     types:
