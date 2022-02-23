@@ -1,4 +1,4 @@
-# Systematics Documentation
+# phylotrackpy Documentation
 
 Contents:
 

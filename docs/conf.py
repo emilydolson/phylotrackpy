@@ -53,7 +53,7 @@ source_suffix = [".rst", ".md"]
 master_doc = "index"
 
 # General information about the project.
-project = "systematics"
+project = "phylotrackpy"
 copyright = "2022, Emily Dolson"
 author = "Emily Dolson"
 
