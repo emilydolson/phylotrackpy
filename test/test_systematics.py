@@ -1,5 +1,6 @@
-import systematics
-
+import phylotrackpy
+phylotrackpy.systematics
+from phylotrackpy import systematics
 
 class ExampleOrg:
     def __init__(self, genotype):

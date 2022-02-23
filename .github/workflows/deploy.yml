@@ -75,7 +75,6 @@ jobs:
           CIBW_PROJECT_REQUIRES_PYTHON: ">=3.7,<3.11"
           # Run the test suite after each build.
           CIBW_TEST_REQUIRES: "pytest"
-          CIBW_TEST_COMMAND: pytest {package}/test_systematics.py
 
       - name: Upload as build artifacts
         uses: actions/upload-artifact@v2
@@ -141,7 +140,6 @@ jobs:
           CIBW_BUILD: "${{ matrix.python-version }}-*"
           # Run the test suite after each build.
           CIBW_TEST_REQUIRES: "pytest"
-          CIBW_TEST_COMMAND: pytest {package}/test_systematics.py
 
       - name: Upload as build artifacts
         uses: actions/upload-artifact@v2

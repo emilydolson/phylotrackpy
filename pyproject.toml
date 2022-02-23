@@ -8,4 +8,4 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [tool.cibuildwheel]
-test-command = "python {project}/test_systematics.py"
+test-command = "python {project}/test/test_systematics.py"

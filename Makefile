@@ -11,7 +11,8 @@ OPT_flags := -O3 -DNDEBUG
 default: opt
 
 opt:
-	$(CXX) $(FLAG) $(OPT_flags) $(INCLUDE) systematics_bindings.cpp -o systematics$(SUFFIX)
+	$(CXX) $(FLAG) $(OPT_flags) $(INCLUDE) systematics_bindings.cpp -o phylotrackpy/systematics$(SUFFIX)
 
 debug:
-	$(CXX) $(FLAG) $(DEBUG_flags) $(INCLUDE) systematics_bindings.cpp -o systematics$(SUFFIX)
+
+	$(CXX) $(FLAG) $(DEBUG_flags) $(INCLUDE) systematics_bindings.cpp -o phylotrackpy/systematics$(SUFFIX)
