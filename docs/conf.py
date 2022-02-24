@@ -1,5 +1,5 @@
 #
-# systematics documentation build configuration file, created by
+# phylotrackpy documentation build configuration file, created by
 # sphinx-quickstart on Fri Feb 26 00:29:33 2016.
 #
 # This file is execfile()d with the current directory set to its
@@ -207,7 +207,7 @@ html_static_path = []
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "systematicsdoc"
+htmlhelp_basename = "phylotrackpydoc"
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -228,8 +228,8 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        "systematics.tex",
-        "systematics Documentation",
+        "phylotrackpy.tex",
+        "phylotrackpy Documentation",
         "Sylvain Corlay",
         "manual",
     ),
@@ -261,7 +261,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, "systematics", "systematics Documentation", [author], 1)
+    (master_doc, "phylotrackpy", "phylotrackpy Documentation", [author], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -276,10 +276,10 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc,
-        "systematics",
-        "systematics Documentation",
+        "phylotrackpy",
+        "phylotrackpy Documentation",
         author,
-        "systematics",
+        "phylotrackpy",
         "One line description of project.",
         "Miscellaneous",
     ),

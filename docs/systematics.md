@@ -1,7 +1,7 @@
 # Systematics
 
 ```{eval-rst}
-.. automodule:: systematics
+.. automodule:: phylotrackpy.systematics
 .. autoclass:: Systematics
     :special-members: __init__
     :members:
