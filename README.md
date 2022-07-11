@@ -20,3 +20,13 @@ There are three main steps in using phylotrackpy:
 - Construct a `Systematics` object
 - Notify the systematics object whenever anything is born
 - Notify the systematics object whenever anyything dies
+
+For more detailed instructions, see the [documentation](https://phylotrackpy.readthedocs.io/en/latest/)
+
+## Installation
+
+Phylotrackpy is available through pip:
+
+```bash
+pip install phylotrackpy
+```
