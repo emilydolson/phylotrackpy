@@ -1,4 +1,4 @@
-# Systematics
+# API
 
 The systematics object keeps track of a phylogeny as it is being produced by an evolving population. 
 

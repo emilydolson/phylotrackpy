@@ -1,3 +1,5 @@
+#include <tuple>
+#include <vector>
 #include <pybind11/pybind11.h>
 #include <pybind11/functional.h>
 #include <pybind11/stl.h>
@@ -46,10 +48,13 @@ PYBIND11_MODULE(systematics, m) {
 
     py::class_<emp::WorldPosition>(m, "WorldPosition")
         .def(py::init<size_t, size_t>())
+        // .def(py::init<std::tuple<size_t, size_t>>())
         .def("get_index", &emp::WorldPosition::GetIndex)
         .def("get_pop_ID", &emp::WorldPosition::GetPopID)
         .def("is_active", &emp::WorldPosition::IsActive)
         .def("is_valid", &emp::WorldPosition::IsValid);
+
+    // py::implicitly_convertible<std::tuple<int, int>, emp::WorldPosition>();
 
     // The py::nodelete here might cause memory leaks if someone tries to construct
     // a taxon without putting it in a systematics manager, but it seems necessary to
@@ -114,10 +119,54 @@ PYBIND11_MODULE(systematics, m) {
         .def("add_org", [](sys_t & self, org_t & org, taxon_t * parent){return self.AddOrg(org, parent);}, "Add an organism to systematics manager", py::return_value_policy::reference_internal)
 
         // Death notification
-        .def("remove_org_by_position", static_cast<bool (sys_t::*) (emp::WorldPosition)>(&sys_t::RemoveOrg))
-        .def("remove_org", [](sys_t & self, taxon_t * tax){return self.RemoveOrg(tax);})
-        .def("remove_org_by_position_after_repro", static_cast<void (sys_t::*) (emp::WorldPosition)>(&sys_t::RemoveOrgAfterRepro))
-        .def("remove_org_after_repro", [](sys_t & self, taxon_t * tax){self.RemoveOrgAfterRepro(tax);})
+        .def("remove_org_by_position", static_cast<bool (sys_t::*) (emp::WorldPosition)>(&sys_t::RemoveOrg), R"mydelimiter(
+            Notify the systematics manager that an organism has died. Use this method if you're having the systematics
+            manager keep track of each organism's position and want to use the position to tell the systematics manager which
+            organism died. Otherwise use remove_org.
+
+            Parameters
+            ----------
+            WorldPosition position: The location of the organism that died. 
+            )mydelimiter")
+        .def("remove_org", [](sys_t & self, taxon_t * tax){return self.RemoveOrg(tax);}, R"mydelimiter(
+            Notify the systematics manager that an organism has died. Use this method if you are keeping track of
+            taxon objects yourself (rather than having the systematics manager handle it by tracking position).
+
+            Parameters
+            ----------
+            Taxon tax: The taxon of the organism that died. 
+            )mydelimiter")
+        .def("remove_org_by_position_after_repro", static_cast<void (sys_t::*) (emp::WorldPosition)>(&sys_t::RemoveOrgAfterRepro), R"mydelimiter(
+            Notify the systematics manager that an organism has died but that it shouldn't record the death until the next reproduction event. 
+            You might want to do this if there's a chance that the organism simultaneously died and reproduced (e.g. if the organism's
+            offspring might have replaced it in the population). 
+            
+            Calling remove_org_by_position in that scenario could result in a segmentation fault if it was the last organism of its taxon. It could
+            either be incorrectly marked extinct (if the offspring is part of the same taxon) and/or incorrectly pruned (if the offspring is part of a new
+            taxon).
+
+            Use this method if you're having the systematics manager keep track of each organism's position and want to use the position to 
+            tell the systematics manager which organism died. Otherwise use remove_org_after_repro.
+
+            Parameters
+            ----------
+            WorldPosition position: The location of the organism that died. 
+            )mydelimiter")
+        .def("remove_org_after_repro", [](sys_t & self, taxon_t * tax){self.RemoveOrgAfterRepro(tax);}, R"mydelimiter(
+            Notify the systematics manager that an organism has died but that it shouldn't record the death until the next reproduction event. 
+            You might want to do this if there's a chance that the organism simultaneously died and reproduced (e.g. if the organism's
+            offspring might have replaced it in the population). 
+            
+            Calling remove_org_by_position in that scenario could result in a segmentation fault if it was the last organism of its taxon. It could
+            either be incorrectly marked extinct (if the offspring is part of the same taxon) and/or incorrectly pruned (if the offspring is part of a new
+            taxon).
+
+            Use this method if you are keeping track of taxon objects yourself (rather than having the systematics manager handle it by tracking position).
+
+            Parameters
+            ----------
+            Taxon tax: The taxon of the organism that died. 
+            )mydelimiter")
         .def("set_next_parent_by_position", static_cast<void (sys_t::*) (emp::WorldPosition)>(&sys_t::SetNextParent))
         .def("set_next_parent", [](sys_t & self, taxon_t * tax){self.SetNextParent(tax);})
 

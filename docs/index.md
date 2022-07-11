@@ -1,14 +1,16 @@
-# Phylotrackpy Documentation
+# Introduction to Phylotrackpy
 
 Digital/computational/*in silico* evolution is a [powerful technique](https://www.frontiersin.org/articles/10.3389/fevo.2021.750779/full) for better understanding the process of evolution. One of the major benefits of doing *in silico* evolution experiments (instead of or in addition to laboratory or field experiments) is that they allow perfect measurement of quantities that can only be inferred in nature. Once such property is the precise phylogeny (i.e. ancestry tree) of the population.
+
+![An example phylogeny](images/phylogeny.jpg)
 
 At face value, measuring a phylogeny in *in silico* evolution may seem very straightforward: you just need to keep track of what gives birth to what. However, multiple aspects turn out to be non-trivial (see below). The goal of Phylotrackpy is to implement these things the right way once so that we all can stop needing to re-implement them over and over. Phylotrackpy is a python library designed to flexibly handle all aspects of recording phylogenies in *in silico* evolution.
 
 Note: this library is essentially a wrapper around the [Empirical Systematics Manager](https://empirical--466.org.readthedocs.build/en/466/library/Evolve/systematics.html), which is implemented in C++. If you need a C++ phylogeny tracker, you can use that one directly (it is part of the larger Empirical library, which is header-only so you can just include the parts you want).
 
-## Features
+# Features
 
-### Flexible taxon definitions
+## Flexible taxon definitions
 
 One of the central decisions when creating a phylogeny is choosing what the taxonomic units (i.e. the nodes in the tree) are. In a traditional phylogeny, these nodes are species. However, the concept of species is so murky that it is impossible to generically apply to computational evolution systems (we'd argue that it's questionable whether it could even be applied to biological data recorded at perfect temporal resolution, but that's a separate conversation). One alternative would be to make a phylogeny in which all nodes are individuals, but these trees are usually so large that they are impractical to work with.
 
@@ -33,11 +35,11 @@ from phylotrackpy import systematics
 sys = systematics.Systematics(lambda org: org.genotype)
 ```
 
-### Pruning
+## Pruning
 
 Phylogenies can get very large. So large that they can cause you program to exceed its available memory. To combat this problem, phylogenies can be "pruned" so they only contain extant (i.e. not extinct) taxa and their ancestors. If the `store_outside` variable for a systematics object is set to `False` (the default), this pruning will happen automatically. If you truly want to keep track of every taxon that ever existed, you can do so by setting `store_outside` to `True`. If you want to keep track of some historical data but can't afford the memory overhead of storing every taxon that ever existed, an intermediate options is to periodically print "snapshot" files containing all taxa currently in the phylogeny.
 
-### Phylostatistics calculations
+## Phylostatistics calculations
 
 Phylogenies are very information-dense data structures, but it can sometimes be hard to know how to usefully compare them. A variety of phylogenetic summary statistics (mostly based on topology) have been developed for the purpose of usefully making high-level comparisons. Phylotrackpy has many of these statistics built-in and can automatically output them. It can even keep running data (mean, variance, maximum, and minimum) on each statistic over time in a highly efficient format.
 
@@ -48,7 +50,7 @@ Available statistics include:
 - Sackin index
 - Phylogenetic diversity
 
-### Efficiency
+## Efficiency
 
 Tracking phylogenies can be computationally expensive. We have sought to keep the computational overhead as low as possible by implementing Phylotrackpy in C++ under the hood, and in general writing the code with an eye towards efficiency.
 
@@ -56,13 +58,13 @@ We also provide the option to remove all taxa that died before a certain time po
 
 If you need substantially higher efficiency (in terms of time or memory) or are working in a distributed computing environment (where having a centralized phylogeny tracker can pose a large bottleneck), check out the [hstrat library](https://github.com/mmore500/hstrat), which lets you sacrifice some precision to achieve lower computational overhead.
 
-### Flexible output options
+## Flexible output options
 
 At any time, you can tell Phylotrackpy to print out the full contents of its current phylogeny in a "snapshot" file. These files will be formatted according to the [Artificial Life Phylogeny Data Standard format](https://alife-data-standards.github.io/alife-data-standards/phylogeny.html). By default they will contain the following columns for each taxon: 1) unique ID, 2) ancestor list, 3) origin time, and 4) destruction time. However, you can add additional columns with the `add_snapshot_fun` method.
 
 You can also print information on a single lineage.
 
-## Useful background information
+# Useful background information
 
 There are certain quirks associated with real-time phylogenies that you might not be used to thinking about if you're used to dealing with reconstructed phylogenies. Many of these discrepancies are the result of the very different temporal resolutions on which these types of phylogenies are measured, and the fact that the taxonomic units we work with are often at a finer resolution than species. We document some here so that they don't catch you off guard:
 
@@ -70,7 +72,11 @@ There are certain quirks associated with real-time phylogenies that you might no
 - **Not all extant taxa are leaf nodes**: In phylogenetic reconstructions, there is usually an assumption that all extant (i.e. still living) taxa are leaf nodes in the phylogeny (i.e. none of them are parents/offspring of each other; similar taxa are descended from a shared common ancestor). In real-time phylogenies it is entirely possible that one taxon gives birth to something that we have defined as a different taxon and then continues to coexist with that child taxon.
 - **Not all nodes are branch points**: In phylogenetic reconstructions, we only attempt to infer where branch points (i.e. common ancestors of multiple taxa) occurred. We do not try to infer how many taxa existed on a line of descent between a branch point and an extant taxa. In real-time phylogenies we observe exactly how many taxa exist on this line of descent and we keep a record of them. In practice there are often a lot of them, depending on you define your taxa. It is unclear whether we should include these non-branching nodes when calculating phylogenetic statistics (which is why Phylotrackpy lets you choose whether you want to).
 
-## Glossary
+![An example of a full digital evolution phylogeny](images/FullPhylogeny.png)
+
+The above image represents an actual phylogeny measured from digital evolution. Each rectangle represents a different taxon. It's position along the x axis represents the span of time it existed for. Note that there are often sections along a single branch where multiple taxa coexisted for a period of time. Circles represent extant taxa at the end of this run.
+
+# Glossary
 
 Some useful terminology that might be useful in understanding the documentation (and especially the code base) for Phylotrackpy, particularly in light of the fact that different sub-fields of evolutionary biology tend to use different words in many of these contexts.
 
@@ -83,12 +89,23 @@ Some useful terminology that might be useful in understanding the documentation 
 - **Most Recent Common Ancestor (MRCA)**: The most recent node in a phylogeny that is a common ancestor of all nodes associated with extant taxa. If the phylogeny is pruned, there won't be any branch points before the MRCA (because any branches not leading to the MRCA would lead to taxa that are now extinct). 
 - **Coalescence events**: Occur when the most recent common ancestor changes (i.e. all descendants from one side of the deepest branch of the phylogeny have gone extinct). In the absence of diversity-preserving features coalescence events are expected to occur by chance with a frequency dependent on population size and spatial structure (but be careful of distributional assumptions). Observing coalescence less frequently than you would expect by chance can be an indication that ecological interactions are present (we have discussed this more [here](https://direct.mit.edu/artl/article/26/1/58/93272/Interpreting-the-Tape-of-Life-Ancestry-Based) and [here](https://direct.mit.edu/artl/article/25/1/50/2915/The-MODES-Toolbox-Measurements-of-Open-Ended)).
 
-Contents:
 
-```{eval-rst}
-.. toctree::
-   :maxdepth: 2
+# Quickstart
 
-   systematics
+## Installation
 
+You can install phylotrackpy with pip:
+
+```bash
+pip install phylotrackpy
+```
+
+## Usage
+
+The first step in tracking a phylogeny with phylo
+
+```{include} systematics.md
+```
+
+```{toctree}
 ```
