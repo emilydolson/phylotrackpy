@@ -29,7 +29,7 @@ def test_systematics_by_position():
     child_org = ExampleOrg("hello2")
     sys.add_org_by_position(child_org, child_pos, org_pos)
     sys.remove_org_by_position(org_pos)
-    sys.remove_org_by_position((2,0))
+    # sys.remove_org_by_position((2,0))
 
 def test_systematics():
     # sys = systematics.Systematics(taxon_info_fun, True, True, False, False)
