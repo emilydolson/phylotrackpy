@@ -9,7 +9,7 @@ build-backend = "setuptools.build_meta"
 
 [tool.cibuildwheel]
 test-command = "python {project}/test/test_systematics.py"
-skip = ["cp36-musllinux*", "cp37-musllinux*", "cp38-musllinux*"]
+skip = "*musllinux*"
 
 [[tool.cibuildwheel.overrides]]
 select = "*-musllinux_x86_64"
