@@ -241,6 +241,9 @@ PYBIND11_MODULE(systematics, m) {
         .def("get_sum_pairwise_distance", static_cast<double (sys_t::*) (bool) const>(&sys_t::GetSumPairwiseDistance))
         .def("get_phylogenetic_diversity", static_cast<int (sys_t::*) () const>(&sys_t::GetPhylogeneticDiversity))
 
+        // Input
+        .def("load_from_file", static_cast<void (sys_t::*) (const std::string &, const std::string &, bool)>(&sys_t::LoadFromFile))
+
         // Output
         .def("snapshot", static_cast<void (sys_t::*) (const std::string &) const>(&sys_t::Snapshot))
         .def("add_snapshot_fun", static_cast<void (sys_t::*) (const std::function<std::string(const taxon_t &)> &, const std::string &, const std::string &) >(&sys_t::AddSnapshotFun))
