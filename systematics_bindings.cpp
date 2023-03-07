@@ -49,10 +49,35 @@ PYBIND11_MODULE(systematics, m) {
     py::class_<emp::WorldPosition>(m, "WorldPosition")
         .def(py::init<size_t, size_t>())
         // .def(py::init<std::tuple<size_t, size_t>>())
-        .def("get_index", &emp::WorldPosition::GetIndex)
-        .def("get_pop_ID", &emp::WorldPosition::GetPopID)
-        .def("is_active", &emp::WorldPosition::IsActive)
-        .def("is_valid", &emp::WorldPosition::IsValid);
+        .def("get_index", &emp::WorldPosition::GetIndex, R"mydelimiter(
+            Returns the index (position within the population) represented by this WorldPosition as an int 
+            )mydelimiter")
+        .def("get_pop_ID", &emp::WorldPosition::GetPopID, R"mydelimiter(
+            Returns the ID (as an int) of the population that this WorldPosition is referring to.
+
+            Wondering why there might be multiple populations? It's because WorldPosition objects 
+            are designed to gracefully handle configurations in which there are
+            multiple separate populations (e.g. due to islands or separated generations).
+            If you're just using one population, the pop ID will always be 0 and that's fine.
+            )mydelimiter")
+        .def("is_active", &emp::WorldPosition::IsActive, R"mydelimiter(
+            Returns a boolean indicating whether this position potentially represents an "active" (i.e. "alive")
+            organism in the context of a generational/synchronous configuration (i.e. one in which a new generation
+            is created on each time step and there is no overlap of organisms between generations; this 
+            configuration is commonly used in evolutionary computation and simple evolutionary models). In this case, 
+            the next generation (i.e. the one that is currently in the process of being created) is considered 
+            "inactive". Conventionally, the population that selection is currently happening on has ID 0 and the population
+            holding the new generation has ID 1. Thus, this method simply returns true if the population ID is 0 and false 
+            otherwise.
+
+            If you are using population IDs for a separate purpose (e.g. islands), this method will not yield accurate
+            results.
+            )mydelimiter")
+        .def("is_valid", &emp::WorldPosition::IsValid, R"mydelimiter(
+            -1 can be used as a sentinel value to indicate that a position is not to be used.
+            This method returns a boolean indicating whether this position is "valid" 
+            (i.e. the index is not equal to -1).
+            )mydelimiter");
 
     // py::implicitly_convertible<std::tuple<int, int>, emp::WorldPosition>();
 
@@ -167,11 +192,37 @@ PYBIND11_MODULE(systematics, m) {
             ----------
             Taxon tax: The taxon of the organism that died. 
             )mydelimiter")
-        .def("set_next_parent_by_position", static_cast<void (sys_t::*) (emp::WorldPosition)>(&sys_t::SetNextParent))
-        .def("set_next_parent", [](sys_t & self, taxon_t * tax){self.SetNextParent(tax);})
+        .def("set_next_parent", [](sys_t & self, taxon_t * tax){self.SetNextParent(tax);}, R"mydelimiter(
+            Sometimes, due to the flow of your program, you may not have access to the taxon object for the parent and
+            the offspring at the same time. In these cases, you can use set_next_parent to tell the systematics manager
+            what the taxon of the parent of the next offspring should be. The next time you call one of the add_org 
+            methods without a specified parent, the systematics manager will used the specified taxon as the parent for that organism.
+
+            Parameters
+            ----------
+            Taxon tax: The taxon to set as the next parent. 
+            )mydelimiter")
+        .def("set_next_parent_by_position", static_cast<void (sys_t::*) (emp::WorldPosition)>(&sys_t::SetNextParent), R"mydelimiter(
+            Works just like set_next_parent except for systematics managers that are tracking based on position.
+
+            Parameters
+            ----------
+            WorldPosition pos: The position in the world of the organism that should be the next parent.
+            )mydelimiter")
 
         // Move notification
-        .def("swap_positions", static_cast<void (sys_t::*) (emp::WorldPosition, emp::WorldPosition)>(&sys_t::SwapPositions))
+        .def("swap_positions", static_cast<void (sys_t::*) (emp::WorldPosition, emp::WorldPosition)>(&sys_t::SwapPositions), R"mydelimiter(
+            If you are tracking taxa by positions it is important that you notify the systematics manager any time a taxon changes
+            position for any reason. This function allows you to do so. Assumes that all changes in position take the form of the
+            contents of one location being replaced with the contents of a different location. If only one organism is moving, the location
+            it is moving to is presumably empty and it is presumably leaving its former position empty. Thus, you will swap an organism with
+            an empty space.
+
+            Parameters
+            ----------
+            WorldPosition pos1: The position of one of the organisms being swapped. 
+            WorldPosition pos2: The position of one of the organisms being swapped. 
+            )mydelimiter")
 
         // Signals
         .def("on_new", [](sys_t & self, std::function<void(emp::Ptr<taxon_t> t, org_t & org)> & fun){self.OnNew(fun);})

@@ -1,6 +1,5 @@
-import phylotrackpy
-phylotrackpy.systematics
 from phylotrackpy import systematics
+
 
 class ExampleOrg:
     def __init__(self, genotype):
@@ -31,6 +30,7 @@ def test_systematics_by_position():
     sys.remove_org_by_position(org_pos)
     # sys.remove_org_by_position((2,0))
 
+
 def test_systematics():
     # sys = systematics.Systematics(taxon_info_fun, True, True, False, False)
     sys = systematics.Systematics(taxon_info_fun, True, True, False, False)
@@ -48,6 +48,12 @@ def test_systematics():
     assert(org_tax != org2_tax)
     assert(org4_tax != org2_tax)
     assert(org5_tax == org4_tax)
+    assert(sys.get_num_active() == 3)
+    assert(sys.get_num_ancestors() == 0)
+
+    assert(not sys.remove_org(org2_tax))
+    assert(sys.get_num_active() == 2)
+    assert(sys.get_num_ancestors() == 1)
 
 
 def test_shared_ancestor():
