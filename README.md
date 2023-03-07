@@ -3,6 +3,7 @@
 [![Tests](https://github.com/emilydolson/python-phylogeny-tracker/actions/workflows/ci.yml/badge.svg)](https://github.com/emilydolson/python-phylogeny-tracker/actions/workflows/ci.yml)
 [![Documentation Status](https://readthedocs.org/projects/phylotrackpy/badge/?version=latest)](https://phylotrackpy.readthedocs.io/en/latest/?badge=latest)
 [![PyPi Package Version](https://img.shields.io/pypi/v/phylotrackpy.svg)](https://pypi.python.org/pypi/phylotrackpy)
+![PyPI - Wheel](https://img.shields.io/pypi/wheel/phylotrackpy)
 
 In _in silico_ evolution experiments, we have the luxury of being able to perfectly track the phylogenies of our populations, rather than having to just infer them after the fact. Phylotrackpy is a Python package designed to help you do so as efficiently as possible.
 
