@@ -2,7 +2,7 @@
 
 __author__ = """Emily Dolson"""
 __email__ = 'emilydolson@gmail.com'
-__version__ = '0.1.3'
+__version__ = '0.1.4'
 
 import phylotrackpy.systematics
 
