@@ -10,7 +10,3 @@ build-backend = "setuptools.build_meta"
 [tool.cibuildwheel]
 test-command = "python {project}/test/test_systematics.py"
 skip = "*musllinux*"
-
-[[tool.cibuildwheel.overrides]]
-select = "*-musllinux_x86_64"
-before-all = "rm setup.py && mv setup_old_cpp.py setup.py"
