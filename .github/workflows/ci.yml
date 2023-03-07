@@ -47,6 +47,7 @@ jobs:
 
   build_wheels:
     name: Build wheels on ${{ matrix.os }}
+    needs: [test]
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -65,6 +66,7 @@ jobs:
 
   build_sdist:
     name: Build source distribution
+    needs: [test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
