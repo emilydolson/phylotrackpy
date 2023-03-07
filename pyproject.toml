@@ -9,3 +9,4 @@ build-backend = "setuptools.build_meta"
 
 [tool.cibuildwheel]
 test-command = "python {project}/test/test_systematics.py"
+skip = ["cp36-*", "cp37-*"]
