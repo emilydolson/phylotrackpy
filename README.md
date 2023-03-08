@@ -5,7 +5,7 @@
 [![PyPi Package Version](https://img.shields.io/pypi/v/phylotrackpy.svg)](https://pypi.python.org/pypi/phylotrackpy)
 ![PyPI - Wheel](https://img.shields.io/pypi/wheel/phylotrackpy)
 
-![An example phylogeny](images/phylogeny.jpg)
+![An example phylogeny](docs/images/phylogeny.jpg)
 
 In _in silico_ evolution experiments, we have the luxury of being able to perfectly track the phylogenies of our populations, rather than having to just infer them after the fact. Phylotrackpy is a Python package designed to help you do so as efficiently as possible.
 
@@ -48,7 +48,7 @@ There are certain quirks associated with real-time phylogenies (especially digit
 - **Not all extant taxa are leaf nodes**: In phylogenetic reconstructions, there is usually an assumption that all extant (i.e. still living) taxa are leaf nodes in the phylogeny (i.e. none of them are parents/offspring of each other; similar taxa are descended from a shared common ancestor). In real-time phylogenies it is entirely possible that one taxon gives birth to something that we have defined as a different taxon and then continues to coexist with that child taxon.
 - **Not all nodes are branch points**: In phylogenetic reconstructions, we only attempt to infer where branch points (i.e. common ancestors of multiple taxa) occurred. We do not try to infer how many taxa existed on a line of descent between a branch point and an extant taxa. In real-time phylogenies we observe exactly how many taxa exist on this line of descent and we keep a record of them. In practice there are often a lot of them, depending on you define your taxa. It is unclear whether we should include these non-branching nodes when calculating phylogenetic statistics (which is why Phylotrackpy lets you choose whether you want to).
 
-![An example of a full digital evolution phylogeny](images/FullPhylogeny.png)
+![An example of a full digital evolution phylogeny](docs/images/FullPhylogeny.png)
 
 The above image represents an actual phylogeny measured from digital evolution. Each rectangle represents a different taxon. It's position along the x axis represents the span of time it existed for. Note that there are often sections along a single branch where multiple taxa coexisted for a period of time. Circles represent extant taxa at the end of this run.
 
