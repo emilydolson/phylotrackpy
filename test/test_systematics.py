@@ -71,6 +71,28 @@ def test_shared_ancestor():
     shared = sys.get_shared_ancestor(org3_tax, org4_tax)
     assert(shared == org1_tax)
 
+
+def test_load_data():
+    sys = systematics.Systematics(taxon_info_fun, True, True, False, False)
+    sys.load_from_file("test/assets/systematics_snapshot.csv", "genome", True)
+
+    assert sys.get_num_roots() == 1
+    assert sys.get_num_active() == 6
+    assert sys.get_num_ancestors() == 4
+    assert sys.get_num_outside() == 0
+    assert sys.get_num_taxa() == 10
+    assert sys.get_max_depth() == 4
+
+    mrca = sys.get_mrca()
+    assert mrca.get_id() == 1
+    assert mrca.get_total_offspring() == 9
+    assert mrca.get_num_offspring() == 3
+
+    offspring = mrca.get_offspring()
+    for off in offspring:
+        assert off.get_id() in [7, 2, 3]
+
+
 # def test_data():
 #     sys = systematics.Systematics(taxon_info_fun, True, True, False, False)
 #     org = ExampleOrg("hello")
@@ -80,4 +102,4 @@ def test_shared_ancestor():
 
 
 if __name__ == "__main__":
-    test_systematics()
+    test_load_data()
