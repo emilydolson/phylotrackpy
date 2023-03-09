@@ -1,6 +1,7 @@
 from phylotrackpy import systematics
 from pytest import approx
 
+
 class ExampleOrg:
     def __init__(self, genotype):
         self.genotype = genotype
@@ -32,7 +33,6 @@ def test_systematics_by_position():
 
 
 def test_systematics():
-    # sys = systematics.Systematics(taxon_info_fun, True, True, False, False)
     sys = systematics.Systematics(taxon_info_fun, True, True, False, False)
     org = ExampleOrg("hello")
     org2 = ExampleOrg("hello 2")
@@ -128,6 +128,19 @@ def test_phylostatistics():
     assert out_dist[1] == 1
     assert out_dist[2] == 2
 
+    assert sys.calc_diversity() == approx(2.58496)
+    assert sys.get_ave_depth() == approx(1.5)
+
+
+def test_loading_stats():
+    sys = systematics.Systematics(lambda x: x)
+    sys.load_from_file("test/assets/consolidated.csv", "id")
+
+    assert sys.get_ave_depth() > 0
+    assert sys.calc_diversity() > 0
+
+    sys.load_from_file("test/assets/full.csv", "id", True, False)
+
 # def test_data():
 #     sys = systematics.Systematics(taxon_info_fun, True, True, False, False)
 #     org = ExampleOrg("hello")
@@ -137,4 +150,4 @@ def test_phylostatistics():
 
 
 if __name__ == "__main__":
-    test_phylostatistics()
+    test_loading_stats()

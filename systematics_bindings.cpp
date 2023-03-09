@@ -252,7 +252,7 @@ PYBIND11_MODULE(systematics, m) {
         .def("get_out_degree_distribution", static_cast<std::unordered_map<int, int> (sys_t::*) () const>(&sys_t::GetOutDegreeDistribution))
 
         // Input
-        .def("load_from_file", static_cast<void (sys_t::*) (const std::string &, const std::string &, bool)>(&sys_t::LoadFromFile))
+        .def("load_from_file", static_cast<void (sys_t::*) (const std::string &, const std::string &, bool, bool)>(&sys_t::LoadFromFile), py::arg("file_path"), py::arg("info_col") = "info", py::arg("assume_leaves_extant") = true, py::arg("adjust_total_offspring") = true)
 
         // Output
         .def("snapshot", static_cast<void (sys_t::*) (const std::string &) const>(&sys_t::Snapshot))
