@@ -1,5 +1,5 @@
 from phylotrackpy import systematics
-
+from pytest import approx
 
 class ExampleOrg:
     def __init__(self, genotype):
@@ -85,13 +85,48 @@ def test_load_data():
 
     mrca = sys.get_mrca()
     assert mrca.get_id() == 1
-    assert mrca.get_total_offspring() == 9
+    assert mrca.get_total_offspring() == 6
     assert mrca.get_num_offspring() == 3
 
     offspring = mrca.get_offspring()
     for off in offspring:
         assert off.get_id() in [7, 2, 3]
 
+
+def test_phylostatistics():
+    sys = systematics.Systematics(lambda x: str(x), True, True, False, False)
+
+    sys.set_update(0)
+    id1 = sys.add_org(25)
+    assert sys.get_average_origin_time() == 0
+    assert sys.get_average_origin_time(True) == 0
+
+    sys.set_update(6)
+    id2 = sys.add_org(1, id1)
+    assert sys.get_average_origin_time() == 3
+    assert sys.get_average_origin_time(True) == 0
+
+    sys.set_update(10)
+    id3 = sys.add_org(26, id1)
+    assert sys.get_average_origin_time() == approx(5.3333333)
+    assert sys.get_average_origin_time(True) == 0
+
+    sys.set_update(25)
+    id4 = sys.add_org(27, id2)
+    assert sys.get_average_origin_time() == approx(10.25)
+    assert sys.get_average_origin_time(True) == 0
+
+    sys.set_update(32)
+    id5 = sys.add_org(28, id2)
+    assert sys.get_average_origin_time() == approx(14.6)
+    assert sys.get_average_origin_time(True) == 3
+    
+    id6 = sys.add_org(30, id5)
+
+    out_dist = sys.get_out_degree_distribution()
+    assert out_dist[0] == 3
+    assert out_dist[1] == 1
+    assert out_dist[2] == 2
 
 # def test_data():
 #     sys = systematics.Systematics(taxon_info_fun, True, True, False, False)

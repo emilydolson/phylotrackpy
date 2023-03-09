@@ -248,6 +248,8 @@ PYBIND11_MODULE(systematics, m) {
         .def("get_mean_pairwise_distance", static_cast<double (sys_t::*) (bool) const>(&sys_t::GetMeanPairwiseDistance))
         .def("get_sum_pairwise_distance", static_cast<double (sys_t::*) (bool) const>(&sys_t::GetSumPairwiseDistance))
         .def("get_phylogenetic_diversity", static_cast<int (sys_t::*) () const>(&sys_t::GetPhylogeneticDiversity))
+        .def("get_average_origin_time", static_cast<double (sys_t::*) (bool) const>(&sys_t::GetAverageOriginTime), py::arg("normalize") = false)
+        .def("get_out_degree_distribution", static_cast<std::unordered_map<int, int> (sys_t::*) () const>(&sys_t::GetOutDegreeDistribution))
 
         // Input
         .def("load_from_file", static_cast<void (sys_t::*) (const std::string &, const std::string &, bool)>(&sys_t::LoadFromFile))
