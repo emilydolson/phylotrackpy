@@ -153,4 +153,5 @@ def test_phylostatistics():
 
 
 if __name__ == "__main__":
-    test_loading_stats()
+    # test_loading_stats()
+    pass
