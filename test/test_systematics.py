@@ -138,6 +138,9 @@ def test_loading_stats():
 
     assert sys.get_ave_depth() > 0
     assert sys.calc_diversity() > 0
+    assert sys.get_mean_evolutionary_distinctiveness(32766) > 0
+    assert sys.get_sum_evolutionary_distinctiveness(32766) > 0
+    assert sys.get_variance_evolutionary_distinctiveness(32766) > 0
 
     sys.load_from_file("test/assets/full.csv", "id", True, False)
 
