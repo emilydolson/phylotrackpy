@@ -5,7 +5,7 @@
 [![PyPi Package Version](https://img.shields.io/pypi/v/phylotrackpy.svg)](https://pypi.python.org/pypi/phylotrackpy)
 ![PyPI - Wheel](https://img.shields.io/pypi/wheel/phylotrackpy)
 
-<img src=docs/images/phylogeny.jpg width="50%" height="50%">
+<img src=https://github.com/emilydolson/phylotrackpy/raw/main/docs/images/phylogeny.jpg width="50%" height="50%">
 
 In _in silico_ evolution experiments, we have the luxury of being able to perfectly track the phylogenies of our populations, rather than having to just infer them after the fact. Phylotrackpy is a Python package designed to help you do so as efficiently as possible.
 
