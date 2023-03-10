@@ -132,17 +132,17 @@ def test_phylostatistics():
     assert sys.get_ave_depth() == approx(1.5)
 
 
-# def test_loading_stats():
-#     sys = systematics.Systematics(lambda x: x)
-#     sys.load_from_file("test/assets/consolidated.csv", "id")
+def test_loading_stats():
+    sys = systematics.Systematics(lambda x: x)
+    sys.load_from_file("test/assets/consolidated.csv", "id")
 
-#     assert sys.get_ave_depth() > 0
-#     # assert sys.calc_diversity() > 0
-#     assert sys.get_mean_evolutionary_distinctiveness(32766) > 0
-#     assert sys.get_sum_evolutionary_distinctiveness(32766) > 0
-#     assert sys.get_variance_evolutionary_distinctiveness(32766) > 0
+    assert sys.get_ave_depth() > 0
+    # assert sys.calc_diversity() > 0
+    assert sys.get_mean_evolutionary_distinctiveness(32766) > 0
+    assert sys.get_sum_evolutionary_distinctiveness(32766) > 0
+    assert sys.get_variance_evolutionary_distinctiveness(32766) > 0
 
-    # sys.load_from_file("test/assets/full.csv", "id", True, False)
+    sys.load_from_file("test/assets/full.csv", "id", True, False)
 
 # def test_data():
 #     sys = systematics.Systematics(taxon_info_fun, True, True, False, False)
