@@ -1,23 +1,22 @@
 ---
-title: 'hstrat: a Python Package for phylogenetic inference on distributed digital evolution populations'
+title: 'phylotrackpy: a Python package for phylogenetic tracking on *in silico* evolution experiments'
 tags:
   - Python
   - artificial life
   - digital evolution
-  - distributed computing
+  - phylogenetics
 authors:
-  - name: Matthew Andres Moreno
-    orcid: 0000-0003-4726-4479
-    affiliation: 1
   - name: Emily Dolson
     orcid: 0000-0001-8616-4898
     affiliation: 1
-  - name: Charles Ofria
-    orcid: 0000-0003-2924-1732
-    affiliation: 1
+  - name: Matthew Andres Moreno
+    orcid: 0000-0003-4726-4479
+    affiliation: 2
 affiliations:
  - name: Michigan State University
    index: 1
+ - name: University of Michigan
+   index: 2
 date: 1 October 2022
 bibliography: paper.bib
 ---
