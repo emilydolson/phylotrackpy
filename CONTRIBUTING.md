@@ -49,17 +49,21 @@ If you are proposing a feature:
 Ready to contribute? Here's how to set up `phylotrackpy` for local development.
 
 1. Fork the `phylotrackpy` repo on GitHub.
-2. Clone your fork locally::
+2. Clone your fork locally:
 
-    $ git clone git@github.com:your_name_here/phylotrackpy.git
+    ```bash
+    git clone git@github.com:your_name_here/phylotrackpy.git
+    ```
 
-3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development::
+3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development:
 
-    $ mkvirtualenv phylotrackpy
-    $ cd phylotrackpy/
-    $ python setup.py develop
+    ```bash
+    mkvirtualenv phylotrackpy
+    cd phylotrackpy/
+    python setup.py develop
+    ```
 
-4. Create a branch for local development::
+4. Create a branch for local development:
 
     ```bash
     git checkout -b name-of-your-bugfix-or-feature
@@ -75,11 +79,13 @@ Ready to contribute? Here's how to set up `phylotrackpy` for local development.
 
    To get flake8 and tox, just pip install them into your virtualenv.
 
-6. Commit your changes and push your branch to GitHub::
+6. Commit your changes and push your branch to GitHub:
 
-    $ git add .
-    $ git commit -m "Your detailed description of your changes."
-    $ git push origin name-of-your-bugfix-or-feature
+    ```bash
+    git add .
+    git commit -m "Your detailed description of your changes."
+    git push origin name-of-your-bugfix-or-feature
+    ```
 
 7. Submit a pull request through the GitHub website.
 
@@ -96,8 +102,8 @@ Before you submit a pull request, check that it meets these guidelines:
 ## Deploying
 
 A reminder for the maintainers on how to deploy.
-Make sure all your changes are committed (including an entry in HISTORY.rst).
-Then run::
+Make sure all your changes are committed.
+Then run:
 
 ```bash
 bumpversion patch # possible: major / minor / patch
