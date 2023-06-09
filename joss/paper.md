@@ -1,5 +1,5 @@
 ---
-title: 'phylotrackpy: a Python package for phylogenetic tracking on *in silico* evolution experiments'
+title: 'the phylotrack suite: header-only C++ and Python tools for *in silico* phylogenetic tracking'
 tags:
   - Python
   - C++
