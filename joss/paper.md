@@ -91,7 +91,8 @@ __Phylogenetic Topology Statistics:__ Support is provided for
 
 # Future Work
 
-The primary limitation of Phylotrackpy at this point in time is the fact that it is limited to tracking asexual phylogenies (i.e. each taxon can have only one parent). In the future, we plan to extend Phylotrackpy to allow multiple parents per taxon.
+A primary current limitation is incompatibility with asexual phylogenies.
+We expect to extend Phylotrack in a future release to allow multiple parents per taxon.
 
 # Acknowledgements
 
