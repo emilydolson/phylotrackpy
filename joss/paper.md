@@ -52,10 +52,10 @@ APOGeT, in turn, focuses on tracking speciation in sexually-reproducing populati
 
 Vast amounts of bioinformatics-oriented phylogenetics software is also available.
 These programs' purposes typically include
-- inferring phylogenies from extant organisms (and sometimes fossils) [@challa2019phylogenetic]
-- sampling phylogenies from theoretical models of population and species dynamics [@stadler2011simulating]
-- cross-referencing phylogenies with other data (e.g., spatial species distributions) [@emerson2008phylogenetic]
-- analyzing and manipulating tree structures [@smith2020treedist;@sand2014tqdist;@sukumaran2010dendropy;@cock2009biopython]
+- inferring phylogenies from extant organisms (and sometimes fossils) [@challa2019phylogenetic],
+- sampling phylogenies from theoretical models of population and species dynamics [@stadler2011simulating],
+- cross-referencing phylogenies with other data (e.g., spatial species distributions) [@emerson2008phylogenetic], and
+- analyzing and manipulating tree structures [@smith2020treedist;@sand2014tqdist;@sukumaran2010dendropy;@cock2009biopython].
 
 Phylotrack overlaps with these goals only in that it also provides tree statistic implementations. We chose to include this feature to facilitate fast during-simulation calculations of these metrics.
 Notably, the problem of tracking a phylogeny within an agent-based program is substantially different from the more traditional problem of reconstructing a phylogeny.
