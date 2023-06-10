@@ -1,10 +1,11 @@
 ---
-title: 'the Phylotrack suite: header-only C++ and Python tools for *in silico* phylogenetic tracking'
+title: 'Phylotrack: C++ and Python libraries for *in silico* phylogenetic tracking'
 tags:
   - Python
   - C++
   - artificial life
   - digital evolution
+  - evolutionary computation
   - phylogenetics
 authors:
   - name: Emily Dolson
@@ -24,75 +25,75 @@ bibliography: paper.bib
 
 # Summary
 
-*In silico* evolution instantiates the evolutionary mechanisms of heredity, variation, and differential reproductive success within agent-based computational models.
-Under these conditions, populations of virtual agents undergo evolution via natural selection and/or drift [@pennock2007models].
-This experimental paradigm --- used across biological modeling, artificial life, and evolutionary computation --- provides distinct capabilities that complement research with natural model systems.
+*In silico* evolution instantiates the processes of heredity, variation, and differential reproductive success (the three "ingredients" for evolution by natural selection) within digital populations of computational agents.
+Consequently, these populations undergo evolution [@pennock2007models], and can be used as virtual model systems for studying evolutionary dynamics.
+This experimental paradigm --- used across biological modeling, artificial life, and evolutionary computation --- complements research done using *in vitro* and *in vivo* systems by enabling the user to conduct experiments that would be impossible in the lab or field [@dolsonDigitalEvolutionEcology2021].
 One key benefit is complete, exact observability.
-For instance, compiling the full set of parent-child relationships over the history of a population yields complete, exact records of evolutionary lineage.
-This information reveals sequences of events behind gain, loss, or maintenance of specific traits, but also has provides robust inferential power over general factors driving evolution and adaptation like ecology and selection pressure [@dolsonInterpretingTapeLife2020].
+For example, it is possible to perfectly record the full set of parent-child relationships over the history of a population, yielding precise and accurate phylogenies (ancestry trees).
+This information reveals the sequences of events behind gain, loss, or maintenance of specific traits, and also facilitates making inferences about the general factors driving evolution [@dolsonInterpretingTapeLife2020;@moreno2023toward].
 
-The Phylotrack suite packages simulation lineage tracking and analysis capabilities.
-The suite is composed of a header-only C++ library, developed under the umbrella of the Empirical project [@ofria2020empirical], and a Python wrapper around that library created with Pybind11 [@pybind11].
-Both components supply a public-facing API to attach phylogenetic tracking to external digital evolution systems, as well as interfaces for stand-alone application of a variety of popular phylogenetic topology metrics [@tuckerGuidePhylogeneticMetrics2017].
-Underlying algorithm and data structure engineering prioritizes efficiency to support large systems with rapid generational turnover.
-The suite's underlying native implementation ensures fast, memory-efficient runtime, with multiple explicit features (e.g., lineage pruning and consolidation, etc.) included to reduce the memory footprint of phylogenetic information.
+The Phylotrack project provides libraries for tracking and analyzing phylogenies in *in silico* evolution.
+The project is composed of 1) Phylotracklib: a header-only C++ library, developed under the umbrella of the Empirical project [@ofria2020empirical], and 2) Phylotrackpy: a Python wrapper around Phylotracklib, created with Pybind11 [@pybind11].
+Both components supply a public-facing API to attach phylogenetic tracking to digital evolution systems, as well as a stand-alone interface for measuring a variety of popular phylogenetic topology metrics [@tuckerGuidePhylogeneticMetrics2017].
+The underlying algorithm design prioritizes efficiency, allowing Phylotrack to support large systems with rapid generational turnover.
+The underlying C++ implementation ensures fast, memory-efficient performance, with multiple explicit features (e.g., phylogeny pruning and abstraction, etc.) that facilitate reducing the memory footprint of phylogenetic information.
 
 # Statement of Need
 
 <!-- was going to say a rich history of sophisticated phylogenetic analyses... -->
-*In silico* evolution work enjoys a rich history of phylogenetic record-keeping and analysis [@ray1992evolution].
-However, to our knowledge, all pre-existing work has relied on bespoke system- or framework-specific phylogeny tracking implementations [@ofria2004avida;@bohm2017mabe;@de2012deap;@Garwood_REvoSim_Organism-level_simulation_2019].
-In contrast, the Phylotrack suite seeks to supply ready-built tracking flexible enough to attach to any system modeling replicating entities.
-To our knowledge, no such general-purpose library currently exists.
+*In silico* evolution work enjoys a rich history of phylogenetic record-keeping and analysis, and many systems facilitate tracking phylogenies [@ray1992evolution;@ofria2004avida;@bohm2017mabe;@de2012deap;@Garwood_REvoSim_Organism-level_simulation_2019].
+However, to our knowledge, no other general-purpose perfect phylogeny tracking library exists; prior work has used bespoke system- or framework-specific implementations.
+In contrast, Phylotrack provides ready-built tracking flexible enough to attach to any system containing replicating entities.
 
-The hstrat and Automated Phylogeny Over Geological Timescales (APOGeT) libraries relate closely to, but do not entirely overlap, the Phylotrack suite's goals.
-Both are also designed as general-purpose attachments to digital evolution systems, but they differ in the mode of phylogenetic tracking supplied.
-Whereas Phylotrackpy uses a graph-based approach to perfectly record asexual phylogenies, the hstrat library implements hereditary stratigraphy, a recently developed method for approximate, inference-based approach for robust decentralized phylogenetic tracking in parallel and distributed systems [@moreno2022hstrat].
+Two other general-purpose libraries for recording phylogenetic information do exist: hstrat and Automated Phylogeny Over Geological Timescales (APOGeT).
+However, they allow different modes of phylogenetic tracking than Phylotrack does.
+Whereas Phylotrack uses a graph-based approach to perfectly record asexual phylogenies, the hstrat library implements hereditary stratigraphy, a recently developed method that allows robust decentralized phylogenetic tracking in parallel and distributed systems at the cost of a tunable reduction in accuracy [@moreno2022hstrat].
 APOGeT, in turn, focuses on tracking speciation in sexually-reproducing populations [@godin2019apoget].
 
-Vast amounts of [bioinformatics-oritented phylogenetics software](https://en.wikipedia.org/wiki/List_of_phylogenetics_software) is currently available.
+Vast amounts of bioinformatics-oriented phylogenetics software is also available.
 These programs' purposes typically include
-- inferring phylogenies from extant organisms (and sometimes fossils) [@challa2019phylogenetic],
-- sampling phylogenies from theoretical models of population and species dynamics [@stadler2011simulating], and
-- interoperating phylogeneies with other data (e.g., spatial species distributions) [@emerson2008phylogenetic],
-- analyzing and manipulating tree structure [@smith2020treedist;@sand2014tqdist;@sukumaran2010dendropy;@cock2009biopython].
+- inferring phylogenies from extant organisms (and sometimes fossils) [@challa2019phylogenetic]
+- sampling phylogenies from theoretical models of population and species dynamics [@stadler2011simulating]
+- cross-referencing phylogenies with other data (e.g., spatial species distributions) [@emerson2008phylogenetic]
+- analyzing and manipulating tree structures [@smith2020treedist;@sand2014tqdist;@sukumaran2010dendropy;@cock2009biopython]
 
-Phylotrack overlaps only in providing tree statistic implementations, under the rationale of facilitating fast during-simulation calculations.
-The problem of tracking a phylogeny within an agent-based simulation differs substantially from bioinformatics-oriented tools' paradigm and purposes.
-(Users new to working with recorded phylogenies should refer to Phylotrackpy documentation for [notes on subtle structural differences](https://phylotrackpy.readthedocs.io/en/latest/#useful-background-information) from more common reconstructed phylogenies.)
-The Phylotrack suite has already facilitated several research projects.
-Originally developed as part of the Empirical library [@ofria2020empirical], the C++ Phylotrack backend has been integrated into packages such as Modular Agent-Based Evolver (MABE) 2.0 [@bohm2019mabe], Symbulation [@vostinarSpatialStructureCan2019], and even a fork of the Avida digital evolution platform [@ofria2004avida;@dolsonInterpretingTapeLife2020].
+Phylotrack overlaps with these goals only in that it also provides tree statistic implementations. We chose to include this feature to facilitate fast during-simulation calculations of these metrics.
+Notably, the problem of tracking a phylogeny within an agent-based program is substantially different from the more traditional problem of reconstructing a phylogeny
+(indeed, users new to working with recorded phylogenies should refer to the Phylotrackpy documentation for notes on subtle structural differences from reconstructed phylogenies).
+
+Phylotrack has already facilitated several research projects.
+Phylotracklib has been integrated into packages such as Modular Agent-Based Evolver (MABE) 2.0 [@bohm2019mabe], Symbulation [@vostinarSpatialStructureCan2019], and even a fork of the Avida digital evolution platform [@ofria2004avida;@dolsonInterpretingTapeLife2020].
 These applications have facilitated research on open-ended evolution [@dolsonMODESToolboxMeasurements2019], the origin of endosymbiosis [@johnsonEndosymbiosisBustInfluence2022a], the importance of phylogenetic diversity for machine learning via evolutionary computation [@hernandez2022can;@shahbandegan2022untangling], and more.
-The Python wrapper for Phylotrackpy is newer, but it has already served as a point of comparison in the development of other phylogenetic tools [@moreno2022hereditary;@moreno2023toward].
+Phylotrackpy is newer, but it has already served as a point of comparison in the development of other phylogenetic tools [@moreno2022hereditary;@moreno2023toward].
 
 # Features
 
 __Lineage Recording:__
-The core functionality of Phylotrack is synthesis of asexual lineage records from individual agent creation and elimination events.
-Extinct lineages are pruned from phylogenies by default, but this can be disabled.
-Spatial trajectories of lineages can also be stored.
-Configuration of taxonomic unit definition is supported through user-provided lambda mappings.
+The core functionality of Phylotrack is recording asexual phylogenies. To achieve this goal, Phylotrack need only be notified of each agent creation and destruction event.
+To reduce memory overhead, extinct branches are pruned from phylogenies by default, but this feature can be disabled.
+The level of abstraction (i.e. what constitutes a taxonomic unit) can be customized via a user-provided function.
+Supplemental data about each taxonomic unit can be stored efficiently.
 
 __Serialization:__
-Phylotrack outputs data in the Artificial Life Standard Phylogeny format [@lalejiniDataStandardsArtificial2019] to facilitate interoperability with an associated [ecosystem of software converters, analyzers, visualizers](https://github.com/alife-data-standards/alife-data-tools).
-Conversion to bioinformatics-standard formats (e.g., Newick, phyloXML, etc.) can be accomplished via these external tools.
-Phylogeny data can be restored from file, enabling after-the-fact calculation of phylogenetic topology statistics.
+Phylotrack outputs data in the Artificial Life Standard Phylogeny format [@lalejiniDataStandardsArtificial2019] to facilitate interoperability with an associated ecosystem of software converters, analyzers, visualizers.
+As these tools support conversion to bioinformatics-standard formats (e.g., Newick, phyloXML, etc.), Phylotrack phylogenies can also be analyzed with tools designed for biological data. 
+Phylogeny data can be restored from file, enabling post-hoc calculation of phylogenetic topology statistics.
 
 __Phylogenetic Topology Statistics:__ Support is provided for
-- Shannon diversity,
-- Colless-like index,
-- average phylogenetic depth,
-- average origin time,
-- evolutionary distinctiveness,
-- pairwise distance,
-- mrca origin time,
-- internal node count, and
-- Sackin index.
+- Average phylogenetic depth across taxa
+- Average origin time across taxa
+- Most recent common ancestor origin time
+- Shannon diversity
+- Colless-like index [@mirSoundCollesslikeBalance2018]
+- Mean, sum, and variance of evolutionary distinctiveness [@isaacMammalsEDGEConservation2007;@tuckerGuidePhylogeneticMetrics2017]
+- Mean, sum, and variance pairwise distance [@clarkeQuantifyingStructuralRedundancy1998;@clarkeFurtherBiodiversityIndex2001;@webbPhylogeniesCommunityEcology2002;@tuckerGuidePhylogeneticMetrics2017]
+- Phylogenetic diversity [@faithConservationEvaluationPhylogenetic1992]
+- Sackin index
 
 # Future Work
 
-A primary current limitation is incompatibility with asexual phylogenies.
-We expect to extend Phylotrack in a future release to allow multiple parents per taxon.
+The primary current limitation of Phylotrack is its incompatibility with sexually-reproducing populations (unless tracking is done per-gene).
+We plan to extend Phylotrack in a future release to allow multiple parents per taxon.
 
 # Acknowledgements
 
