@@ -76,7 +76,7 @@ Supplemental data about each taxonomic unit can be stored efficiently.
 
 __Serialization:__
 Phylotrack outputs data in the Artificial Life Standard Phylogeny format [@lalejiniDataStandardsArtificial2019] to facilitate interoperability with an associated ecosystem of software converters, analyzers, visualizers.
-As these tools support conversion to bioinformatics-standard formats (e.g., Newick, phyloXML, etc.), Phylotrack phylogenies can also be analyzed with tools designed for biological data. 
+As these tools support conversion to bioinformatics-standard formats (e.g., Newick, phyloXML, etc.), Phylotrack phylogenies can also be analyzed with tools designed for biological data.
 Phylogeny data can be restored from file, enabling post-hoc calculation of phylogenetic topology statistics.
 
 __Phylogenetic Topology Statistics:__ Support is provided for
