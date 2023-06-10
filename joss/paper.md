@@ -65,6 +65,30 @@ Originally developed as part of the Empirical library [@ofria2020empirical], the
 These applications have facilitated research on open-ended evolution [@dolsonMODESToolboxMeasurements2019], the origin of endosymbiosis [@johnsonEndosymbiosisBustInfluence2022a], the importance of phylogenetic diversity for machine learning via evolutionary computation [@hernandez2022can;@shahbandegan2022untangling], and more.
 The Python wrapper for Phylotrackpy is newer, but it has already served as a point of comparison in the development of other phylogenetic tools [@moreno2022hereditary;@moreno2023toward].
 
+# Features
+
+__Lineage Recording:__
+The core functionality of Phylotrack is synthesis of asexual lineage records from individual agent creation and elimination events.
+Extinct lineages are pruned from phylogenies by default, but this can be disabled.
+Spatial trajectories of lineages can also be stored.
+Configuration of taxonomic unit definition is supported through user-provided lambda mappings.
+
+__Serialization:__
+Phylotrack outputs data in the Artificial Life Standard Phylogeny format [@lalejiniDataStandardsArtificial2019] to facilitate interoperability with an associated [ecosystem of software converters, analyzers, visualizers](https://github.com/alife-data-standards/alife-data-tools).
+Conversion to bioinformatics-standard formats (e.g., Newick, phyloXML, etc.) can be accomplished via these external tools.
+Phylogeny data can be restored from file, enabling after-the-fact calculation of phylogenetic topology statistics.
+
+__Phylogenetic Topology Statistics:__ Support is provided for
+- Shannon diversity,
+- Colless-like index,
+- average phylogenetic depth,
+- average origin time,
+- evolutionary distinctiveness,
+- pairwise distance,
+- mrca origin time,
+- internal node count, and
+- Sackin index.
+
 # Future Work
 
 The primary limitation of Phylotrackpy at this point in time is the fact that it is limited to tracking asexual phylogenies (i.e. each taxon can have only one parent). In the future, we plan to extend Phylotrackpy to allow multiple parents per taxon.
