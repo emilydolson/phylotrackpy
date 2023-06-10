@@ -83,12 +83,12 @@ __Phylogenetic Topology Statistics:__ Support is provided for
 - Average phylogenetic depth across taxa
 - Average origin time across taxa
 - Most recent common ancestor origin time
-- Shannon diversity
+- Shannon diversity [@spellerberg2003tribute]
 - Colless-like index [@mirSoundCollesslikeBalance2018]
 - Mean, sum, and variance of evolutionary distinctiveness [@isaacMammalsEDGEConservation2007;@tuckerGuidePhylogeneticMetrics2017]
 - Mean, sum, and variance pairwise distance [@clarkeQuantifyingStructuralRedundancy1998;@clarkeFurtherBiodiversityIndex2001;@webbPhylogeniesCommunityEcology2002;@tuckerGuidePhylogeneticMetrics2017]
 - Phylogenetic diversity [@faithConservationEvaluationPhylogenetic1992]
-- Sackin index
+- Sackin's index [@shao1990tree]
 
 # Future Work
 
