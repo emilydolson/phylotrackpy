@@ -1,5 +1,5 @@
 ---
-title: 'the phylotrack suite: header-only C++ and Python tools for *in silico* phylogenetic tracking'
+title: 'the Phylotrack suite: header-only C++ and Python tools for *in silico* phylogenetic tracking'
 tags:
   - Python
   - C++
@@ -31,7 +31,7 @@ One key benefit is complete, exact observability.
 For instance, compiling the full set of parent-child relationships over the history of a population yields complete, exact records of evolutionary lineage.
 This information reveals sequences of events behind gain, loss, or maintenance of specific traits, but also has provides robust inferential power over general factors driving evolution and adaptation like ecology and selection pressure [@dolsonInterpretingTapeLife2020].
 
-The phylotrack suite packages simulation lineage tracking and analysis capabilities.
+The Phylotrack suite packages simulation lineage tracking and analysis capabilities.
 The suite is composed of a header-only C++ library, developed under the umbrella of the Empirical project [@ofria2020empirical], and a Python wrapper around that library created with Pybind11 [@pybind11].
 Both components supply a public-facing API to attach phylogenetic tracking to external digital evolution systems, as well as interfaces for stand-alone application of a variety of popular phylogenetic topology metrics [@tuckerGuidePhylogeneticMetrics2017].
 Underlying algorithm and data structure engineering prioritizes efficiency to support large systems with rapid generational turnover.
