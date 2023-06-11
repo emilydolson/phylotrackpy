@@ -10,15 +10,18 @@ tags:
 authors:
   - name: Emily Dolson
     orcid: 0000-0001-8616-4898
-    affiliation: 1
+    affiliation: "1, 2"
+    corresponding: true
   - name: Matthew Andres Moreno
     orcid: 0000-0003-4726-4479
-    affiliation: 2
+    affiliation: 3
 affiliations:
- - name: Michigan State University
+ - name: Department of Computer Science and Engineering, Michigan State University, East Lansing, MI, USA
    index: 1
- - name: University of Michigan
+ - name: Ecology, Evolution, and Behavior, Michigan State University, East Lansing, MI, USA
    index: 2
+ - name: Department of Ecology and Evolutionary Biology, University of Michigan, Ann Arbor, MI, USA
+   index: 3
 date: 10 June 2023
 bibliography: paper.bib
 ---
