@@ -14,7 +14,7 @@ authors:
     corresponding: true
   - name: Matthew Andres Moreno
     orcid: 0000-0003-4726-4479
-    affiliation: 3
+    affiliation: "3, 4"
 affiliations:
  - name: Department of Computer Science and Engineering, Michigan State University, East Lansing, MI, USA
    index: 1
@@ -22,6 +22,8 @@ affiliations:
    index: 2
  - name: Department of Ecology and Evolutionary Biology, University of Michigan, Ann Arbor, MI, USA
    index: 3
+ - name: Center for the Study of Complex Systems, University of Michigan, Ann Arbor, MI, USA
+   index: 4
 date: 10 June 2023
 bibliography: paper.bib
 ---
