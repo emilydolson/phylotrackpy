@@ -50,12 +50,12 @@ PYBIND11_MODULE(systematics, m) {
         .def(py::init<size_t, size_t>())
         // .def(py::init<std::tuple<size_t, size_t>>())
         .def("get_index", &emp::WorldPosition::GetIndex, R"mydelimiter(
-            Returns the index (position within the population) represented by this WorldPosition as an int 
+            Returns the index (position within the population) represented by this WorldPosition as an int
             )mydelimiter")
         .def("get_pop_ID", &emp::WorldPosition::GetPopID, R"mydelimiter(
             Returns the ID (as an int) of the population that this WorldPosition is referring to.
 
-            Wondering why there might be multiple populations? It's because WorldPosition objects 
+            Wondering why there might be multiple populations? It's because WorldPosition objects
             are designed to gracefully handle configurations in which there are
             multiple separate populations (e.g. due to islands or separated generations).
             If you're just using one population, the pop ID will always be 0 and that's fine.
@@ -63,11 +63,11 @@ PYBIND11_MODULE(systematics, m) {
         .def("is_active", &emp::WorldPosition::IsActive, R"mydelimiter(
             Returns a boolean indicating whether this position potentially represents an "active" (i.e. "alive")
             organism in the context of a generational/synchronous configuration (i.e. one in which a new generation
-            is created on each time step and there is no overlap of organisms between generations; this 
-            configuration is commonly used in evolutionary computation and simple evolutionary models). In this case, 
-            the next generation (i.e. the one that is currently in the process of being created) is considered 
+            is created on each time step and there is no overlap of organisms between generations; this
+            configuration is commonly used in evolutionary computation and simple evolutionary models). In this case,
+            the next generation (i.e. the one that is currently in the process of being created) is considered
             "inactive". Conventionally, the population that selection is currently happening on has ID 0 and the population
-            holding the new generation has ID 1. Thus, this method simply returns true if the population ID is 0 and false 
+            holding the new generation has ID 1. Thus, this method simply returns true if the population ID is 0 and false
             otherwise.
 
             If you are using population IDs for a separate purpose (e.g. islands), this method will not yield accurate
@@ -75,7 +75,7 @@ PYBIND11_MODULE(systematics, m) {
             )mydelimiter")
         .def("is_valid", &emp::WorldPosition::IsValid, R"mydelimiter(
             -1 can be used as a sentinel value to indicate that a position is not to be used.
-            This method returns a boolean indicating whether this position is "valid" 
+            This method returns a boolean indicating whether this position is "valid"
             (i.e. the index is not equal to -1).
             )mydelimiter");
 
@@ -90,9 +90,9 @@ PYBIND11_MODULE(systematics, m) {
         .def(py::init<size_t, taxon_info_t>())
         .def(py::init<size_t, taxon_info_t, taxon_t*>())
         .def("get_parent", &taxon_t::GetParent)
-        .def("get_id", &taxon_t::GetID)        
+        .def("get_id", &taxon_t::GetID)
         .def("get_total_offspring", &taxon_t::GetTotalOffspring)
-        .def("get_total_orgs", &taxon_t::GetTotOrgs)        
+        .def("get_total_orgs", &taxon_t::GetTotOrgs)
         .def("get_num_offspring", &taxon_t::GetNumOff)
         .def("get_num_orgs", &taxon_t::GetNumOrgs)
         .def("get_offspring", &taxon_t::GetOffspring)
@@ -106,8 +106,8 @@ PYBIND11_MODULE(systematics, m) {
         .def(py::init<std::function<taxon_info_t(org_t &)>, bool, bool, bool, bool>(), py::arg("calc_taxon"), py::arg("store_active") = true, py::arg("store_ancestors") = true, py::arg("store_all") = false, py::arg("store_pos") = true)
 
         // Setting systematics manager state
-        .def("set_calc_info_fun", static_cast<void (sys_t::*) (std::function<taxon_info_t(org_t &)>)>(&sys_t::SetCalcInfoFun))        
-        .def("set_store_active", static_cast<void (sys_t::*) (bool)>(&sys_t::SetStoreActive))        
+        .def("set_calc_info_fun", static_cast<void (sys_t::*) (std::function<taxon_info_t(org_t &)>)>(&sys_t::SetCalcInfoFun))
+        .def("set_store_active", static_cast<void (sys_t::*) (bool)>(&sys_t::SetStoreActive))
         .def("set_store_ancestors", static_cast<void (sys_t::*) (bool)>(&sys_t::SetStoreAncestors))
         .def("set_store_outside", static_cast<void (sys_t::*) (bool)>(&sys_t::SetStoreOutside))
         .def("set_store_archive", static_cast<void (sys_t::*) (bool)>(&sys_t::SetArchive))
@@ -116,7 +116,7 @@ PYBIND11_MODULE(systematics, m) {
         .def("set_update", static_cast<void (sys_t::*) (size_t)>(&sys_t::SetUpdate))
 
         // Getting systematics manager state
-        .def("get_store_active", static_cast<bool (sys_t::*) () const>(&sys_t::GetStoreActive))        
+        .def("get_store_active", static_cast<bool (sys_t::*) () const>(&sys_t::GetStoreActive))
         .def("get_store_ancestors", static_cast<bool (sys_t::*) () const>(&sys_t::GetStoreAncestors))
         .def("get_store_outside", static_cast<bool (sys_t::*) () const>(&sys_t::GetStoreOutside))
         .def("get_store_archive", static_cast<bool (sys_t::*) () const>(&sys_t::GetArchive))
@@ -144,7 +144,7 @@ PYBIND11_MODULE(systematics, m) {
         .def("get_taxon_at", static_cast<emp::Ptr<taxon_t> (sys_t::*) (emp::WorldPosition)>(&sys_t::GetTaxonAt))
         .def("get_mrca", static_cast<emp::Ptr<taxon_t> (sys_t::*) () const>(&sys_t::GetMRCA), py::return_value_policy::reference_internal)
         .def("get_shared_ancestor", [](sys_t & self, taxon_t * t1, taxon_t * t2){return self.GetSharedAncestor(t1, t2);}, py::return_value_policy::reference_internal)
-        
+
         // Birth notification
         .def("add_org_by_position", static_cast<void (sys_t::*) (org_t &, emp::WorldPosition)>(&sys_t::AddOrg), "Add an organism to systematics manager")
         .def("add_org_by_position", static_cast<void (sys_t::*) (org_t &, emp::WorldPosition, emp::WorldPosition)>(&sys_t::AddOrg), "Add an organism to systematics manager")
@@ -159,7 +159,7 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            WorldPosition position: The location of the organism that died. 
+            WorldPosition position: The location of the organism that died.
             )mydelimiter")
         .def("remove_org", [](sys_t & self, taxon_t * tax){return self.RemoveOrg(tax);}, R"mydelimiter(
             Notify the systematics manager that an organism has died. Use this method if you are keeping track of
@@ -167,29 +167,29 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            Taxon tax: The taxon of the organism that died. 
+            Taxon tax: The taxon of the organism that died.
             )mydelimiter")
         .def("remove_org_by_position_after_repro", static_cast<void (sys_t::*) (emp::WorldPosition)>(&sys_t::RemoveOrgAfterRepro), R"mydelimiter(
-            Notify the systematics manager that an organism has died but that it shouldn't record the death until the next reproduction event. 
+            Notify the systematics manager that an organism has died but that it shouldn't record the death until the next reproduction event.
             You might want to do this if there's a chance that the organism simultaneously died and reproduced (e.g. if the organism's
-            offspring might have replaced it in the population). 
-            
+            offspring might have replaced it in the population).
+
             Calling remove_org_by_position in that scenario could result in a segmentation fault if it was the last organism of its taxon. It could
             either be incorrectly marked extinct (if the offspring is part of the same taxon) and/or incorrectly pruned (if the offspring is part of a new
             taxon).
 
-            Use this method if you're having the systematics manager keep track of each organism's position and want to use the position to 
+            Use this method if you're having the systematics manager keep track of each organism's position and want to use the position to
             tell the systematics manager which organism died. Otherwise use remove_org_after_repro.
 
             Parameters
             ----------
-            WorldPosition position: The location of the organism that died. 
+            WorldPosition position: The location of the organism that died.
             )mydelimiter")
         .def("remove_org_after_repro", [](sys_t & self, taxon_t * tax){self.RemoveOrgAfterRepro(tax);}, R"mydelimiter(
-            Notify the systematics manager that an organism has died but that it shouldn't record the death until the next reproduction event. 
+            Notify the systematics manager that an organism has died but that it shouldn't record the death until the next reproduction event.
             You might want to do this if there's a chance that the organism simultaneously died and reproduced (e.g. if the organism's
-            offspring might have replaced it in the population). 
-            
+            offspring might have replaced it in the population).
+
             Calling remove_org_by_position in that scenario could result in a segmentation fault if it was the last organism of its taxon. It could
             either be incorrectly marked extinct (if the offspring is part of the same taxon) and/or incorrectly pruned (if the offspring is part of a new
             taxon).
@@ -198,17 +198,17 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            Taxon tax: The taxon of the organism that died. 
+            Taxon tax: The taxon of the organism that died.
             )mydelimiter")
         .def("set_next_parent", [](sys_t & self, taxon_t * tax){self.SetNextParent(tax);}, R"mydelimiter(
             Sometimes, due to the flow of your program, you may not have access to the taxon object for the parent and
             the offspring at the same time. In these cases, you can use set_next_parent to tell the systematics manager
-            what the taxon of the parent of the next offspring should be. The next time you call one of the add_org 
+            what the taxon of the parent of the next offspring should be. The next time you call one of the add_org
             methods without a specified parent, the systematics manager will used the specified taxon as the parent for that organism.
 
             Parameters
             ----------
-            Taxon tax: The taxon to set as the next parent. 
+            Taxon tax: The taxon to set as the next parent.
             )mydelimiter")
         .def("set_next_parent_by_position", static_cast<void (sys_t::*) (emp::WorldPosition)>(&sys_t::SetNextParent), R"mydelimiter(
             Works just like set_next_parent except for systematics managers that are tracking based on position.
@@ -228,15 +228,15 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            WorldPosition pos1: The position of one of the organisms being swapped. 
-            WorldPosition pos2: The position of one of the organisms being swapped. 
+            WorldPosition pos1: The position of one of the organisms being swapped.
+            WorldPosition pos2: The position of one of the organisms being swapped.
             )mydelimiter")
 
         // Signals
         .def("on_new", [](sys_t & self, std::function<void(emp::Ptr<taxon_t> t, org_t & org)> & fun){self.OnNew(fun);})
         .def("on_extinct", [](sys_t & self, std::function<void(emp::Ptr<taxon_t> t)> & fun){self.OnExtinct(fun);})
         .def("on_prune", [](sys_t & self, std::function<void(emp::Ptr<taxon_t> t)> & fun){self.OnPrune(fun);})
-        
+
         // Phylostatistics
         .def("calc_diversity", static_cast<double (sys_t::*) () const>(&sys_t::CalcDiversity))
         .def("mrca_depth", static_cast<int (sys_t::*) () const>(&sys_t::GetMRCADepth))
@@ -262,14 +262,11 @@ PYBIND11_MODULE(systematics, m) {
         .def("add_snapshot_fun", static_cast<void (sys_t::*) (const std::function<std::string(const taxon_t &)> &, const std::string &, const std::string &) >(&sys_t::AddSnapshotFun))
         .def("print_status", [](sys_t & self){self.PrintStatus();})
         .def("print_lineage", [](sys_t & self, taxon_t * tax){self.PrintLineage(tax);})
-        
+
         // Time tracking
         .def("update", static_cast<void (sys_t::*) ()>(&sys_t::Update))
 
-        // Efficiency functions        
+        // Efficiency functions
         .def("remove_before", static_cast<void (sys_t::*) (int)>(&sys_t::RemoveBefore))
         ;
 }
-
-
-
