@@ -125,14 +125,71 @@ PYBIND11_MODULE(systematics, m) {
         .def(py::init<std::function<taxon_info_t(org_t &)>, bool, bool, bool, bool>(), py::arg("calc_taxon"), py::arg("store_active") = true, py::arg("store_ancestors") = true, py::arg("store_all") = false, py::arg("store_pos") = true)
 
         // Setting systematics manager state
-        .def("set_calc_info_fun", static_cast<void (sys_t::*) (std::function<taxon_info_t(org_t &)>)>(&sys_t::SetCalcInfoFun))
-        .def("set_store_active", static_cast<void (sys_t::*) (bool)>(&sys_t::SetStoreActive))
-        .def("set_store_ancestors", static_cast<void (sys_t::*) (bool)>(&sys_t::SetStoreAncestors))
-        .def("set_store_outside", static_cast<void (sys_t::*) (bool)>(&sys_t::SetStoreOutside))
-        .def("set_store_archive", static_cast<void (sys_t::*) (bool)>(&sys_t::SetArchive))
-        .def("set_store_position", static_cast<void (sys_t::*) (bool)>(&sys_t::SetStorePosition))
-        .def("set_track_synchronous", static_cast<void (sys_t::*) (bool)>(&sys_t::SetTrackSynchronous))
-        .def("set_update", static_cast<void (sys_t::*) (size_t)>(&sys_t::SetUpdate))
+        .def("set_calc_info_fun", static_cast<void (sys_t::*) (std::function<taxon_info_t(org_t &)>)>(&sys_t::SetCalcInfoFun), R"mydelimiter(
+            Set the function used to calculate the information associated with an organism.
+            This information is used to categorize organisms within the systematics manager.
+            Possible information includes genotype, phenotype, genome sequence, etc.
+
+            Parameters
+            ----------
+            A function that takes in an organism and returns its associated information.
+        )mydelimiter")
+        .def("set_store_active", static_cast<void (sys_t::*) (bool)>(&sys_t::SetStoreActive), R"mydelimiter(
+            A setter method to configure whether to store all taxa that are active in the population.
+            This option defaults to True.
+
+            Parameters
+            ----------
+            A boolean value representing whether to store all taxa that are active in the population.
+        )mydelimiter")
+        .def("set_store_ancestors", static_cast<void (sys_t::*) (bool)>(&sys_t::SetStoreAncestors), R"mydelimiter(
+            A setter method to configure whether to store all taxa that are the ancestors of living organisms in the population.
+            This option defaults to True.
+
+            Parameters
+            ----------
+            A boolean value representing whether to store all taxa that are the ancestors of living organisms in the population.
+        )mydelimiter")
+        .def("set_store_outside", static_cast<void (sys_t::*) (bool)>(&sys_t::SetStoreOutside), R"mydelimiter(
+            A setter method to configure whether to store all dead taxa whose descendats have also died.
+            Defaults to False.
+
+            Parameters
+            ----------
+            A boolean value representing whether to store all dead taxa whose descendats have also died.
+        )mydelimiter")
+        .def("set_store_archive", static_cast<void (sys_t::*) (bool)>(&sys_t::SetArchive), R"mydelimiter(
+            A setter method to configure whether to store taxa types that have died out.
+            Defaults to True.
+
+            Parameters
+            ----------
+            A boolean value representing whether to store taxa types that have died out.
+        )mydelimiter")
+        .def("set_store_position", static_cast<void (sys_t::*) (bool)>(&sys_t::SetStorePosition), R"mydelimiter(
+            A setter method to configure whether to store the position of each taxa.
+            Defaults to True.
+
+            Parameters
+            ----------
+            A boolean value representing whether to store the position of each taxa.
+        )mydelimiter")
+        .def("set_track_synchronous", static_cast<void (sys_t::*) (bool)>(&sys_t::SetTrackSynchronous), R"mydelimiter(
+            A setter method to configure whether a synchronous population is being tracked.
+            The accuracy of the systematics tracking relies on this option, so it is imperative it be configured properly.
+            Defaults to False.
+
+            Parameters
+            ----------
+            A boolean value representing whether a synchronous population is being tracked.
+        )mydelimiter")
+        .def("set_update", static_cast<void (sys_t::*) (size_t)>(&sys_t::SetUpdate), R"mydelimiter(
+            A setter method to modify the current time step.
+
+            Parameters
+            ----------
+            An integer value representing the current time step.
+        )mydelimiter")
 
         // Getting systematics manager state
         .def("get_store_active", static_cast<bool (sys_t::*) () const>(&sys_t::GetStoreActive))
