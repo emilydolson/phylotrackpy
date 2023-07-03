@@ -90,14 +90,33 @@ PYBIND11_MODULE(systematics, m) {
         .def(py::init<size_t, taxon_info_t>())
         .def(py::init<size_t, taxon_info_t, taxon_t*>())
         .def("get_parent", &taxon_t::GetParent)
-        .def("get_id", &taxon_t::GetID)
-        .def("get_total_offspring", &taxon_t::GetTotalOffspring)
-        .def("get_total_orgs", &taxon_t::GetTotOrgs)
-        .def("get_num_offspring", &taxon_t::GetNumOff)
-        .def("get_num_orgs", &taxon_t::GetNumOrgs)
-        .def("get_offspring", &taxon_t::GetOffspring)
-        .def("get_destruction_time", &taxon_t::GetDestructionTime)
-        .def("get_origination_time", &taxon_t::GetOriginationTime)
+        .def("get_id", &taxon_t::GetID, R"mydelimiter(
+            Returns the ID (as an int) that uniquely identifies this taxon.
+            Given that IDs are assigned sequentially, higher IDs will correspond to more recent taxa.
+        )mydelimiter")
+        .def("get_total_offspring", &taxon_t::GetTotalOffspring, R"mydelimiter(
+            Returns the number of direct and indirect descendants of this taxon.
+        )mydelimiter")
+        .def("get_total_orgs", &taxon_t::GetTotOrgs, R"mydelimiter(
+            Returns the total number of organisms that have ever lived corresponding to this taxon.
+        )mydelimiter")
+        .def("get_num_offspring", &taxon_t::GetNumOff, R"mydelimiter(
+            Returns the number of taxa that were produced by organisms corresponding to this taxon.
+        )mydelimiter")
+        .def("get_num_orgs", &taxon_t::GetNumOrgs, R"mydelimiter(
+            Returns the total number of *currently living* organisms corresponding to this taxon.
+        )mydelimiter")
+        .def("get_offspring", &taxon_t::GetOffspring, R"mydelimiter(
+            Returns a pointer (???) to a set holding all immediate offspring taxa.
+            This can be used to iterate through a phylogenetic tree.
+        )mydelimiter")
+        .def("get_destruction_time", &taxon_t::GetDestructionTime, R"mydelimiter(
+            Return the time (as a float) when this taxon left the population.
+            If the taxon is currently alive, this will be equal to float(+inf).
+        )mydelimiter")
+        .def("get_origination_time", &taxon_t::GetOriginationTime, R"mydelimiter(
+            Return the time (as a float) when this taxon first appeared in the population.
+        )mydelimiter")
         // .def("set_data", &taxon_t::SetData)
         // .def("get_data", [](taxon_t & self){return self.GetData();})
         ;
