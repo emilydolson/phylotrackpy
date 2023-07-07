@@ -132,7 +132,7 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            A function that takes in an organism and returns its associated information.
+            Callable[org_t, taxon_info_t] func A function that takes in an organism and returns its associated information.
         )mydelimiter")
         .def("set_store_active", static_cast<void (sys_t::*) (bool)>(&sys_t::SetStoreActive), R"mydelimiter(
             A setter method to configure whether to store all taxa that are active in the population.
@@ -140,7 +140,7 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            A boolean value representing whether to store all taxa that are active in the population.
+            bool val Value representing whether to store all taxa that are active in the population.
         )mydelimiter")
         .def("set_store_ancestors", static_cast<void (sys_t::*) (bool)>(&sys_t::SetStoreAncestors), R"mydelimiter(
             A setter method to configure whether to store all taxa that are the ancestors of living organisms in the population.
@@ -148,7 +148,7 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            A boolean value representing whether to store all taxa that are the ancestors of living organisms in the population.
+            bool val Value representing whether to store all taxa that are the ancestors of living organisms in the population.
         )mydelimiter")
         .def("set_store_outside", static_cast<void (sys_t::*) (bool)>(&sys_t::SetStoreOutside), R"mydelimiter(
             A setter method to configure whether to store all dead taxa whose descendats have also died.
@@ -156,15 +156,15 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            A boolean value representing whether to store all dead taxa whose descendats have also died.
+            bool val Value representing whether to store all dead taxa whose descendats have also died.
         )mydelimiter")
         .def("set_store_archive", static_cast<void (sys_t::*) (bool)>(&sys_t::SetArchive), R"mydelimiter(
-            A setter method to configure whether to store taxa types that have died out.
+            A setter method to configure whether to store taxa types that have become extinct.
             Defaults to True.
 
             Parameters
             ----------
-            A boolean value representing whether to store taxa types that have died out.
+            bool val Value representing whether to store taxa types that have died out.
         )mydelimiter")
         .def("set_store_position", static_cast<void (sys_t::*) (bool)>(&sys_t::SetStorePosition), R"mydelimiter(
             A setter method to configure whether to store the position of each taxa.
@@ -172,7 +172,7 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            A boolean value representing whether to store the position of each taxa.
+            bool val Value representing whether to store the position of each taxa.
         )mydelimiter")
         .def("set_track_synchronous", static_cast<void (sys_t::*) (bool)>(&sys_t::SetTrackSynchronous), R"mydelimiter(
             A setter method to configure whether a synchronous population is being tracked.
@@ -181,45 +181,132 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            A boolean value representing whether a synchronous population is being tracked.
+            bool val Value representing whether a synchronous population is being tracked.
         )mydelimiter")
         .def("set_update", static_cast<void (sys_t::*) (size_t)>(&sys_t::SetUpdate), R"mydelimiter(
             A setter method to modify the current time step.
 
             Parameters
             ----------
-            An integer value representing the current time step.
+            int update An integer value representing the current time step.
         )mydelimiter")
 
         // Getting systematics manager state
-        .def("get_store_active", static_cast<bool (sys_t::*) () const>(&sys_t::GetStoreActive))
-        .def("get_store_ancestors", static_cast<bool (sys_t::*) () const>(&sys_t::GetStoreAncestors))
-        .def("get_store_outside", static_cast<bool (sys_t::*) () const>(&sys_t::GetStoreOutside))
-        .def("get_store_archive", static_cast<bool (sys_t::*) () const>(&sys_t::GetArchive))
-        .def("get_store_position", static_cast<bool (sys_t::*) () const>(&sys_t::GetStorePosition))
-        .def("get_track_synchronous", static_cast<bool (sys_t::*) () const>(&sys_t::GetTrackSynchronous))
-        .def("get_update", static_cast<size_t (sys_t::*) () const>(&sys_t::GetUpdate))
-        .def("get_total_orgs", static_cast<size_t (sys_t::*) () const>(&sys_t::GetTotalOrgs))
-        .def("get_num_active", static_cast<size_t (sys_t::*) () const>(&sys_t::GetNumActive))
-        .def("get_num_ancestors", static_cast<size_t (sys_t::*) () const>(&sys_t::GetNumAncestors))
-        .def("get_num_outside", static_cast<size_t (sys_t::*) () const>(&sys_t::GetNumOutside))
-        .def("get_tree_size", static_cast<size_t (sys_t::*) () const>(&sys_t::GetTreeSize))
-        .def("get_num_taxa", static_cast<size_t (sys_t::*) () const>(&sys_t::GetNumTaxa))
-        .def("get_max_depth", static_cast<int (sys_t::*) () >(&sys_t::GetMaxDepth))
-        .def("get_num_roots", static_cast<size_t (sys_t::*) () const>(&sys_t::GetNumRoots))
-        .def("get_next_id", static_cast<size_t (sys_t::*) () const>(&sys_t::GetNextID))
-        .def("get_ave_depth", static_cast<double (sys_t::*) () const>(&sys_t::GetAveDepth))
-        .def("get_active_taxa_reference", static_cast<std::unordered_set< emp::Ptr<taxon_t>, emp::Ptr<taxon_t>::hash_t > * (sys_t::*) ()>(&sys_t::GetActivePtr), py::return_value_policy::reference_internal)
-        .def("get_active_taxa", static_cast<const std::unordered_set< emp::Ptr<taxon_t>, emp::Ptr<taxon_t>::hash_t > & (sys_t::*) () const>(&sys_t::GetActive), py::return_value_policy::reference_internal)
-        .def("get_ancestor_taxa", static_cast<const std::unordered_set< emp::Ptr<taxon_t>, emp::Ptr<taxon_t>::hash_t > & (sys_t::*) () const>(&sys_t::GetAncestors), py::return_value_policy::reference_internal)
-        .def("get_outside_taxa", static_cast<const std::unordered_set< emp::Ptr<taxon_t>, emp::Ptr<taxon_t>::hash_t > & (sys_t::*) () const>(&sys_t::GetOutside), py::return_value_policy::reference_internal)
-        .def("get_next_parent", static_cast<emp::Ptr<taxon_t> (sys_t::*) ()>(&sys_t::GetNextParent), py::return_value_policy::reference_internal)
-        .def("get_most_recent", static_cast<emp::Ptr<taxon_t> (sys_t::*) ()>(&sys_t::GetMostRecent), py::return_value_policy::reference_internal)
-        .def("parent", [](sys_t & self, taxon_t * tax){return self.Parent(tax);}, py::return_value_policy::reference_internal)
-        .def("is_taxon_at", static_cast<bool (sys_t::*) (emp::WorldPosition)>(&sys_t::IsTaxonAt))
-        .def("get_taxon_at", static_cast<emp::Ptr<taxon_t> (sys_t::*) (emp::WorldPosition)>(&sys_t::GetTaxonAt))
-        .def("get_mrca", static_cast<emp::Ptr<taxon_t> (sys_t::*) () const>(&sys_t::GetMRCA), py::return_value_policy::reference_internal)
-        .def("get_shared_ancestor", [](sys_t & self, taxon_t * t1, taxon_t * t2){return self.GetSharedAncestor(t1, t2);}, py::return_value_policy::reference_internal)
+        .def("get_store_active", static_cast<bool (sys_t::*) () const>(&sys_t::GetStoreActive), R"mydelimiter(
+            Whether the Systematics Manager is configured to store all alive taxa in the population.
+            Can be set using the `set_store_active()` method.
+        )mydelimiter")
+        .def("get_store_ancestors", static_cast<bool (sys_t::*) () const>(&sys_t::GetStoreAncestors), R"mydelimiter(
+            Whether the Systematics Manager is configured to store all taxa that are ancestors of living organisms in the population.
+            Can be set using the `set_store_ancestors()` method.
+        )mydelimiter")
+        .def("get_store_outside", static_cast<bool (sys_t::*) () const>(&sys_t::GetStoreOutside), R"mydelimiter(
+            Whether the Systematics Manager is configured to store all taxa that are ancestors of living organisms in the population.
+            Can be set using the `set_store_ancestors()` method.
+        )mydelimiter")
+        .def("get_store_archive", static_cast<bool (sys_t::*) () const>(&sys_t::GetArchive), R"mydelimiter(
+            Whether the Systematics Manager is configured to store extinct taxa types.
+            Can be set using the `set_store_archive()` method.
+        )mydelimiter")
+        .def("get_store_position", static_cast<bool (sys_t::*) () const>(&sys_t::GetStorePosition), R"mydelimiter(
+            Whether the Systematics Manager is configured to
+            Can be set using the `()` method.
+        )mydelimiter")
+        .def("get_track_synchronous", static_cast<bool (sys_t::*) () const>(&sys_t::GetTrackSynchronous), R"mydelimiter(
+            Whether the Systematics Manager is configured to track a synchronous population.
+            The accuracy of the tracking depends on this option being correctly set.
+            It is recommended to verify this setting before any tracking.
+            Can be set using the `set_track_synchronous()` method.
+        )mydelimiter")
+        .def("get_update", static_cast<size_t (sys_t::*) () const>(&sys_t::GetUpdate), R"mydelimiter(
+            Returns the current timestep of the simulation.
+            This time step can be overriden using the `set_update()` method.
+        )mydelimiter")
+        .def("get_total_orgs", static_cast<size_t (sys_t::*) () const>(&sys_t::GetTotalOrgs), R"mydelimiter(
+            Returns the number of living organisms currently present in the population.
+        )mydelimiter")
+        .def("get_num_active", static_cast<size_t (sys_t::*) () const>(&sys_t::GetNumActive), R"mydelimiter(
+            Returns the number of active taxa in the population.
+        )mydelimiter")
+        .def("get_num_ancestors", static_cast<size_t (sys_t::*) () const>(&sys_t::GetNumAncestors)), R"mydelimiter(
+            Returns the number of *extinct* taxa that are ancestors of living organisms currently present in the population.
+        )mydelimiter"
+        .def("get_num_outside", static_cast<size_t (sys_t::*) () const>(&sys_t::GetNumOutside), R"mydelimiter(
+            Returns the number of *extinct* taxa that have no living descendants.
+            By definition, these are the taxa that are not in the current phylogeny.
+        )mydelimiter")
+        .def("get_tree_size", static_cast<size_t (sys_t::*) () const>(&sys_t::GetTreeSize), R"mydelimiter(
+            Returns the number of taxa in the current phylogeny.
+        )mydelimiter")
+        .def("get_num_taxa", static_cast<size_t (sys_t::*) () const>(&sys_t::GetNumTaxa), R"mydelimiter(
+            Returns the number of total taxa.
+            Empirically, this is equal to the number of taxa in the current phylogeny, plus the number of extinct taxa with no living descendants.
+        )mydelimiter")
+        .def("get_max_depth", static_cast<int (sys_t::*) () >(&sys_t::GetMaxDepth), R"mydelimiter(
+            Returns the lineage length (phylogenetic depth) of the active taxon with the longest lineage.
+        )mydelimiter")
+        .def("get_num_roots", static_cast<size_t (sys_t::*) () const>(&sys_t::GetNumRoots), R"mydelimiter(
+            Returns the number of independent phylogenies currently being tracked.
+        )mydelimiter")
+        .def("get_next_id", static_cast<size_t (sys_t::*) () const>(&sys_t::GetNextID), R"mydelimiter(
+            Returns the ID of the next taxon.
+        )mydelimiter")
+        .def("get_ave_depth", static_cast<double (sys_t::*) () const>(&sys_t::GetAveDepth), R"mydelimiter(
+            Returns the average phylogenetic depth of all organisms currently present in the population.
+        )mydelimiter")
+        .def("get_active_taxa_reference", static_cast<std::unordered_set< emp::Ptr<taxon_t>, emp::Ptr<taxon_t>::hash_t > * (sys_t::*) ()>(&sys_t::GetActivePtr), py::return_value_policy::reference_internal, R"mydelimiter(
+            Returns a temporary, non-owning object (reference) of the set of extant taxa.
+        )mydelimiter")
+        .def("get_active_taxa", static_cast<const std::unordered_set< emp::Ptr<taxon_t>, emp::Ptr<taxon_t>::hash_t > & (sys_t::*) () const>(&sys_t::GetActive), py::return_value_policy::reference_internal, R"mydelimiter(
+            Returns a temporary, non-owning object (reference) of the set of extant taxa.
+        )mydelimiter")
+        .def("get_ancestor_taxa", static_cast<const std::unordered_set< emp::Ptr<taxon_t>, emp::Ptr<taxon_t>::hash_t > & (sys_t::*) () const>(&sys_t::GetAncestors), py::return_value_policy::reference_internal, R"mydelimiter(
+            Returns a temporary, non-owning object (reference) of the set of ancestor taxa.
+            These are extinct taxa with extant descendants.
+        )mydelimiter")
+        .def("get_outside_taxa", static_cast<const std::unordered_set< emp::Ptr<taxon_t>, emp::Ptr<taxon_t>::hash_t > & (sys_t::*) () const>(&sys_t::GetOutside), py::return_value_policy::reference_internal, R"mydelimiter(
+            Returns a temporary, non-owning object (reference) of the set of outside taxa.
+            These are extinct taxa with extinct descendants.
+        )mydelimiter")
+        .def("get_next_parent", static_cast<emp::Ptr<taxon_t> (sys_t::*) ()>(&sys_t::GetNextParent, R"mydelimiter(
+            Returns the taxon that corresponds to the parent of the next taxon created from a call to `add_org(org)`.
+        )mydelimiter"), py::return_value_policy::reference_internal)
+        .def("get_most_recent", static_cast<emp::Ptr<taxon_t> (sys_t::*) ()>(&sys_t::GetMostRecent, R"mydelimiter(
+            Returns the most recently-created taxon.
+        )mydelimiter"), py::return_value_policy::reference_internal)
+        .def("parent", [](sys_t & self, taxon_t * tax){return self.Parent(tax);}, py::return_value_policy::reference_internal, R"mydelimiter(
+            Returns the parent of a given taxon, if any.
+
+            Parameters
+            ----------
+            taxon_t tax The taxon to return the parent of.
+        )mydelimiter")
+        .def("is_taxon_at", static_cast<bool (sys_t::*) (emp::WorldPosition)>(&sys_t::IsTaxonAt), R"mydelimiter(
+            Returns whether a taxon is present at the given location.
+
+            Parameters
+            ----------
+            WorldPosition id Location to check for taxon.
+        )mydelimiter")
+        .def("get_taxon_at", static_cast<emp::Ptr<taxon_t> (sys_t::*) (emp::WorldPosition)>(&sys_t::GetTaxonAt), R"mydelimiter(
+            Returns the taxon at the given location, if any.
+
+            Parameters
+            ----------
+            WorldPosition id Location of taxon.
+        )mydelimiter")
+        .def("get_mrca", static_cast<emp::Ptr<taxon_t> (sys_t::*) () const>(&sys_t::GetMRCA), py::return_value_policy::reference_internal, R"mydelimiter(
+            Returns a temporary, non-owning object (reference) representing the Most-Recent Common Ancestor of the population.
+        )mydelimiter")
+        .def("get_shared_ancestor", [](sys_t & self, taxon_t * t1, taxon_t * t2){return self.GetSharedAncestor(t1, t2);}, py::return_value_policy::reference_internal, R"mydelimiter(
+            Returns a temporary, non-owning object (reference) representing the Most-Recent Common Ancestor shared by two given taxa.
+            The order of the taxa does not matter.
+
+            Parameters
+            ----------
+            taxon_t t1 Taxon to return MCRA of.
+            taxon_t t2 Taxon to return MCRA of.
+        )mydelimiter")
 
         // Birth notification
         .def("add_org_by_position", static_cast<void (sys_t::*) (org_t &, emp::WorldPosition)>(&sys_t::AddOrg), "Add an organism to systematics manager")
