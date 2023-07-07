@@ -228,9 +228,9 @@ PYBIND11_MODULE(systematics, m) {
         .def("get_num_active", static_cast<size_t (sys_t::*) () const>(&sys_t::GetNumActive), R"mydelimiter(
             Returns the number of active taxa in the population.
         )mydelimiter")
-        .def("get_num_ancestors", static_cast<size_t (sys_t::*) () const>(&sys_t::GetNumAncestors)), R"mydelimiter(
+        .def("get_num_ancestors", static_cast<size_t (sys_t::*) () const>(&sys_t::GetNumAncestors), R"mydelimiter(
             Returns the number of *extinct* taxa that are ancestors of living organisms currently present in the population.
-        )mydelimiter"
+        )mydelimiter")
         .def("get_num_outside", static_cast<size_t (sys_t::*) () const>(&sys_t::GetNumOutside), R"mydelimiter(
             Returns the number of *extinct* taxa that have no living descendants.
             By definition, these are the taxa that are not in the current phylogeny.
