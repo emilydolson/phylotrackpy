@@ -435,21 +435,68 @@ PYBIND11_MODULE(systematics, m) {
         )mydelimiter")
 
         // Phylostatistics
-        .def("calc_diversity", static_cast<double (sys_t::*) () const>(&sys_t::CalcDiversity))
-        .def("mrca_depth", static_cast<int (sys_t::*) () const>(&sys_t::GetMRCADepth))
-        .def("colless_like_index", static_cast<double (sys_t::*) () const>(&sys_t::CollessLikeIndex))
-        .def("sackin_index", static_cast<int (sys_t::*) () const>(&sys_t::SackinIndex))
-        .def("get_branches_to_root", [](sys_t & self, taxon_t * tax){return self.GetBranchesToRoot(tax);})
-        .def("get_distance_to_root", [](sys_t & self, taxon_t * tax){return self.GetDistanceToRoot(tax);})
-        .def("get_variance_pairwise_distance", static_cast<double (sys_t::*) (bool) const>(&sys_t::GetVariancePairwiseDistance))
-        .def("get_mean_pairwise_distance", static_cast<double (sys_t::*) (bool) const>(&sys_t::GetMeanPairwiseDistance))
-        .def("get_sum_pairwise_distance", static_cast<double (sys_t::*) (bool) const>(&sys_t::GetSumPairwiseDistance))
-        .def("get_phylogenetic_diversity", static_cast<int (sys_t::*) () const>(&sys_t::GetPhylogeneticDiversity))
-        .def("get_average_origin_time", static_cast<double (sys_t::*) (bool) const>(&sys_t::GetAverageOriginTime), py::arg("normalize") = false)
-        .def("get_out_degree_distribution", static_cast<std::unordered_map<int, int> (sys_t::*) () const>(&sys_t::GetOutDegreeDistribution))
-        .def("get_mean_evolutionary_distinctiveness", static_cast<double (sys_t::*) (double) const>(&sys_t::GetMeanEvolutionaryDistinctiveness))
-        .def("get_sum_evolutionary_distinctiveness", static_cast<double (sys_t::*) (double) const>(&sys_t::GetSumEvolutionaryDistinctiveness))
-        .def("get_variance_evolutionary_distinctiveness", static_cast<double (sys_t::*) (double) const>(&sys_t::GetVarianceEvolutionaryDistinctiveness))
+        .def("calc_diversity", static_cast<double (sys_t::*) () const>(&sys_t::CalcDiversity), R"mydelimiter(
+            Calculates and returns the diversity of the current population. This is done by weighing each active taxon by the number of organisms in it.
+        )mydelimiter")
+        .def("mrca_depth", static_cast<int (sys_t::*) () const>(&sys_t::GetMRCADepth), R"mydelimiter(
+            This function returns the depth of the Most-Recent Common Ancestor for the active population -- that is, this returns the distance between
+            the latest (i.e., newest) generation and the newest taxon that is an ancestor of the active taxa on the latest generation.
+            If no MRCA exists, this returns -1.
+        )mydelimiter")
+        .def("colless_like_index", static_cast<double (sys_t::*) () const>(&sys_t::CollessLikeIndex), R"mydelimiter(
+            Calculates and returns the Colless-like Index of the currently-active phylogeny. This metric is used to measure tree balance in multifurcating
+            trees, as described in doi:10.1371/journal.pone.0203401.
+            Most people are familiar with the standard Colless Index. However, that version is only applicable to bifurcating trees.
+        )mydelimiter")
+        .def("sackin_index", static_cast<int (sys_t::*) () const>(&sys_t::SackinIndex), R"mydelimiter(
+            Calculates and returns the Sackin Index of the currently-active phylogeny. This metric is used to measure phylogenetic tree balance.
+            It is calcualted by adding together the depth of every leaf to its Most-Recent Common Ancestor (or its subtree root if none is found).
+            For more information, see doi:10.2307/2992186.
+        )mydelimiter")
+        .def("get_branches_to_root", [](sys_t & self, taxon_t * tax){return self.GetBranchesToRoot(tax);}, R"mydelimiter(
+            Given a taxon, this function calculates and returns the number of branches leading to multiple extant taxa on the path to its Most-Recent
+            Common Ancestor (or its subtree root if none is found). Only extant taxa are considered since most phylogeny reconstruction algorithms are not designed to additionaly handle extinct taxa. Moreover, this function also does not count unifurcations -- that is, points at which each taxon
+            only has a single ancestor.
+
+            Parameters
+            ----------
+            Taxon tax: Taxon to find branches to MRCA (or subroot) of.
+        )mydelimiter")
+        .def("get_distance_to_root", [](sys_t & self, taxon_t * tax){return self.GetDistanceToRoot(tax);}, R"mydelimiter(
+            Given a taxon, this function calculates and returns the distance to its Most-Recent Common Ancestor (or its subtree root if none is found).
+            This function considers both unifurcations and extinct taxa. Consider using `get_branches_to_root()` instead for phylogeny reconstruction purposes.
+
+            Parameters
+            ----------
+            Taxon tax: Taxon to find distance to MRCA (or subroot) of.
+        )mydelimiter")
+        .def("get_variance_pairwise_distance", static_cast<double (sys_t::*) (bool) const>(&sys_t::GetVariancePairwiseDistance), R"mydelimiter(
+
+        )mydelimiter")
+        .def("get_mean_pairwise_distance", static_cast<double (sys_t::*) (bool) const>(&sys_t::GetMeanPairwiseDistance), R"mydelimiter(
+
+        )mydelimiter")
+        .def("get_sum_pairwise_distance", static_cast<double (sys_t::*) (bool) const>(&sys_t::GetSumPairwiseDistance), R"mydelimiter(
+
+        )mydelimiter")
+        .def("get_phylogenetic_diversity", static_cast<int (sys_t::*) () const>(&sys_t::GetPhylogeneticDiversity), R"mydelimiter(
+
+        )mydelimiter")
+        .def("get_average_origin_time", static_cast<double (sys_t::*) (bool) const>(&sys_t::GetAverageOriginTime), py::arg("normalize") = false, R"mydelimiter(
+
+        )mydelimiter")
+        .def("get_out_degree_distribution", static_cast<std::unordered_map<int, int> (sys_t::*) () const>(&sys_t::GetOutDegreeDistribution), R"mydelimiter(
+
+        )mydelimiter")
+        .def("get_mean_evolutionary_distinctiveness", static_cast<double (sys_t::*) (double) const>(&sys_t::GetMeanEvolutionaryDistinctiveness), R"mydelimiter(
+
+        )mydelimiter")
+        .def("get_sum_evolutionary_distinctiveness", static_cast<double (sys_t::*) (double) const>(&sys_t::GetSumEvolutionaryDistinctiveness), R"mydelimiter(
+
+        )mydelimiter")
+        .def("get_variance_evolutionary_distinctiveness", static_cast<double (sys_t::*) (double) const>(&sys_t::GetVarianceEvolutionaryDistinctiveness), R"mydelimiter(
+
+        )mydelimiter")
 
         // Input
         .def("load_from_file", static_cast<void (sys_t::*) (const std::string &, const std::string &, bool, bool)>(&sys_t::LoadFromFile), py::arg("file_path"), py::arg("info_col") = "info", py::arg("assume_leaves_extant") = true, py::arg("adjust_total_offspring") = true)
