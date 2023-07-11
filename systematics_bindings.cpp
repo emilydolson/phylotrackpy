@@ -396,9 +396,43 @@ PYBIND11_MODULE(systematics, m) {
             )mydelimiter")
 
         // Signals
-        .def("on_new", [](sys_t & self, std::function<void(emp::Ptr<taxon_t> t, org_t & org)> & fun){self.OnNew(fun);})
-        .def("on_extinct", [](sys_t & self, std::function<void(emp::Ptr<taxon_t> t)> & fun){self.OnExtinct(fun);})
-        .def("on_prune", [](sys_t & self, std::function<void(emp::Ptr<taxon_t> t)> & fun){self.OnPrune(fun);})
+        .def("on_new", [](sys_t & self, std::function<void(emp::Ptr<taxon_t> t, org_t & org)> & fun){self.OnNew(fun);}, R"mydelimiter(
+            Set a custom function that is triggered every time a new taxon is created.
+            The function must take two arguments: the first must be `taxon_t` object that represents the newly-minted taxon, and the second
+            must be an `org_t` object representing the organism the taxon was created from.
+            The custom function will be triggered during the taxon creation process: after its origination time has been set, but
+            before its organism or location have been recorded. This allows the user to customize the way objects are represented interlally
+            by the systematics manager, or to implement extra bookkeeping functionality.
+
+            Parameters
+            ----------
+            Callable[[taxon_t, org_t], None] fun: Function to run during new taxon creation. It must take a `taxon_t` object corresponding to
+                the new taxon as its first argument, and an `org_t` object representing the organism the taxon was created from as its second argument.
+        )mydelimiter")
+        .def("on_extinct", [](sys_t & self, std::function<void(emp::Ptr<taxon_t> t)> & fun){self.OnExtinct(fun);}, R"mydelimiter(
+            Set a custom function that is triggered every time a taxon goes extinct.
+            The function must take a single argument: a `taxon_t` object representing the taxon going extinct.
+            The custom function will be triggered near the beginning of the taxon descruction process: after its descruction time has been set, but
+            before any information has been destroyed. This allows the user to customize the way objects are represented interlally
+            by the systematics manager, or to implement extra bookkeeping functionality.
+
+            Parameters
+            ----------
+            Callable[taxon_t, None] fun: Function to run during taxon destruction. It must take a `taxon_t` object corresponding to
+                the destroyee taxon.
+        )mydelimiter")
+        .def("on_prune", [](sys_t & self, std::function<void(emp::Ptr<taxon_t> t)> & fun){self.OnPrune(fun);}, R"mydelimiter(
+            Set a custom function that is triggered every time a taxon is pruned from the tree. This occurs when a taxon and all its descendants go extinct.
+            The function must take a single argument: a `taxon_t` object representing the taxon getting pruned.
+            The custom function will be triggered at the beginning of the taxon pruning process.
+            This allows the user to customize the way objects are represented interlally by the systematics manager, or to implement
+            extra bookkeeping functionality.
+
+            Parameters
+            ----------
+            Callable[taxon_t, None] fun: Function to run during taxon pruning. It must take a `taxon_t` object corresponding to
+                the pruned taxon.
+        )mydelimiter")
 
         // Phylostatistics
         .def("calc_diversity", static_cast<double (sys_t::*) () const>(&sys_t::CalcDiversity))
