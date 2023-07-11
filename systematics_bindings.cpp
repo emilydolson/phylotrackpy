@@ -499,13 +499,23 @@ PYBIND11_MODULE(systematics, m) {
         )mydelimiter")
 
         // Input
-        .def("load_from_file", static_cast<void (sys_t::*) (const std::string &, const std::string &, bool, bool)>(&sys_t::LoadFromFile), py::arg("file_path"), py::arg("info_col") = "info", py::arg("assume_leaves_extant") = true, py::arg("adjust_total_offspring") = true)
+        .def("load_from_file", static_cast<void (sys_t::*) (const std::string &, const std::string &, bool, bool)>(&sys_t::LoadFromFile), py::arg("file_path"), py::arg("info_col") = "info", py::arg("assume_leaves_extant") = true, py::arg("adjust_total_offspring") = true, R"mydelimiter(
+
+        )mydelimiter")
 
         // Output
-        .def("snapshot", static_cast<void (sys_t::*) (const std::string &) const>(&sys_t::Snapshot))
-        .def("add_snapshot_fun", static_cast<void (sys_t::*) (const std::function<std::string(const taxon_t &)> &, const std::string &, const std::string &) >(&sys_t::AddSnapshotFun))
-        .def("print_status", [](sys_t & self){self.PrintStatus();})
-        .def("print_lineage", [](sys_t & self, taxon_t * tax){self.PrintLineage(tax);})
+        .def("snapshot", static_cast<void (sys_t::*) (const std::string &) const>(&sys_t::Snapshot), R"mydelimiter(
+
+        )mydelimiter")
+        .def("add_snapshot_fun", static_cast<void (sys_t::*) (const std::function<std::string(const taxon_t &)> &, const std::string &, const std::string &) >(&sys_t::AddSnapshotFun), R"mydelimiter(
+
+        )mydelimiter")
+        .def("print_status", [](sys_t & self){self.PrintStatus();}, R"mydelimiter(
+
+        )mydelimiter")
+        .def("print_lineage", [](sys_t & self, taxon_t * tax){self.PrintLineage(tax);}, R"mydelimiter(
+
+        )mydelimiter")
 
         // Time tracking
         .def("update", static_cast<void (sys_t::*) ()>(&sys_t::Update))
