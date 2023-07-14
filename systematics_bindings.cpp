@@ -233,14 +233,14 @@ PYBIND11_MODULE(systematics, m) {
         )mydelimiter")
         .def("get_num_outside", static_cast<size_t (sys_t::*) () const>(&sys_t::GetNumOutside), R"mydelimiter(
             Returns the number of *extinct* taxa that have no living descendants.
-            By definition, these are the taxa that are not in the current phylogeny.
+            By definition, these are the taxa that are not in the current phylogenetic tree.
         )mydelimiter")
         .def("get_tree_size", static_cast<size_t (sys_t::*) () const>(&sys_t::GetTreeSize), R"mydelimiter(
-            Returns the number of taxa in the current phylogeny.
+            Returns the number of taxa in the current phylogenetic tree.
         )mydelimiter")
         .def("get_num_taxa", static_cast<size_t (sys_t::*) () const>(&sys_t::GetNumTaxa), R"mydelimiter(
             Returns the number of total taxa.
-            Empirically, this is equal to the number of taxa in the current phylogeny, plus the number of extinct taxa with no living descendants.
+            Empirically, this is equal to the number of taxa in the current phylogenetic tree, plus the number of extinct taxa with no living descendants.
         )mydelimiter")
         .def("get_max_depth", static_cast<int (sys_t::*) () >(&sys_t::GetMaxDepth), R"mydelimiter(
             Returns the lineage length (phylogenetic depth) of the active taxon with the longest lineage.
@@ -444,18 +444,18 @@ PYBIND11_MODULE(systematics, m) {
             If no MRCA exists, this returns -1.
         )mydelimiter")
         .def("colless_like_index", static_cast<double (sys_t::*) () const>(&sys_t::CollessLikeIndex), R"mydelimiter(
-            Calculates and returns the Colless-like Index of the currently-active phylogeny. This metric is used to measure tree balance in multifurcating
+            Calculates and returns the Colless-like Index of the currently-active phylogenetic tree. This metric is used to measure tree balance in multifurcating
             trees, as described in doi:10.1371/journal.pone.0203401.
             Most people are familiar with the standard Colless Index. However, that version is only applicable to bifurcating trees.
         )mydelimiter")
         .def("sackin_index", static_cast<int (sys_t::*) () const>(&sys_t::SackinIndex), R"mydelimiter(
-            Calculates and returns the Sackin Index of the currently-active phylogeny. This metric is used to measure phylogenetic tree balance.
+            Calculates and returns the Sackin Index of the currently-active phylogenetic tree. This metric is used to measure phylogenetic tree balance.
             It is calcualted by adding together the depth of every leaf to its Most-Recent Common Ancestor (or its subtree root if none is found).
             For more information, see doi:10.2307/2992186.
         )mydelimiter")
         .def("get_branches_to_root", [](sys_t & self, taxon_t * tax){return self.GetBranchesToRoot(tax);}, R"mydelimiter(
             Given a taxon, this function calculates and returns the number of branches leading to multiple extant taxa on the path to its Most-Recent
-            Common Ancestor (or its subtree root if none is found). Only extant taxa are considered since most phylogeny reconstruction algorithms are not designed to additionaly handle extinct taxa. Moreover, this function also does not count unifurcations -- that is, points at which each taxon
+            Common Ancestor (or its subtree root if none is found). Only extant taxa are considered since most phylogenetic tree reconstruction algorithms are not designed to additionaly handle extinct taxa. Moreover, this function also does not count unifurcations -- that is, points at which each taxon
             only has a single ancestor.
 
             Parameters
@@ -464,29 +464,50 @@ PYBIND11_MODULE(systematics, m) {
         )mydelimiter")
         .def("get_distance_to_root", [](sys_t & self, taxon_t * tax){return self.GetDistanceToRoot(tax);}, R"mydelimiter(
             Given a taxon, this function calculates and returns the distance to its Most-Recent Common Ancestor (or its subtree root if none is found).
-            This function considers both unifurcations and extinct taxa. Consider using `get_branches_to_root()` instead for phylogeny reconstruction purposes.
+            This function considers both unifurcations and extinct taxa. Consider using `get_branches_to_root()` instead for phylogenetic tree reconstruction purposes.
 
             Parameters
             ----------
             Taxon tax: Taxon to find distance to MRCA (or subroot) of.
         )mydelimiter")
         .def("get_variance_pairwise_distance", static_cast<double (sys_t::*) (bool) const>(&sys_t::GetVariancePairwiseDistance), R"mydelimiter(
+            This method calculates the variance of distance between all pairs of extant taxa. This is a measure of phylogenetic regularity (Tucker et. al., 2017).
+            This assumes the phylogenetic tree is fully connected. If this is not the case, it will return -1.
 
+            If `branch_only` is set, this method will only consider distances in terms of nodes that represent branches between two extant taxa. This is potentially useful as a comparison to real-world, biological data, where non-branching nodes cannot be inferred.
+
+            Parameters
+            ----------
+            bool branch_only: Only counts distance in terms of nodes that represent a branch between two extant taxa.
         )mydelimiter")
         .def("get_mean_pairwise_distance", static_cast<double (sys_t::*) (bool) const>(&sys_t::GetMeanPairwiseDistance), R"mydelimiter(
-
         )mydelimiter")
         .def("get_sum_pairwise_distance", static_cast<double (sys_t::*) (bool) const>(&sys_t::GetSumPairwiseDistance), R"mydelimiter(
+            This method calculates the mean distance between all pairs of extant taxa, also known as the Average Taxonomic Diversity. This is a measure of community distinctness (Webb and Losos, 2000; Warwick and Clark, 1998).
+            This assumes the phylogenetic tree is fully connected. If this is not the case, it will return -1.
 
+            If `branch_only` is set, this method will only consider distances in terms of nodes that represent branches between two extant taxa. This is potentially useful as a comparison to real-world, biological data, where non-branching nodes cannot be inferred.
+
+            Parameters
+            ----------
+            bool branch_only: Only counts distance in terms of nodes that represent a branch between two extant taxa.
         )mydelimiter")
         .def("get_phylogenetic_diversity", static_cast<int (sys_t::*) () const>(&sys_t::GetPhylogeneticDiversity), R"mydelimiter(
-
+            This method calculates the sum of edges of the Minimum Spanning Tree of the currently-active phylogenetic tree. Assuming all parent-child edges have a length of 1 (i.e., there are no unifurcations), this is a measure of phylogenetic diversity.
         )mydelimiter")
         .def("get_average_origin_time", static_cast<double (sys_t::*) (bool) const>(&sys_t::GetAverageOriginTime), py::arg("normalize") = false, R"mydelimiter(
+            This method calculates the average origin time for the whole phylogenetic tree by iterating through its taxa.
 
+            It can optionally normalize the result to make it comparable to that of a strictly bifurcating tree--this is the kind of tree produced by traditional reconstruction methods. Normalization is achieved by multiplying the value of each taxon by its number of offspring minus one.
+
+            Parameters
+            ----------
+            bool normalize: Whether to normalize result.
         )mydelimiter")
         .def("get_out_degree_distribution", static_cast<std::unordered_map<int, int> (sys_t::*) () const>(&sys_t::GetOutDegreeDistribution), R"mydelimiter(
+            This method creates a histogram of outnode degrees. In other words, it iterates through the whole phylogenetic tree and counts the number of outgoing edges for each node, returning this data in the form of a dictionary, with keys being outnode degrees and values being counts.
 
+            For example, {0:12, 1:10, 2:33} means the tree has 12 zero-furcations (leaf nodes), 10 unifurcations, and 33 bifurcations.
         )mydelimiter")
         .def("get_mean_evolutionary_distinctiveness", static_cast<double (sys_t::*) (double) const>(&sys_t::GetMeanEvolutionaryDistinctiveness), R"mydelimiter(
 
@@ -518,9 +539,13 @@ PYBIND11_MODULE(systematics, m) {
         )mydelimiter")
 
         // Time tracking
-        .def("update", static_cast<void (sys_t::*) ()>(&sys_t::Update))
+        .def("update", static_cast<void (sys_t::*) ()>(&sys_t::Update), R"mydelimiter(
+
+        )mydelimiter")
 
         // Efficiency functions
-        .def("remove_before", static_cast<void (sys_t::*) (int)>(&sys_t::RemoveBefore))
+        .def("remove_before", static_cast<void (sys_t::*) (int)>(&sys_t::RemoveBefore), R"mydelimiter(
+
+        )mydelimiter")
         ;
 }
