@@ -13,7 +13,8 @@ authors:
     affiliation: "1, 2"
     corresponding: true
   - name: Santiago Rodruigez-Papa
-    affiliation: "1, 2"
+    affiliation: "1"
+    orcid: 0000-0002-6028-2105
   - name: Matthew Andres Moreno
     orcid: 0000-0003-4726-4479
     affiliation: "3, 4"
