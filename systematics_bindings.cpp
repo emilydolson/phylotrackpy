@@ -268,12 +268,12 @@ PYBIND11_MODULE(systematics, m) {
             Returns a temporary, non-owning object (reference) of the set of outside taxa.
             These are extinct taxa with extinct descendants.
         )mydelimiter")
-        .def("get_next_parent", static_cast<emp::Ptr<taxon_t> (sys_t::*) ()>(&sys_t::GetNextParent, py::return_value_policy::reference_internal, R"mydelimiter(
+        .def("get_next_parent", static_cast<emp::Ptr<taxon_t> (sys_t::*) ()>(&sys_t::GetNextParent), py::return_value_policy::reference_internal, R"mydelimiter(
             Returns the taxon that corresponds to the parent of the next taxon created from a call to `add_org(org)`.
-        )mydelimiter"))
-        .def("get_most_recent", static_cast<emp::Ptr<taxon_t> (sys_t::*) ()>(&sys_t::GetMostRecent, py::return_value_policy::reference_internal, R"mydelimiter(
+        )mydelimiter")
+        .def("get_most_recent", static_cast<emp::Ptr<taxon_t> (sys_t::*) ()>(&sys_t::GetMostRecent), py::return_value_policy::reference_internal, R"mydelimiter(
             Returns the most recently-created taxon.
-        )mydelimiter"))
+        )mydelimiter")
         .def("parent", [](sys_t & self, taxon_t * tax){return self.Parent(tax);}, py::return_value_policy::reference_internal, R"mydelimiter(
             Returns the parent of a given taxon, if any.
 
