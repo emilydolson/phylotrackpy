@@ -12,9 +12,12 @@ authors:
     orcid: 0000-0001-8616-4898
     affiliation: "1, 2"
     corresponding: true
+  - name: Santiago Rodruigez-Papa
+    affiliation: "1, 2"
   - name: Matthew Andres Moreno
     orcid: 0000-0003-4726-4479
     affiliation: "3, 4"
+    
 affiliations:
  - name: Department of Computer Science and Engineering, Michigan State University, East Lansing, MI, USA
    index: 1
@@ -52,7 +55,7 @@ In contrast, Phylotrack provides ready-built tracking flexible enough to attach 
 
 Two other general-purpose libraries for phylogenetic record-keeping do exist: hstrat and Automated Phylogeny Over Geological Timescales (APOGeT).
 However, they provide different modes of phylogenetic instrumentation than Phylotrack does.
-Whereas Phylotrack uses a graph-based approach to perfectly record asexual phylogenies, the hstrat library implements hereditary stratigraphy, a recently developed method that allows robust decentralized phylogenetic tracking in parallel and distributed systems at the cost of a tunable reduction in accuracy [@moreno2022hstrat].
+Whereas Phylotrack uses a graph-based approach to perfectly record asexual phylogenies, the hstrat library implements hereditary stratigraphy, a recently developed method that allows robust decentralized phylogenetic tracking in parallel and distributed systems at the cost of a tunable reduction in accuracy [@moreno2022hstrat] (see  [@moreno2023lineage] for a more thorough comparison).
 APOGeT, in turn, focuses on tracking speciation in sexually-reproducing populations [@godin2019apoget].
 
 Vast amounts of bioinformatics-oriented phylogenetics software is also available.
@@ -78,6 +81,10 @@ The core functionality of Phylotrack is recording asexual phylogenies. To achiev
 To reduce memory overhead, extinct branches are pruned from phylogenies by default, but this feature can be disabled.
 The level of abstraction (i.e. what constitutes a taxonomic unit) can be customized via a user-provided function.
 Supplemental data about each taxonomic unit can be stored efficiently.
+
+Lineage recording in phylotrackpy is efficient.
+The worst-case time complexity is O(1) [@moreno2023lineage].
+Space complexity is harder to meaningfully calculate, but should be O(N) on average in most evolutionary scenarios (where N is population size)  [@moreno2023lineage].
 
 __Serialization:__
 Phylotrack outputs data in the Artificial Life Standard Phylogeny format [@lalejiniDataStandardsArtificial2019] to facilitate interoperability with an associated ecosystem of software converters, analyzers, visualizers.
