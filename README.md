@@ -13,7 +13,7 @@ In _in silico_ evolution experiments, we have the luxury of being able to perfec
 
 At face value, measuring a phylogeny in *in silico* evolution may seem very straightforward: you just need to keep track of what gives birth to what. However, multiple aspects turn out to be non-trivial. The goal of Phylotrackpy is to implement these things the right way once so that we all can stop needing to re-implement them over and over. Phylotrackpy is a python library designed to flexibly handle all aspects of recording phylogenies in *in silico* evolution.
 
-Note: this library is essentially a wrapper around the [Empirical Systematics Manager](https://empirical--466.org.readthedocs.build/en/466/library/Evolve/systematics.html), which is implemented in C++. If you need a C++ phylogeny tracker, you can use that one directly (it is part of the larger Empirical library, which is header-only so you can just include the parts you want).
+Note: this library is essentially a wrapper around [Phylotracklib](https://empirical--466.org.readthedocs.build/en/466/library/Evolve/systematics.html), which is implemented in C++. If you need a C++ phylogeny tracker, you can use that one directly (it is part of the larger Empirical library, which is header-only so you can just include the parts you want).
 
 ## Features
 
@@ -56,7 +56,7 @@ The above image represents an actual phylogeny measured from digital evolution. 
 ## Dependencies
 
 - [pybind11](https://pybind11.readthedocs.io/en/stable/) (for wrapping C++ code into Python)
-- [Empirical](https://github.com/devosoft/Empirical) (where the original C++ version of this code lives)
+- [Empirical](https://github.com/devosoft/Empirical) (where the C++ version of this code lives)
 
 ### Testing dependencies
 
