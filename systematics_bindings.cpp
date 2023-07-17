@@ -92,7 +92,7 @@ PYBIND11_MODULE(systematics, m) {
         .def("get_parent", &taxon_t::GetParent)
         .def("get_id", &taxon_t::GetID, R"mydelimiter(
             Returns the ID (as an int) that uniquely identifies this taxon.
-            Given that IDs are assigned sequentially, higher IDs will correspond to more recent taxa.
+            IDs are assigned sequentially, sp higher IDs will correspond to more recent taxa.
         )mydelimiter")
         .def("get_total_offspring", &taxon_t::GetTotalOffspring, R"mydelimiter(
             Returns the number of direct and indirect descendants of this taxon.
