@@ -288,7 +288,7 @@ PYBIND11_MODULE(systematics, m) {
             taxon_t tax The taxon to return the parent of.
         )mydelimiter")
         .def("is_taxon_at", static_cast<bool (sys_t::*) (emp::WorldPosition)>(&sys_t::IsTaxonAt), R"mydelimiter(
-            Returns whether a taxon is present at the given location.
+            Returns whether a taxon is present at the given location. This will only work if the systematics manager is set to track positions (which can be checked with `get_store_position()`).
 
             Parameters
             ----------
