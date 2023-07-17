@@ -510,13 +510,31 @@ PYBIND11_MODULE(systematics, m) {
             For example, {0:12, 1:10, 2:33} means the tree has 12 zero-furcations (leaf nodes), 10 unifurcations, and 33 bifurcations.
         )mydelimiter")
         .def("get_mean_evolutionary_distinctiveness", static_cast<double (sys_t::*) (double) const>(&sys_t::GetMeanEvolutionaryDistinctiveness), R"mydelimiter(
+            This method calculates the mean evolutionary distinctiveness of all extant taxa.
+            Mean evolutionary distinctiveness is a metric that measures how distinct any given taxa is from the rest of the population, weighted by the amount of evolutionary history it represents (Isaac, 2007; Winter et. al., 2013).
+            This method takes the *current* time as a parameter, in whichever units the systematics manager is using. Using a non-present time will produce innacurate results, since the only known state of the tree is the current one.
 
+            Parameters
+            __________
+            double time: Current time in the appropiate units (e.g., generations, seconds, etc.)
         )mydelimiter")
         .def("get_sum_evolutionary_distinctiveness", static_cast<double (sys_t::*) (double) const>(&sys_t::GetSumEvolutionaryDistinctiveness), R"mydelimiter(
+            This method calculates the sum of evolutionary distinctiveness of all extant taxa.
+            Mean evolutionary distinctiveness is a metric that measures how distinct any given taxa is from the rest of the population, weighted by the amount of evolutionary history it represents (Isaac, 2007; Winter et. al., 2013).
+            This method takes the *current* time as a parameter, in whichever units the systematics manager is using. Using a non-present time will produce innacurate results, since the only known state of the tree is the current one.
 
+            Parameters
+            __________
+            double time: Current time in the appropiate units (e.g., generations, seconds, etc.)
         )mydelimiter")
         .def("get_variance_evolutionary_distinctiveness", static_cast<double (sys_t::*) (double) const>(&sys_t::GetVarianceEvolutionaryDistinctiveness), R"mydelimiter(
+            This method calculates the variance of evolutionary distinctiveness across all extant taxa.
+            Mean evolutionary distinctiveness is a metric that measures how distinct any given taxa is from the rest of the population, weighted by the amount of evolutionary history it represents (Isaac, 2007; Winter et. al., 2013).
+            This method takes the *current* time as a parameter, in whichever units the systematics manager is using. Using a non-present time will produce innacurate results, since the only known state of the tree is the current one.
 
+            Parameters
+            __________
+            double time: Current time in the appropiate units (e.g., generations, seconds, etc.)
         )mydelimiter")
 
         // Input
