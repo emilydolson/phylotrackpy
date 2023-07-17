@@ -147,6 +147,7 @@ PYBIND11_MODULE(systematics, m) {
         )mydelimiter")
         .def("set_store_ancestors", static_cast<void (sys_t::*) (bool)>(&sys_t::SetStoreAncestors), R"mydelimiter(
             A setter method to configure whether to store all taxa that are the ancestors of living organisms in the population.
+            Warning: this is an advanced feature --- setting this to False breaks a lot of assumptions and will most likely disrupt normal functioning of the systematics manager. As opposed to `set_store_active()`, there are probably some situations where this setting could be useful.
             This option defaults to True.
 
             Parameters
