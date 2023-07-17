@@ -181,7 +181,7 @@ PYBIND11_MODULE(systematics, m) {
             bool val Value representing whether to store the position of each taxa.
         )mydelimiter")
         .def("set_track_synchronous", static_cast<void (sys_t::*) (bool)>(&sys_t::SetTrackSynchronous), R"mydelimiter(
-            A setter method to configure whether a synchronous population is being tracked.
+            A setter method to configure whether a synchronous population is being tracked. A synchronous population is one where parents must be extanct for their offspring to be born. As such, there are effectively two populations: a currently-active one, and one being created. This is in opposition to steady-state populations, where organisms might die as their offspring are born (for example, in a world where offspring replaces the parent).
             The accuracy of the systematics tracking relies on this option, so it is imperative it be configured properly.
             This option defaults to False.
 
