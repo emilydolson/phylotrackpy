@@ -107,8 +107,8 @@ PYBIND11_MODULE(systematics, m) {
             Returns the total number of *currently living* organisms corresponding to this taxon.
         )mydelimiter")
         .def("get_offspring", &taxon_t::GetOffspring, R"mydelimiter(
-            Returns a pointer (???) to a set holding all immediate offspring taxa.
-            This can be used to iterate through a phylogenetic tree.
+            Returns a set holding all immediate offspring taxa.
+            This method can be used to traverse the phylogenetic tree.
         )mydelimiter")
         .def("get_destruction_time", &taxon_t::GetDestructionTime, R"mydelimiter(
             Return the time (as a float) when this taxon left the population.
