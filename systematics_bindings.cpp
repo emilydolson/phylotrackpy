@@ -249,7 +249,7 @@ PYBIND11_MODULE(systematics, m) {
             Empirically, this is equal to the number of taxa in the current phylogenetic tree, plus the number of extinct taxa with no living descendants.
         )mydelimiter")
         .def("get_max_depth", static_cast<int (sys_t::*) () >(&sys_t::GetMaxDepth), R"mydelimiter(
-            Returns the lineage length (phylogenetic depth) of the active taxon with the longest lineage.
+            Returns the lineage length (phylogenetic depth) from time zero to the active taxon with the longest lineage.
         )mydelimiter")
         .def("get_num_roots", static_cast<size_t (sys_t::*) () const>(&sys_t::GetNumRoots), R"mydelimiter(
             Returns the number of independent phylogenies currently being tracked.
