@@ -214,8 +214,8 @@ PYBIND11_MODULE(systematics, m) {
             Can be set using the `set_store_archive()` method.
         )mydelimiter")
         .def("get_store_position", static_cast<bool (sys_t::*) () const>(&sys_t::GetStorePosition), R"mydelimiter(
-            Whether the Systematics Manager is configured to
-            Can be set using the `()` method.
+            Whether the Systematics Manager is configured to store taxa positions.
+            Can be set using the `set_store_position()` method.
         )mydelimiter")
         .def("get_track_synchronous", static_cast<bool (sys_t::*) () const>(&sys_t::GetTrackSynchronous), R"mydelimiter(
             Whether the Systematics Manager is configured to track a synchronous population.
