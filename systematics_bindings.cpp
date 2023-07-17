@@ -404,16 +404,12 @@ PYBIND11_MODULE(systematics, m) {
         // Signals
         .def("on_new", [](sys_t & self, std::function<void(emp::Ptr<taxon_t> t, org_t & org)> & fun){self.OnNew(fun);}, R"mydelimiter(
             Set a custom function that is triggered every time a new taxon is created.
-            The function must take two arguments: the first must be `taxon_t` object that represents the newly-minted taxon, and the second
-            must be an `org_t` object representing the organism the taxon was created from.
-            The custom function will be triggered during the taxon creation process: after its origination time has been set, but
-            before its organism or location have been recorded. This allows the user to customize the way objects are represented interlally
-            by the systematics manager, or to implement extra bookkeeping functionality.
+            The function must take two arguments: the first must be a Taxon object that represents the newly-minted taxon, and the second must be an object representing the organism the taxon was created from.
+            The custom function will be triggered during the taxon creation process: after its origination time has been set, but before its organism or location have been recorded. This allows the user to customize the way objects are represented interlally by the systematics manager, or to implement extra bookkeeping functionality.
 
             Parameters
             ----------
-            Callable[[taxon_t, org_t], None] fun: Function to run during new taxon creation. It must take a `taxon_t` object corresponding to
-                the new taxon as its first argument, and an `org_t` object representing the organism the taxon was created from as its second argument.
+            Callable[[Taxon, Organism], None] fun: Function to run during new taxon creation. It must take a Taxon object corresponding to the new taxon as its first argument, and an object representing the organism the taxon was created from as its second argument.
         )mydelimiter")
         .def("on_extinct", [](sys_t & self, std::function<void(emp::Ptr<taxon_t> t)> & fun){self.OnExtinct(fun);}, R"mydelimiter(
             Set a custom function that is triggered every time a taxon goes extinct.
