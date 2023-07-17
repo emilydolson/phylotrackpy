@@ -499,7 +499,7 @@ PYBIND11_MODULE(systematics, m) {
             bool branch_only: Only counts distance in terms of nodes that represent a branch between two extant taxa.
         )mydelimiter")
         .def("get_phylogenetic_diversity", static_cast<int (sys_t::*) () const>(&sys_t::GetPhylogeneticDiversity), R"mydelimiter(
-            This method calculates the sum of edges of the Minimum Spanning Tree of the currently-active phylogenetic tree. Assuming all parent-child edges have a length of 1 (i.e., there are no unifurcations), this is a measure of phylogenetic diversity.
+            This method calculates the sum of edges of the Minimum Spanning Tree of the currently-active phylogenetic tree (Faith 1992, reviewed in Winters et al., 2013). Assuming all parent-child edges have a length of 1 (i.e., there are no unifurcations), this is a measure of phylogenetic diversity.
         )mydelimiter")
         .def("get_average_origin_time", static_cast<double (sys_t::*) (bool) const>(&sys_t::GetAverageOriginTime), py::arg("normalize") = false, R"mydelimiter(
             This method calculates the average origin time for the whole phylogenetic tree by iterating through its taxa.
