@@ -33,7 +33,8 @@ extensions = [
     "sphinx.ext.autosummary",
     "sphinx.ext.napoleon",
     'sphinx_rtd_theme',
-    "myst_parser"
+    "myst_parser",
+    "sphinx_tippy",
 ]
 
 autosummary_generate = True
