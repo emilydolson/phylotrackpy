@@ -164,7 +164,7 @@ PYBIND11_MODULE(systematics, m) {
         )mydelimiter")
         .def("set_store_archive", static_cast<void (sys_t::*) (bool)>(&sys_t::SetArchive), R"mydelimiter(
             A setter method to configure whether to store taxa types that have become extinct.
-            Defaults to True.
+            Warning: this is an advanced feature --- archive is handled internally. Overriding this setting could disrupt normal behavior of the systematics manager.
 
             Parameters
             ----------
