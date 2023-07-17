@@ -461,8 +461,7 @@ PYBIND11_MODULE(systematics, m) {
         )mydelimiter")
         .def("get_branches_to_root", [](sys_t & self, taxon_t * tax){return self.GetBranchesToRoot(tax);}, R"mydelimiter(
             Given a taxon, this function calculates and returns the number of branches leading to multiple extant taxa on the path to its Most-Recent
-            Common Ancestor (or its subtree root if none is found). Only extant taxa are considered since most phylogeny reconstruction algorithms are not designed to additionaly handle extinct taxa. Moreover, this function also does not count unifurcations -- that is, points at which each taxon
-            only has a single ancestor.
+            Common Ancestor (or its subtree root if none is found). Only extant taxa are considered since most phylogeny reconstruction algorithms are not designed to additionaly handle extinct taxa. This function does not count unifurcations -- that is, points at which each taxon only has a single ancestor.
 
             Parameters
             ----------
