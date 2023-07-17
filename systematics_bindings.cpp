@@ -442,7 +442,7 @@ PYBIND11_MODULE(systematics, m) {
 
         // Phylostatistics
         .def("calc_diversity", static_cast<double (sys_t::*) () const>(&sys_t::CalcDiversity), R"mydelimiter(
-            Calculates and returns the diversity of the current population. This is done by weighing each active taxon by the number of organisms in it.
+            Calculates and returns the Shannon Diversity Index of the current extant population. This is done by weighing each active taxon by the number of organisms in it.
         )mydelimiter")
         .def("mrca_depth", static_cast<int (sys_t::*) () const>(&sys_t::GetMRCADepth), R"mydelimiter(
             This function returns the depth of the Most-Recent Common Ancestor for the active population -- that is, this returns the distance between
