@@ -113,11 +113,11 @@ PYBIND11_MODULE(systematics, m) {
         .def("get_destruction_time", &taxon_t::GetDestructionTime, R"mydelimiter(
             Return the time (as a float) when this taxon left the population.
             If the taxon is currently alive, this will be equal to float(+inf).
-            This call will only succeed when the systematics manager has been set to track times.
+            This call will only succeed when the systematics manager has been set to track times via `set_update()`.
         )mydelimiter")
         .def("get_origination_time", &taxon_t::GetOriginationTime, R"mydelimiter(
             Return the time (as a float) when this taxon first appeared in the population.
-            This call will only succeed when the systematics manager has been set to track times.
+            This call will only succeed when the systematics manager has been set to track times via `set_update()`.
         )mydelimiter")
         // .def("set_data", &taxon_t::SetData)
         // .def("get_data", [](taxon_t & self){return self.GetData();})
@@ -190,7 +190,7 @@ PYBIND11_MODULE(systematics, m) {
             bool val Value representing whether a synchronous population is being tracked.
         )mydelimiter")
         .def("set_update", static_cast<void (sys_t::*) (size_t)>(&sys_t::SetUpdate), R"mydelimiter(
-            A setter method to modify the current time step.
+            A setter method to modify the current time step. This should be used if you want PhylotrackPy to track when events occur.
 
             Parameters
             ----------
