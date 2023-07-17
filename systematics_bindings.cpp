@@ -450,9 +450,8 @@ PYBIND11_MODULE(systematics, m) {
             If no MRCA exists, this returns -1.
         )mydelimiter")
         .def("colless_like_index", static_cast<double (sys_t::*) () const>(&sys_t::CollessLikeIndex), R"mydelimiter(
-            Calculates and returns the Colless-like Index of the currently-active phylogenetic tree. This metric is used to measure tree balance in multifurcating
-            trees, as described in doi:10.1371/journal.pone.0203401.
-            Most people are familiar with the standard Colless Index. However, that version is only applicable to bifurcating trees.
+            Calculates and returns the Colless-like Index of the currently-active phylogenetic tree. This metric is used to measure tree balance in multifurcating trees, as described in doi:10.1371/journal.pone.0203401.
+            The standard Colless Index is more well-known. However, that version is only applicable to bifurcating trees.
         )mydelimiter")
         .def("sackin_index", static_cast<int (sys_t::*) () const>(&sys_t::SackinIndex), R"mydelimiter(
             Calculates and returns the Sackin Index of the currently-active phylogenetic tree. This metric is used to measure phylogenetic tree balance.
