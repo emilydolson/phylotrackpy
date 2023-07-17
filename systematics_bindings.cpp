@@ -533,37 +533,67 @@ PYBIND11_MODULE(systematics, m) {
             This method takes the *current* time as a parameter, in whichever units the systematics manager is using. Using a non-present time will produce innacurate results, since the only known state of the tree is the current one.
 
             Parameters
-            __________
+            ----------
             double time: Current time in the appropiate units (e.g., generations, seconds, etc.)
         )mydelimiter")
 
         // Input
         .def("load_from_file", static_cast<void (sys_t::*) (const std::string &, const std::string &, bool, bool)>(&sys_t::LoadFromFile), py::arg("file_path"), py::arg("info_col") = "info", py::arg("assume_leaves_extant") = true, py::arg("adjust_total_offspring") = true, R"mydelimiter(
+            This method loads phylogenies into the systematics manager from a given file, replacing the currently-present phylogenies, if any. It is only successful when the `info_col` type is convertible to the systematics manager's ORG_INFO type. Such a phylogeny file can be obtained by calling `snapshot()` on a systematics manager with an active phylogeny.
 
-        )mydelimiter")
+            Parameters
+            ----------
+            string file_path: Path to file containing phylogenies to be loaded. Either absolute or relative to the Python executable.
+            string info_col: Name of file column containing taxa information. Defaults to `"info"`.
+            bool assume_leaves_extant: Whether leaves are assumed to be extant. Defaults to `True`.
+            bool adjust_total_offstring: Whether total offspring count should be adjusted for all taxa. Defaults to `True`.
+            )mydelimiter")
 
         // Output
         .def("snapshot", static_cast<void (sys_t::*) (const std::string &) const>(&sys_t::Snapshot), R"mydelimiter(
+            This method takes a snapshot of the current state of the phylogeny and stores it to a file. This file can then be loaded through `load_from_file()`.
+            Note that this assumes each taxon only has one parent taxon.
 
+            Parameters
+            ----------
+            string file_path: File path to save snapshot to.
         )mydelimiter")
         .def("add_snapshot_fun", static_cast<void (sys_t::*) (const std::function<std::string(const taxon_t &)> &, const std::string &, const std::string &) >(&sys_t::AddSnapshotFun), R"mydelimiter(
+            This method adds a new snapshot function that will run in addition to the default functions when a snapshot is taken. A custom snapshot function should be created whenever storage and retrival of custom taxon data is desired.
 
+            Custom snapshot functions must take a Taxon object as a single argument and return the data to be saved as a string. The second argument to this method is the key the custom information will be stored under in the snapshot file. Optionally, a short description of the custom information can be provided as its third argument.
+
+            Parameters
+            ----------
+            Callable[Taxon, str] fun: Custom snapshot function, taking a Taxon object as its singular parameter, and returning the custom data as a string.
+            str key: Key to store the custom information under inside the snapshot file.
+            str desc: Optional description for the custom information.
         )mydelimiter")
         .def("print_status", [](sys_t & self){self.PrintStatus();}, R"mydelimiter(
-
+            This method prints details about the systematics manager.
+            It first prints all settings. Then, it prints all stored active, ancestor, and outside taxa in that order.
+            The format for a taxon is [id | number of orgs, number of offspring | parent taxon].
         )mydelimiter")
         .def("print_lineage", [](sys_t & self, taxon_t * tax){self.PrintLineage(tax);}, R"mydelimiter(
+            This method prints the complete lineage of a given taxon. The output format consists of the string "Lineage:" followed by each taxon in the lineage on a new line.
 
+            Parameters
+            ----------
+            Taxon tax: Taxon to print the lineage of.
         )mydelimiter")
 
         // Time tracking
         .def("update", static_cast<void (sys_t::*) ()>(&sys_t::Update), R"mydelimiter(
-
+            Calling this method advances the tracking by one time step. This can be useful for tracking taxon survival times, as well as population positions in synchronous generation worlds.
         )mydelimiter")
 
         // Efficiency functions
         .def("remove_before", static_cast<void (sys_t::*) (int)>(&sys_t::RemoveBefore), R"mydelimiter(
+            This method removes all taxa that went extinct before the given time step, and that only have ancestors taht went extinct before the given time step. While this invalidates most tree topology metrics, it is useful when limited ancestry tracking is necessary, but complete ancestry tracking is not computationally possible.
 
+            Parameters
+            ----------
+            int ud: Time step before which to remove taxa.
         )mydelimiter")
         ;
 }
