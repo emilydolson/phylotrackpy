@@ -101,7 +101,7 @@ PYBIND11_MODULE(systematics, m) {
             Returns the total number of organisms that have ever lived corresponding to this taxon.
         )mydelimiter")
         .def("get_num_offspring", &taxon_t::GetNumOff, R"mydelimiter(
-            Returns the number of taxa that were produced by organisms corresponding to this taxon.
+            Returns the number of new taxa that were produced by organisms corresponding to this taxon.
         )mydelimiter")
         .def("get_num_orgs", &taxon_t::GetNumOrgs, R"mydelimiter(
             Returns the total number of *currently living* organisms corresponding to this taxon.
