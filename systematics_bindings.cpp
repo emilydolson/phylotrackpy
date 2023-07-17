@@ -211,7 +211,7 @@ PYBIND11_MODULE(systematics, m) {
             Can be set using the `set_store_ancestors()` method.
         )mydelimiter")
         .def("get_store_archive", static_cast<bool (sys_t::*) () const>(&sys_t::GetArchive), R"mydelimiter(
-            Whether the Systematics Manager is configured to store extinct taxa types.
+            Whether the Systematics Manager is configured to store extinct taxa types. Note that this is just `get_store_ancestors() || get_store_outside()`.
             Can be set using the `set_store_archive()` method.
         )mydelimiter")
         .def("get_store_position", static_cast<bool (sys_t::*) () const>(&sys_t::GetStorePosition), R"mydelimiter(
