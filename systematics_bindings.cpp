@@ -275,7 +275,7 @@ PYBIND11_MODULE(systematics, m) {
             These are extinct taxa with extinct descendants.
         )mydelimiter")
         .def("get_next_parent", static_cast<emp::Ptr<taxon_t> (sys_t::*) ()>(&sys_t::GetNextParent), py::return_value_policy::reference_internal, R"mydelimiter(
-            Returns the taxon that corresponds to the parent of the next taxon created from a call to `add_org(org)`.
+            Returns the taxon that corresponds to the parent of the next taxon. This will only be set if parents are being specified through calls to `set_next_parent()`.
         )mydelimiter")
         .def("get_most_recent", static_cast<emp::Ptr<taxon_t> (sys_t::*) ()>(&sys_t::GetMostRecent), py::return_value_policy::reference_internal, R"mydelimiter(
             Returns the most recently-created taxon.
