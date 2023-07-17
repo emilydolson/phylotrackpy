@@ -131,6 +131,7 @@ PYBIND11_MODULE(systematics, m) {
             Set the function used to calculate the information associated with an organism.
             This information is used to categorize organisms within the systematics manager.
             Possible information includes genotype, phenotype, genome sequence, etc.
+            For more information on flexible taxon definitions, please see https://phylotrackpy.readthedocs.io/en/latest/index.html#flexible-taxon-definitions.
 
             Parameters
             ----------
