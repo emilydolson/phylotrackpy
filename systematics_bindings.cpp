@@ -295,7 +295,7 @@ PYBIND11_MODULE(systematics, m) {
             WorldPosition id Location to check for taxon.
         )mydelimiter")
         .def("get_taxon_at", static_cast<emp::Ptr<taxon_t> (sys_t::*) (emp::WorldPosition)>(&sys_t::GetTaxonAt), R"mydelimiter(
-            Returns the taxon at the given location, if any.
+            Returns the taxon at the given location, if any. This will only work if the systematics manager is set to track positions (which can be checked with `get_store_position()`).
 
             Parameters
             ----------
