@@ -156,7 +156,7 @@ PYBIND11_MODULE(systematics, m) {
         )mydelimiter")
         .def("set_store_outside", static_cast<void (sys_t::*) (bool)>(&sys_t::SetStoreOutside), R"mydelimiter(
             A setter method to configure whether to store all dead taxa whose descendats have also died.
-            Defaults to False.
+            This option defaults to False.
 
             Parameters
             ----------
@@ -165,6 +165,7 @@ PYBIND11_MODULE(systematics, m) {
         .def("set_store_archive", static_cast<void (sys_t::*) (bool)>(&sys_t::SetArchive), R"mydelimiter(
             A setter method to configure whether to store taxa types that have become extinct.
             Warning: this is an advanced feature --- archive is handled internally. Overriding this setting could disrupt normal behavior of the systematics manager.
+            This option defaults to True.
 
             Parameters
             ----------
@@ -172,7 +173,7 @@ PYBIND11_MODULE(systematics, m) {
         )mydelimiter")
         .def("set_store_position", static_cast<void (sys_t::*) (bool)>(&sys_t::SetStorePosition), R"mydelimiter(
             A setter method to configure whether to store the position of each taxa.
-            Defaults to True.
+            This option defaults to True.
 
             Parameters
             ----------
@@ -181,7 +182,7 @@ PYBIND11_MODULE(systematics, m) {
         .def("set_track_synchronous", static_cast<void (sys_t::*) (bool)>(&sys_t::SetTrackSynchronous), R"mydelimiter(
             A setter method to configure whether a synchronous population is being tracked.
             The accuracy of the systematics tracking relies on this option, so it is imperative it be configured properly.
-            Defaults to False.
+            This option defaults to False.
 
             Parameters
             ----------
