@@ -261,17 +261,17 @@ PYBIND11_MODULE(systematics, m) {
             Returns the average phylogenetic depth of all organisms currently present in the population.
         )mydelimiter")
         .def("get_active_taxa_reference", static_cast<std::unordered_set< emp::Ptr<taxon_t>, emp::Ptr<taxon_t>::hash_t > * (sys_t::*) ()>(&sys_t::GetActivePtr), py::return_value_policy::reference_internal, R"mydelimiter(
-            Returns a temporary, non-owning object (reference) of the set of extant taxa.
+            Returns a reference to the set of extant taxa.
         )mydelimiter")
         .def("get_active_taxa", static_cast<const std::unordered_set< emp::Ptr<taxon_t>, emp::Ptr<taxon_t>::hash_t > & (sys_t::*) () const>(&sys_t::GetActive), py::return_value_policy::reference_internal, R"mydelimiter(
-            Returns a temporary, non-owning object (reference) of the set of extant taxa.
+            Returns a reference to the set of extant taxa.
         )mydelimiter")
         .def("get_ancestor_taxa", static_cast<const std::unordered_set< emp::Ptr<taxon_t>, emp::Ptr<taxon_t>::hash_t > & (sys_t::*) () const>(&sys_t::GetAncestors), py::return_value_policy::reference_internal, R"mydelimiter(
-            Returns a temporary, non-owning object (reference) of the set of ancestor taxa.
+            Returns a reference to the set of ancestor taxa.
             These are extinct taxa with extant descendants.
         )mydelimiter")
         .def("get_outside_taxa", static_cast<const std::unordered_set< emp::Ptr<taxon_t>, emp::Ptr<taxon_t>::hash_t > & (sys_t::*) () const>(&sys_t::GetOutside), py::return_value_policy::reference_internal, R"mydelimiter(
-            Returns a temporary, non-owning object (reference) of the set of outside taxa.
+            Returns a reference to the set of outside taxa.
             These are extinct taxa with extinct descendants.
         )mydelimiter")
         .def("get_next_parent", static_cast<emp::Ptr<taxon_t> (sys_t::*) ()>(&sys_t::GetNextParent), py::return_value_policy::reference_internal, R"mydelimiter(
