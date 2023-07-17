@@ -55,28 +55,17 @@ PYBIND11_MODULE(systematics, m) {
         .def("get_pop_ID", &emp::WorldPosition::GetPopID, R"mydelimiter(
             Returns the ID (as an int) of the population that this WorldPosition is referring to.
 
-            Wondering why there might be multiple populations? It's because WorldPosition objects
-            are designed to gracefully handle configurations in which there are
-            multiple separate populations (e.g. due to islands or separated generations).
+            Wondering why there might be multiple populations? It's because WorldPosition objects are designed to gracefully handle configurations in which there are multiple separate populations (e.g. due to islands or separated generations).
             If you're just using one population, the pop ID will always be 0 and that's fine.
             )mydelimiter")
         .def("is_active", &emp::WorldPosition::IsActive, R"mydelimiter(
-            Returns a boolean indicating whether this position potentially represents an "active" (i.e. "alive")
-            organism in the context of a generational/synchronous configuration (i.e. one in which a new generation
-            is created on each time step and there is no overlap of organisms between generations; this
-            configuration is commonly used in evolutionary computation and simple evolutionary models). In this case,
-            the next generation (i.e. the one that is currently in the process of being created) is considered
-            "inactive". Conventionally, the population that selection is currently happening on has ID 0 and the population
-            holding the new generation has ID 1. Thus, this method simply returns true if the population ID is 0 and false
-            otherwise.
+            Returns a boolean indicating whether this position potentially represents an "active" (i.e. "alive") organism in the context of a generational/synchronous configuration (i.e. one in which a new generation is created on each time step and there is no overlap of organisms between generations; this configuration is commonly used in evolutionary computation and simple evolutionary models). In this case, the next generation (i.e. the one that is currently in the process of being created) is considered "inactive". Conventionally, the population that selection is currently happening on has ID 0 and the population holding the new generation has ID 1. Thus, this method simply returns true if the population ID is 0 and false otherwise.
 
-            If you are using population IDs for a separate purpose (e.g. islands), this method will not yield accurate
-            results.
+            If you are using population IDs for a separate purpose (e.g. islands), this method will not yield accurate results.
             )mydelimiter")
         .def("is_valid", &emp::WorldPosition::IsValid, R"mydelimiter(
             -1 can be used as a sentinel value to indicate that a position is not to be used.
-            This method returns a boolean indicating whether this position is "valid"
-            (i.e. the index is not equal to -1).
+            This method returns a boolean indicating whether this position is "valid" (i.e. the index is not equal to -1).
             )mydelimiter");
 
     // py::implicitly_convertible<std::tuple<int, int>, emp::WorldPosition>();
@@ -323,17 +312,14 @@ PYBIND11_MODULE(systematics, m) {
 
         // Death notification
         .def("remove_org_by_position", static_cast<bool (sys_t::*) (emp::WorldPosition)>(&sys_t::RemoveOrg), R"mydelimiter(
-            Notify the systematics manager that an organism has died. Use this method if you're having the systematics
-            manager keep track of each organism's position and want to use the position to tell the systematics manager which
-            organism died. Otherwise use remove_org.
+            Notify the systematics manager that an organism has died. Use this method if you're having the systematics manager keep track of each organism's position and want to use the position to tell the systematics manager which organism died. Otherwise use remove_org.
 
             Parameters
             ----------
             WorldPosition position: The location of the organism that died.
             )mydelimiter")
         .def("remove_org", [](sys_t & self, taxon_t * tax){return self.RemoveOrg(tax);}, R"mydelimiter(
-            Notify the systematics manager that an organism has died. Use this method if you are keeping track of
-            taxon objects yourself (rather than having the systematics manager handle it by tracking position).
+            Notify the systematics manager that an organism has died. Use this method if you are keeping track of taxon objects yourself (rather than having the systematics manager handle it by tracking position).
 
             Parameters
             ----------
@@ -341,15 +327,11 @@ PYBIND11_MODULE(systematics, m) {
             )mydelimiter")
         .def("remove_org_by_position_after_repro", static_cast<void (sys_t::*) (emp::WorldPosition)>(&sys_t::RemoveOrgAfterRepro), R"mydelimiter(
             Notify the systematics manager that an organism has died but that it shouldn't record the death until the next reproduction event.
-            You might want to do this if there's a chance that the organism simultaneously died and reproduced (e.g. if the organism's
-            offspring might have replaced it in the population).
+            You might want to do this if there's a chance that the organism simultaneously died and reproduced (e.g. if the organism's offspring might have replaced it in the population).
 
-            Calling remove_org_by_position in that scenario could result in a segmentation fault if it was the last organism of its taxon. It could
-            either be incorrectly marked extinct (if the offspring is part of the same taxon) and/or incorrectly pruned (if the offspring is part of a new
-            taxon).
+            Calling remove_org_by_position in that scenario could result in a segmentation fault if it was the last organism of its taxon. It could either be incorrectly marked extinct (if the offspring is part of the same taxon) and/or incorrectly pruned (if the offspring is part of a new taxon).
 
-            Use this method if you're having the systematics manager keep track of each organism's position and want to use the position to
-            tell the systematics manager which organism died. Otherwise use remove_org_after_repro.
+            Use this method if you're having the systematics manager keep track of each organism's position and want to use the position to tell the systematics manager which organism died. Otherwise use remove_org_after_repro.
 
             Parameters
             ----------
@@ -357,12 +339,9 @@ PYBIND11_MODULE(systematics, m) {
             )mydelimiter")
         .def("remove_org_after_repro", [](sys_t & self, taxon_t * tax){self.RemoveOrgAfterRepro(tax);}, R"mydelimiter(
             Notify the systematics manager that an organism has died but that it shouldn't record the death until the next reproduction event.
-            You might want to do this if there's a chance that the organism simultaneously died and reproduced (e.g. if the organism's
-            offspring might have replaced it in the population).
+            You might want to do this if there's a chance that the organism simultaneously died and reproduced (e.g. if the organism's offspring might have replaced it in the population).
 
-            Calling remove_org_by_position in that scenario could result in a segmentation fault if it was the last organism of its taxon. It could
-            either be incorrectly marked extinct (if the offspring is part of the same taxon) and/or incorrectly pruned (if the offspring is part of a new
-            taxon).
+            Calling remove_org_by_position in that scenario could result in a segmentation fault if it was the last organism of its taxon. It could either be incorrectly marked extinct (if the offspring is part of the same taxon) and/or incorrectly pruned (if the offspring is part of a new taxon).
 
             Use this method if you are keeping track of taxon objects yourself (rather than having the systematics manager handle it by tracking position).
 
@@ -371,10 +350,7 @@ PYBIND11_MODULE(systematics, m) {
             Taxon tax: The taxon of the organism that died.
             )mydelimiter")
         .def("set_next_parent", [](sys_t & self, taxon_t * tax){self.SetNextParent(tax);}, R"mydelimiter(
-            Sometimes, due to the flow of your program, you may not have access to the taxon object for the parent and
-            the offspring at the same time. In these cases, you can use set_next_parent to tell the systematics manager
-            what the taxon of the parent of the next offspring should be. The next time you call one of the add_org
-            methods without a specified parent, the systematics manager will used the specified taxon as the parent for that organism.
+            Sometimes, due to the flow of your program, you may not have access to the taxon object for the parent and the offspring at the same time. In these cases, you can use set_next_parent to tell the systematics manager what the taxon of the parent of the next offspring should be. The next time you call one of the add_org methods without a specified parent, the systematics manager will used the specified taxon as the parent for that organism.
 
             Parameters
             ----------
@@ -390,11 +366,7 @@ PYBIND11_MODULE(systematics, m) {
 
         // Move notification
         .def("swap_positions", static_cast<void (sys_t::*) (emp::WorldPosition, emp::WorldPosition)>(&sys_t::SwapPositions), R"mydelimiter(
-            If you are tracking taxa by positions it is important that you notify the systematics manager any time a taxon changes
-            position for any reason. This function allows you to do so. Assumes that all changes in position take the form of the
-            contents of one location being replaced with the contents of a different location. If only one organism is moving, the location
-            it is moving to is presumably empty and it is presumably leaving its former position empty. Thus, you will swap an organism with
-            an empty space.
+            If you are tracking taxa by positions it is important that you notify the systematics manager any time a taxon changes position for any reason. This function allows you to do so. Assumes that all changes in position take the form of the contents of one location being replaced with the contents of a different location. If only one organism is moving, the location it is moving to is presumably empty and it is presumably leaving its former position empty. Thus, you will swap an organism with an empty space.
 
             Parameters
             ----------
@@ -415,26 +387,21 @@ PYBIND11_MODULE(systematics, m) {
         .def("on_extinct", [](sys_t & self, std::function<void(emp::Ptr<taxon_t> t)> & fun){self.OnExtinct(fun);}, R"mydelimiter(
             Set a custom function that is triggered every time a taxon goes extinct.
             The function must take a single argument: a `taxon_t` object representing the taxon going extinct.
-            The custom function will be triggered near the beginning of the taxon descruction process: after its descruction time has been set, but
-            before any information has been destroyed. This allows the user to customize the way objects are represented interlally
-            by the systematics manager, or to implement extra bookkeeping functionality.
+            The custom function will be triggered near the beginning of the taxon descruction process: after its descruction time has been set, but before any information has been destroyed. This allows the user to customize the way objects are represented interlally by the systematics manager, or to implement extra bookkeeping functionality.
 
             Parameters
             ----------
-            Callable[taxon_t, None] fun: Function to run during taxon destruction. It must take a `taxon_t` object corresponding to
-                the destroyee taxon.
+            Callable[taxon_t, None] fun: Function to run during taxon destruction. It must take a `taxon_t` object corresponding to the destroyee taxon.
         )mydelimiter")
         .def("on_prune", [](sys_t & self, std::function<void(emp::Ptr<taxon_t> t)> & fun){self.OnPrune(fun);}, R"mydelimiter(
             Set a custom function that is triggered every time a taxon is pruned from the tree. This occurs when a taxon and all its descendants go extinct.
             The function must take a single argument: a `taxon_t` object representing the taxon getting pruned.
             The custom function will be triggered at the beginning of the taxon pruning process.
-            This allows the user to customize the way objects are represented interlally by the systematics manager, or to implement
-            extra bookkeeping functionality.
+            This allows the user to customize the way objects are represented interlally by the systematics manager, or to implement extra bookkeeping functionality.
 
             Parameters
             ----------
-            Callable[taxon_t, None] fun: Function to run during taxon pruning. It must take a `taxon_t` object corresponding to
-                the pruned taxon.
+            Callable[taxon_t, None] fun: Function to run during taxon pruning. It must take a `taxon_t` object corresponding to the pruned taxon.
         )mydelimiter")
 
         // Phylostatistics
@@ -442,8 +409,7 @@ PYBIND11_MODULE(systematics, m) {
             Calculates and returns the Shannon Diversity Index of the current extant population. This is done by weighing each active taxon by the number of organisms in it.
         )mydelimiter")
         .def("mrca_depth", static_cast<int (sys_t::*) () const>(&sys_t::GetMRCADepth), R"mydelimiter(
-            This function returns the depth of the Most-Recent Common Ancestor for the active population -- that is, this returns the distance between
-            the latest (i.e., newest) generation and the newest taxon that is an ancestor of the active taxa on the latest generation.
+            This function returns the depth of the Most-Recent Common Ancestor for the active population -- that is, this returns the distance between the latest (i.e., newest) generation and the newest taxon that is an ancestor of the active taxa on the latest generation.
             If no MRCA exists, this returns -1.
         )mydelimiter")
         .def("colless_like_index", static_cast<double (sys_t::*) () const>(&sys_t::CollessLikeIndex), R"mydelimiter(
@@ -456,8 +422,7 @@ PYBIND11_MODULE(systematics, m) {
             For more information, see doi:10.2307/2992186.
         )mydelimiter")
         .def("get_branches_to_root", [](sys_t & self, taxon_t * tax){return self.GetBranchesToRoot(tax);}, R"mydelimiter(
-            Given a taxon, this function calculates and returns the number of branches leading to multiple extant taxa on the path to its Most-Recent
-            Common Ancestor (or its subtree root if none is found). Only extant taxa are considered since most phylogeny reconstruction algorithms are not designed to additionaly handle extinct taxa. This function does not count unifurcations -- that is, points at which each taxon only has a single ancestor.
+            Given a taxon, this function calculates and returns the number of branches leading to multiple extant taxa on the path to its Most-Recent Common Ancestor (or its subtree root if none is found). Only extant taxa are considered since most phylogeny reconstruction algorithms are not designed to additionaly handle extinct taxa. This function does not count unifurcations -- that is, points at which each taxon only has a single ancestor.
 
             Parameters
             ----------
