@@ -138,7 +138,7 @@ PYBIND11_MODULE(systematics, m) {
         )mydelimiter")
         .def("set_store_active", static_cast<void (sys_t::*) (bool)>(&sys_t::SetStoreActive), R"mydelimiter(
             A setter method to configure whether to store all taxa that are active in the population.
-            Warning: this is an advanced feature --- setting this to False breaks a lot of assumptions and will most likely disrupt normal functioning of the systematics manager.
+            Warning: this is an advanced feature --- setting this to False breaks a lot of assumptions and will most likely disrupt normal functioning of the systematics manager. There is probably not a real reason to change this setting.
             This option defaults to True.
 
             Parameters
