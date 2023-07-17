@@ -156,6 +156,7 @@ PYBIND11_MODULE(systematics, m) {
         )mydelimiter")
         .def("set_store_outside", static_cast<void (sys_t::*) (bool)>(&sys_t::SetStoreOutside), R"mydelimiter(
             A setter method to configure whether to store all dead taxa whose descendats have also died.
+            Warning: this is an advanced feature --- this setting will use a lot of memory in most cases.
             This option defaults to False.
 
             Parameters
