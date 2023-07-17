@@ -113,9 +113,11 @@ PYBIND11_MODULE(systematics, m) {
         .def("get_destruction_time", &taxon_t::GetDestructionTime, R"mydelimiter(
             Return the time (as a float) when this taxon left the population.
             If the taxon is currently alive, this will be equal to float(+inf).
+            This call will only succeed when the systematics manager has been set to track times.
         )mydelimiter")
         .def("get_origination_time", &taxon_t::GetOriginationTime, R"mydelimiter(
             Return the time (as a float) when this taxon first appeared in the population.
+            This call will only succeed when the systematics manager has been set to track times.
         )mydelimiter")
         // .def("set_data", &taxon_t::SetData)
         // .def("get_data", [](taxon_t & self){return self.GetData();})
