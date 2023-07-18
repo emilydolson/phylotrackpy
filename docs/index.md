@@ -176,7 +176,7 @@ sys.remove_org(my_org.taxon)
 
 
 
-```{include} systematics.md
+```{include} systematics.inc
 ```
 
 ```{bibliography}
