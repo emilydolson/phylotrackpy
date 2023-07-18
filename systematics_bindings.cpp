@@ -120,7 +120,7 @@ PYBIND11_MODULE(systematics, m) {
             Set the function used to calculate the information associated with an organism.
             This information is used to categorize organisms within the systematics manager.
             Possible information includes genotype, phenotype, genome sequence, etc.
-            For more information on flexible taxon definitions, please see https://phylotrackpy.readthedocs.io/en/latest/index.html#flexible-taxon-definitions.
+            See `Flexible Taxon Definitions <#flexible-taxon-definitions>`_ for more information.
 
             Parameters
             ----------
@@ -413,13 +413,13 @@ PYBIND11_MODULE(systematics, m) {
             If no MRCA exists, this returns -1.
         )mydelimiter")
         .def("colless_like_index", static_cast<double (sys_t::*) () const>(&sys_t::CollessLikeIndex), R"mydelimiter(
-            Calculates and returns the Colless-like Index of the currently-active phylogenetic tree. This metric is used to measure tree balance in multifurcating trees, as described in https://doi.org/10.1371/journal.pone.0203401.
+            Calculates and returns the Colless-like Index of the currently-active phylogenetic tree. This metric is used to measure tree balance in multifurcating trees, as described in `Sound Colless-like balance indices for multifurcating trees <https://doi.org/10.1371/journal.pone.0203401>`_.
             The standard Colless Index is more well-known. However, that version is only applicable to bifurcating trees.
         )mydelimiter")
         .def("sackin_index", static_cast<int (sys_t::*) () const>(&sys_t::SackinIndex), R"mydelimiter(
             Calculates and returns the Sackin Index of the currently-active phylogenetic tree. This metric is used to measure phylogenetic tree balance.
             It is calcualted by adding together the depth of every leaf to its Most-Recent Common Ancestor (or its subtree root if none is found).
-            For more information, see https://doi.org/10.2307/2992186.
+            For more information, see `Tree Balance <https://doi.org/10.2307/2992186>`_.
         )mydelimiter")
         .def("get_branches_to_root", [](sys_t & self, taxon_t * tax){return self.GetBranchesToRoot(tax);}, R"mydelimiter(
             Given a taxon, this function calculates and returns the number of branches leading to multiple extant taxa on the path to its Most-Recent Common Ancestor (or its subtree root if none is found). Only extant taxa are considered since most phylogeny reconstruction algorithms are not designed to additionaly handle extinct taxa. This function does not count unifurcations -- that is, points at which each taxon only has a single ancestor.
