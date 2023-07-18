@@ -21,7 +21,7 @@ We can generalize this concept - any phylogeny of individuals can be abstracted 
 ![Illustration of different ways taxonomic units could be defined](https://raw.githubusercontent.com/emilydolson/interpreting_the_tape_of_life/master/figs/dolson.lineage_metrics_cartoon.png)
 (Figure from "Quantifying the tape of life: Ancestry-based metrics provide insights and intuition about evolutionary dynamics" published in the proceedings of [ALIFE 2018](http://2018.alife.org/))
 
-So how does Phylotrackpy handle this problem? By giving you the power to define taxonomic groupings however you want! When you construct a Phylotrackpy `Systematics` object, you give it a function that it can use to determine the taxonomic unit of an organism. Later, when organisms are born, you will pass them to the `Systematics` object and it will run that function on them. If the result matches the result of calling that function on the new organism's parent, then the organism will be considered to be part of the same taxonomic unit (taxon) as its parent. If the results do not match, the new organism will be considered to be the start of a new taxon descended from the parent's taxon. 
+So how does Phylotrackpy handle this problem? By giving you the power to define taxonomic groupings however you want! When you construct a Phylotrackpy `Systematics` object, you give it a function that it can use to determine the taxonomic unit of an organism. Later, when organisms are born, you will pass them to the `Systematics` object and it will run that function on them. If the result matches the result of calling that function on the new organism's parent, then the organism will be considered to be part of the same taxonomic unit (taxon) as its parent. If the results do not match, the new organism will be considered to be the start of a new taxon descended from the parent's taxon.
 
 Note that multiple taxa may evolve that are the "same" (i.e. running the function on organisms in each yields the same result); each unique evolutionary origin will be counted as a distinct taxon. For example, let's imagine we are building a phylogeny of real animals in nature and grouping them into taxa based on whether they spend more than 50% of their lives in water. Fish and whales would be parts of two different taxa. Even though they both live their whole lives in the water, there would be a "land" taxon in between them on the line of descent.
 
@@ -86,7 +86,7 @@ Some useful terminology that might be useful in understanding the documentation 
 - **Bifurcation**: A node in a phylogeny that has exactly two child nodes.
 - **Non-branch node**: A node in a phylogeny with only one child node.
 - **Leaf node**: A node in a phylogeny with no children.
-- **Most Recent Common Ancestor (MRCA)**: The most recent node in a phylogeny that is a common ancestor of all nodes associated with extant taxa. If the phylogeny is pruned, there won't be any branch points before the MRCA (because any branches not leading to the MRCA would lead to taxa that are now extinct). 
+- **Most Recent Common Ancestor (MRCA)**: The most recent node in a phylogeny that is a common ancestor of all nodes associated with extant taxa. If the phylogeny is pruned, there won't be any branch points before the MRCA (because any branches not leading to the MRCA would lead to taxa that are now extinct).
 - **Coalescence events**: Occur when the most recent common ancestor changes (i.e. all descendants from one side of the deepest branch of the phylogeny have gone extinct). In the absence of diversity-preserving features coalescence events are expected to occur by chance with a frequency dependent on population size and spatial structure (but be careful of distributional assumptions). Observing coalescence less frequently than you would expect by chance can be an indication that ecological interactions are present (we have discussed this more [here](https://direct.mit.edu/artl/article/26/1/58/93272/Interpreting-the-Tape-of-Life-Ancestry-Based) and [here](https://direct.mit.edu/artl/article/25/1/50/2915/The-MODES-Toolbox-Measurements-of-Open-Ended)).
 
 
@@ -161,7 +161,7 @@ An example of tracking positions is coming soon. For now, feel free to contact u
 
 ### Notifying the systematics object of deaths
 
-You must notify the systematics manager of deaths using the `remove_org` family of functions. 
+You must notify the systematics manager of deaths using the `remove_org` family of functions.
 
 As an example (again, building on the previous examples):
 ```py
@@ -177,6 +177,9 @@ sys.remove_org(my_org.taxon)
 
 
 ```{include} systematics.md
+```
+
+```{bibliography}
 ```
 
 ```{toctree}

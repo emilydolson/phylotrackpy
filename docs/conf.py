@@ -35,7 +35,12 @@ extensions = [
     'sphinx_rtd_theme',
     "myst_parser",
     "sphinx_tippy",
+    "sphinxcontrib.bibtex",
 ]
+
+bibtex_bibfiles = ['bibliography.bib']
+bibtex_reference_style = "author_year"
+bibtex_default_style = 'unsrt'
 
 autosummary_generate = True
 

@@ -437,7 +437,7 @@ PYBIND11_MODULE(systematics, m) {
             Taxon tax: Taxon to find distance to MRCA (or subroot) of.
         )mydelimiter")
         .def("get_variance_pairwise_distance", static_cast<double (sys_t::*) (bool) const>(&sys_t::GetVariancePairwiseDistance), R"mydelimiter(
-            This method calculates the variance of distance between all pairs of extant taxa. This is a measure of phylogenetic regularity (Tucker et. al., 2017).
+            This method calculates the variance of distance between all pairs of extant taxa. This is a measure of phylogenetic regularity :cite:p:`tucker2017guide`.
             This assumes the phylogenetic tree is fully connected. If this is not the case, it will return -1.
 
             If `branch_only` is set, this method will only consider distances in terms of nodes that represent branches between two extant taxa. This is potentially useful as a comparison to real-world, biological data, where non-branching nodes cannot be inferred.
@@ -449,7 +449,7 @@ PYBIND11_MODULE(systematics, m) {
         .def("get_mean_pairwise_distance", static_cast<double (sys_t::*) (bool) const>(&sys_t::GetMeanPairwiseDistance), R"mydelimiter(
         )mydelimiter")
         .def("get_sum_pairwise_distance", static_cast<double (sys_t::*) (bool) const>(&sys_t::GetSumPairwiseDistance), R"mydelimiter(
-            This method calculates the mean distance between all pairs of extant taxa, also known as the Average Taxonomic Diversity. This is a measure of community distinctness (Webb and Losos, 2000; Warwick and Clark, 1998).
+            This method calculates the mean distance between all pairs of extant taxa, also known as the Average Taxonomic Diversity. This is a measure of community distinctness :cite:p:`webb2000exploring,clark1998artificial`.
             This assumes the phylogenetic tree is fully connected. If this is not the case, it will return -1.
 
             If `branch_only` is set, this method will only consider distances in terms of nodes that represent branches between two extant taxa. This is potentially useful as a comparison to real-world, biological data, where non-branching nodes cannot be inferred.
@@ -459,7 +459,8 @@ PYBIND11_MODULE(systematics, m) {
             bool branch_only: Only counts distance in terms of nodes that represent a branch between two extant taxa.
         )mydelimiter")
         .def("get_phylogenetic_diversity", static_cast<int (sys_t::*) () const>(&sys_t::GetPhylogeneticDiversity), R"mydelimiter(
-            This method calculates the sum of edges of the Minimum Spanning Tree of the currently-active phylogenetic tree (Faith 1992, reviewed in Winters et al., 2013). Assuming all parent-child edges have a length of 1 (i.e., there are no unifurcations), this is a measure of phylogenetic diversity.
+            This method calculates the sum of edges of the Minimum Spanning Tree of the currently-active phylogenetic tree :cite:p:`faith1992conservation,winter2013phylogenetic`.
+            Assuming all parent-child edges have a length of 1 (i.e., there are no unifurcations), this is a measure of phylogenetic diversity.
         )mydelimiter")
         .def("get_average_origin_time", static_cast<double (sys_t::*) (bool) const>(&sys_t::GetAverageOriginTime), py::arg("normalize") = false, R"mydelimiter(
             This method calculates the average origin time for the whole phylogenetic tree by iterating through its taxa.
@@ -477,7 +478,7 @@ PYBIND11_MODULE(systematics, m) {
         )mydelimiter")
         .def("get_mean_evolutionary_distinctiveness", static_cast<double (sys_t::*) (double) const>(&sys_t::GetMeanEvolutionaryDistinctiveness), R"mydelimiter(
             This method calculates the mean evolutionary distinctiveness of all extant taxa.
-            Mean evolutionary distinctiveness is a metric that measures how distinct any given taxa is from the rest of the population, weighted by the amount of evolutionary history it represents (Isaac, 2007; Winter et. al., 2013).
+            Mean evolutionary distinctiveness is a metric that measures how distinct any given taxa is from the rest of the population, weighted by the amount of evolutionary history it represents :cite:p:`isaac2007mammals,winter2013phylogenetic`.
             This method takes the *current* time as a parameter, in whichever units the systematics manager is using. Using a non-present time will produce innacurate results, since the only known state of the tree is the current one.
 
             Parameters
@@ -486,7 +487,7 @@ PYBIND11_MODULE(systematics, m) {
         )mydelimiter")
         .def("get_sum_evolutionary_distinctiveness", static_cast<double (sys_t::*) (double) const>(&sys_t::GetSumEvolutionaryDistinctiveness), R"mydelimiter(
             This method calculates the sum of evolutionary distinctiveness of all extant taxa.
-            Mean evolutionary distinctiveness is a metric that measures how distinct any given taxa is from the rest of the population, weighted by the amount of evolutionary history it represents (Isaac, 2007; Winter et. al., 2013).
+            Mean evolutionary distinctiveness is a metric that measures how distinct any given taxa is from the rest of the population, weighted by the amount of evolutionary history it represents :cite:p:`isaac2007mammals,winter2013phylogenetic`.
             This method takes the *current* time as a parameter, in whichever units the systematics manager is using. Using a non-present time will produce innacurate results, since the only known state of the tree is the current one.
 
             Parameters
@@ -495,7 +496,7 @@ PYBIND11_MODULE(systematics, m) {
         )mydelimiter")
         .def("get_variance_evolutionary_distinctiveness", static_cast<double (sys_t::*) (double) const>(&sys_t::GetVarianceEvolutionaryDistinctiveness), R"mydelimiter(
             This method calculates the variance of evolutionary distinctiveness across all extant taxa.
-            Mean evolutionary distinctiveness is a metric that measures how distinct any given taxa is from the rest of the population, weighted by the amount of evolutionary history it represents (Isaac, 2007; Winter et. al., 2013).
+            Mean evolutionary distinctiveness is a metric that measures how distinct any given taxa is from the rest of the population, weighted by the amount of evolutionary history it represents :cite:p:`isaac2007mammals,winter2013phylogenetic`.
             This method takes the *current* time as a parameter, in whichever units the systematics manager is using. Using a non-present time will produce innacurate results, since the only known state of the tree is the current one.
 
             Parameters
