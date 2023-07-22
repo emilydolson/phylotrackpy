@@ -1,5 +1,6 @@
 from phylotrackpy import systematics
 from pytest import approx
+from copy import deepcopy
 
 
 class ExampleOrg:
@@ -143,6 +144,13 @@ def test_loading_stats():
     assert sys.get_variance_evolutionary_distinctiveness(32766) > 0
 
     sys.load_from_file("test/assets/full.csv", "id", True, False)
+
+
+def test_deepcopy():
+    tax = systematics.Taxon(0,"hello")
+    tax2 = deepcopy(tax)
+    assert tax.get_id() == tax2.get_id()
+
 
 # def test_data():
 #     sys = systematics.Systematics(taxon_info_fun, True, True, False, False)

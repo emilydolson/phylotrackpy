@@ -78,6 +78,12 @@ PYBIND11_MODULE(systematics, m) {
     py::class_<taxon_t, std::unique_ptr<taxon_t, py::nodelete> >(m, "Taxon")
         .def(py::init<size_t, taxon_info_t>())
         .def(py::init<size_t, taxon_info_t, taxon_t*>())
+        .def("__copy__",  [](const taxon_t &self) {
+            return taxon_t(self);
+        })
+        .def("__deepcopy__", [](const taxon_t &self, py::dict) {
+            return taxon_t(self);
+        })
         .def("get_parent", &taxon_t::GetParent)
         .def("get_id", &taxon_t::GetID, R"mydelimiter(
             Returns the ID (as an int) that uniquely identifies this taxon.
