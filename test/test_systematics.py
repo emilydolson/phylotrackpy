@@ -147,9 +147,14 @@ def test_loading_stats():
 
 
 def test_deepcopy():
-    tax = systematics.Taxon(0,"hello")
+    sys = systematics.Systematics(lambda x: x, True, True, False, False)
+    tax = sys.add_org("hello")
     tax2 = deepcopy(tax)
     assert tax.get_id() == tax2.get_id()
+    
+    sys.add_org("hello", tax)
+    assert tax.get_num_orgs() == 2
+    assert tax2.get_num_orgs() == 2
 
 
 def test_taxon():
