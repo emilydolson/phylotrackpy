@@ -85,6 +85,7 @@ PYBIND11_MODULE(systematics, m) {
             return taxon_t(self);
         })
         .def("get_parent", &taxon_t::GetParent)
+        .def("get_info", &taxon_t::GetInfo)
         .def("get_id", &taxon_t::GetID, R"mydelimiter(
             Returns the ID (as an int) that uniquely identifies this taxon.
             IDs are assigned sequentially, sp higher IDs will correspond to more recent taxa.

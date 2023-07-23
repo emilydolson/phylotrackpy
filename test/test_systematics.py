@@ -152,6 +152,11 @@ def test_deepcopy():
     assert tax.get_id() == tax2.get_id()
 
 
+def test_taxon():
+    tax = systematics.Taxon(0, "hello")
+    assert tax.get_info() == "hello"
+
+
 # def test_data():
 #     sys = systematics.Systematics(taxon_info_fun, True, True, False, False)
 #     org = ExampleOrg("hello")
