@@ -79,10 +79,10 @@ PYBIND11_MODULE(systematics, m) {
         .def(py::init<size_t, taxon_info_t>())
         .def(py::init<size_t, taxon_info_t, taxon_t*>())
         .def("__copy__",  [](const taxon_t &self) {
-            return taxon_t(self);
+            return self;
         })
         .def("__deepcopy__", [](const taxon_t &self, py::dict) {
-            return taxon_t(self);
+            return self;
         })
         .def("get_parent", &taxon_t::GetParent)
         .def("get_info", &taxon_t::GetInfo)
