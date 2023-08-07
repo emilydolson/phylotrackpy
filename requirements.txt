@@ -68,7 +68,7 @@ pybtex==0.24.0
     #   sphinxcontrib-bibtex
 pybtex-docutils==1.0.2
     # via sphinxcontrib-bibtex
-pygments==2.14.0
+pygments==2.15.0
     # via sphinx
 pytest==7.2.2
     # via -r requirements.in
@@ -76,7 +76,7 @@ pyyaml==6.0
     # via
     #   myst-parser
     #   pybtex
-requests==2.28.2
+requests==2.31.0
     # via
     #   sphinx
     #   sphinx-tippy
@@ -84,6 +84,7 @@ six==1.16.0
     # via
     #   latexcodec
     #   pybtex
+    # via myst-parser
 snowballstemmer==2.2.0
     # via sphinx
 soupsieve==2.4.1
@@ -114,8 +115,6 @@ sphinxcontrib-qthelp==1.0.3
     # via sphinx
 sphinxcontrib-serializinghtml==1.1.5
     # via sphinx
-tomli==2.0.1
-    # via pytest
 urllib3==1.26.14
     # via requests
 zipp==3.16.2
