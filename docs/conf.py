@@ -33,8 +33,14 @@ extensions = [
     "sphinx.ext.autosummary",
     "sphinx.ext.napoleon",
     'sphinx_rtd_theme',
-    "myst_parser"
+    "myst_parser",
+    "sphinx_tippy",
+    "sphinxcontrib.bibtex",
 ]
+
+bibtex_bibfiles = ['bibliography.bib']
+bibtex_reference_style = "author_year"
+bibtex_default_style = 'unsrt'
 
 autosummary_generate = True
 
@@ -71,7 +77,7 @@ release = "0.1.16"
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = 'en'
 
 # There are two options for replacing |today|: either, you set today to some
 # non-false value, then it is used:
