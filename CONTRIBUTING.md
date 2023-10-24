@@ -44,6 +44,14 @@ If you are proposing a feature:
 - Remember that this is a volunteer-driven project, and that contributions
   are welcome :)
 
+## First-time Open-source Contributors
+
+First-time open source contributor?
+Welcome!
+
+If you're looking for introductory information about how open-source software works, [opensource.guide](https://opensource.guide) provides several excellent primers.
+Project maintainers are happy to provide further guidance --- please feel free to reach out directly.
+
 ## Get Started!
 
 Ready to contribute? Here's how to set up `phylotrackpy` for local development.
