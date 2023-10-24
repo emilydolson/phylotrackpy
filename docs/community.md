@@ -20,10 +20,11 @@ Find a comprehensive, up-to-date listing of project contributors [here](https://
 ## Governance
 
 As an early-stage project, Phylotrack currently operates under a founder-leader model, where project decisions are driven by consensus within a small group of core maintainers.
-[@emilydolson](https://github.com/emilydolson) and [@mmore500](https://github.com/mmore500) currently lead in this role.
+[Emily Dolsonn](https://github.com/emilydolson) and [Matthew Andres Moreno](https://github.com/mmore500) currently lead in this role.
 
 We are committed to actively involving Phylotrack’s user community in project decision-making.
-To weigh in on project directions, please open feature request(s) through our [GitHub issue tracker](https://github.com/emilydolson/phylotrackpy/issues) and Be notified of announcements and join in on discussions through mailing list, which you can join [here](https://groups.google.com/g/phylotrack).
+Please use the [GitHub issue tracker](https://github.com/emilydolson/phylotrackpy/issues) to suggest features and highlight important library use cases.
+Keep up with announcements and contribute to broader discussion through mailing list, which you can join [here](https://groups.google.com/g/phylotrack).
 
 ```{include} code_of_conduct.md
 ```
