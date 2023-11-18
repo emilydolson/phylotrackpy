@@ -2,3 +2,5 @@ pybind11
 sphinx_rtd_theme
 myst_parser
 pytest
+sphinx_tippy
+sphinxcontrib-bibtex
