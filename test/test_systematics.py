@@ -155,6 +155,9 @@ def test_deepcopy():
     sys.add_org("hello", tax)
     assert tax.get_num_orgs() == 2
     assert tax2.get_num_orgs() == 2
+    sys.remove_org(tax)
+    sys.remove_org(tax2)
+    # sys.remove_org(tax)
 
 
 def test_taxon():

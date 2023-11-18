@@ -120,7 +120,7 @@ PYBIND11_MODULE(systematics, m) {
         ;
 
     py::class_<sys_t>(m, "Systematics")
-        .def(py::init<std::function<taxon_info_t(org_t &)>, bool, bool, bool, bool>(), py::arg("calc_taxon"), py::arg("store_active") = true, py::arg("store_ancestors") = true, py::arg("store_all") = false, py::arg("store_pos") = true)
+        .def(py::init<std::function<taxon_info_t(org_t &)>, bool, bool, bool, bool>(), py::arg("calc_taxon"), py::arg("store_active") = true, py::arg("store_ancestors") = true, py::arg("store_all") = false, py::arg("store_pos") = false)
 
         // Setting systematics manager state
         .def("set_calc_info_fun", static_cast<void (sys_t::*) (std::function<taxon_info_t(org_t &)>)>(&sys_t::SetCalcInfoFun), R"mydelimiter(
@@ -559,7 +559,13 @@ PYBIND11_MODULE(systematics, m) {
         .def("update", static_cast<void (sys_t::*) ()>(&sys_t::Update), R"mydelimiter(
             Calling this method advances the tracking by one time step. This can be useful for tracking taxon survival times, as well as population positions in synchronous generation worlds.
         )mydelimiter")
-
+        .def("test_def", [](sys_t & self){
+            #ifdef IN_PYTHON
+                std::cout << "in python"  << std::endl;
+            #endif
+            emp_optional_throw(false);
+            std::cout << "done"  << std::endl;
+            })
         // Efficiency functions
         .def("remove_before", static_cast<void (sys_t::*) (int)>(&sys_t::RemoveBefore), R"mydelimiter(
             This method removes all taxa that went extinct before the given time step, and that only have ancestors taht went extinct before the given time step. While this invalidates most tree topology metrics, it is useful when limited ancestry tracking is necessary, but complete ancestry tracking is not computationally possible.

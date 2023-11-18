@@ -20,7 +20,7 @@ ext_modules = [
     Pybind11Extension("phylotrackpy.systematics",
         ["systematics_bindings.cpp"],
         # Example: passing in the version to the compiled code
-        define_macros = [('VERSION_INFO', __version__)],
+        define_macros = [('VERSION_INFO', __version__), ("IN_PYTHON", 1)],
         cxx_std=20
         ),
 ]
