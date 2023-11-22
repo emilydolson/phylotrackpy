@@ -180,7 +180,8 @@ def plot_timeprof(*args, **kwargs) -> None:
     ax = sns.lineplot(*args, errorbar="se", **kwargs)
     ax = sns.scatterplot(*args, **kwargs, color="salmon", marker="+")
     ax.set_xscale("log")
-    ax.set_yscale("log")
+    if kwargs["y"] == "generations per second":
+        ax.set_yscale("log")
     ax.text(
         0.95, 0.95,
         f"n = {kwargs['data']['replicate'].nunique()}",
@@ -193,13 +194,17 @@ data = pd.read_csv(
     "batch=${BATCH_UUID}+what=timeprof+ext=.csv",
     index_col=False,
 )
-tp.tee(
-    plot_timeprof,
-    data=data,
-    x="population size",
-    y="generations per second",
-    teeplot_outdir="batch=${BATCH_UUID}+what=teeplots",
+data["agent evaluations per second"] = (
+    data["generations per second"] * data["population size"]
 )
+for y in "generations per second", "agent evaluations per second":
+    tp.tee(
+        plot_timeprof,
+        data=data,
+        x="population size",
+        y=y,
+        teeplot_outdir="batch=${BATCH_UUID}+what=teeplots",
+    )
 EOF
 
 
