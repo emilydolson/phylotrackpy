@@ -72,8 +72,11 @@ pygments==2.15.0
     # via sphinx
 pytest==7.2.2
     # via -r requirements.in
-pyyaml==6.0
+pytz==2023.3.post1
+    # via babel
+pyyaml==6.0.1
     # via
+    #   -r requirements.in
     #   myst-parser
     #   pybtex
 requests==2.31.0

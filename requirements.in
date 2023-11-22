@@ -4,3 +4,7 @@ myst_parser
 pytest
 sphinx_tippy
 sphinxcontrib-bibtex
+
+# need pin for python3.12 compatibility
+# see https://github.com/yaml/pyyaml/issues/723
+pyyaml>=6.0.1
