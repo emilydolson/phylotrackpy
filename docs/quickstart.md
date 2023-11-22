@@ -100,8 +100,8 @@ Capability to interoperate with other phylogenetic computing libraries (BioPytho
 import io
 from pathlib import Path
 
-import alifedata_phyloinformatics_convert apc
-import bio
+import alifedata_phyloinformatics_convert as apc
+import Bio
 import dendropy
 import ete3 as ete
 
