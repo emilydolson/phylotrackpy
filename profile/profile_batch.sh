@@ -95,7 +95,7 @@ for f in mem_file_list:
     mem_df = pd.read_csv(
         f,
         index_col=False,
-        names=["MEM", "memory (kb)", "timestamp"],
+        names=["MEM", "memory (MiB)", "timestamp"],
         sep=" ",
         skiprows=1,
     )
@@ -140,9 +140,7 @@ data = pd.read_csv(
     "batch=${BATCH_UUID}+what=memprof+ext=.csv",
     index_col=False,
 )
-data["memory (mb)"] = data["memory (kb)"] / 1000
-data["memory (gb)"] = data["memory (mb)"] / 1000
-for memory in "memory (kb)", "memory (mb)", "memory (gb)":
+for memory in ("memory (MiB)",):
     plt.gca().clear()
     plt.clf()
     tp.tee(
