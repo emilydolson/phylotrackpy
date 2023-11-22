@@ -8,7 +8,7 @@
 namespace py = pybind11;
 
 
-PYBIND11_DECLARE_HOLDER_TYPE(T, emp::Ptr<T>, false);
+PYBIND11_DECLARE_HOLDER_TYPE(T, emp::Ptr<T>, true);
 
 // Only needed if the type's `.get()` goes by another name
 namespace pybind11 { namespace detail {
@@ -70,12 +70,7 @@ PYBIND11_MODULE(systematics, m) {
 
     // py::implicitly_convertible<std::tuple<int, int>, emp::WorldPosition>();
 
-    // The py::nodelete here might cause memory leaks if someone tries to construct
-    // a taxon without putting it in a systematics manager, but it seems necessary to
-    // avoid a segfault on destruction of the systematics manager. There's also
-    // not really any reason to ever make a taxon that you don't put in a systematics
-    // manager
-    py::class_<taxon_t, std::unique_ptr<taxon_t, py::nodelete> >(m, "Taxon")
+    py::class_<taxon_t, taxon_ptr>(m, "Taxon")
         .def(py::init<size_t, taxon_info_t>())
         .def(py::init<size_t, taxon_info_t, taxon_t*>())
         .def("__copy__",  [](const taxon_t &self) -> const taxon_t & {
@@ -560,13 +555,7 @@ PYBIND11_MODULE(systematics, m) {
         .def("update", static_cast<void (sys_t::*) ()>(&sys_t::Update), R"mydelimiter(
             Calling this method advances the tracking by one time step. This can be useful for tracking taxon survival times, as well as population positions in synchronous generation worlds.
         )mydelimiter")
-        .def("test_def", [](sys_t & self){
-            #ifdef IN_PYTHON
-                std::cout << "in python"  << std::endl;
-            #endif
-            emp_optional_throw(false);
-            std::cout << "done"  << std::endl;
-            })
+        
         // Efficiency functions
         .def("remove_before", static_cast<void (sys_t::*) (int)>(&sys_t::RemoveBefore), R"mydelimiter(
             This method removes all taxa that went extinct before the given time step, and that only have ancestors taht went extinct before the given time step. While this invalidates most tree topology metrics, it is useful when limited ancestry tracking is necessary, but complete ancestry tracking is not computationally possible.

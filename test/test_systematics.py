@@ -142,6 +142,8 @@ def test_loading_stats():
     assert sys.get_mean_evolutionary_distinctiveness(32766) > 0
     assert sys.get_sum_evolutionary_distinctiveness(32766) > 0
     assert sys.get_variance_evolutionary_distinctiveness(32766) > 0
+    assert len(sys.get_active_taxa()) > 0
+    assert len(sys.get_active_taxa()) > 0  # Check for object lifetime bug
 
     sys.load_from_file("test/assets/full.csv", "id", True, False)
 
