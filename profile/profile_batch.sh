@@ -195,6 +195,8 @@ data["agent evaluations per second"] = (
     data["generations per second"] * data["population size"]
 )
 for y in "generations per second", "agent evaluations per second":
+    plt.gca().clear()
+    plt.clf()
     tp.tee(
         plot_timeprof,
         data=data,
