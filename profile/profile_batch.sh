@@ -10,9 +10,6 @@ echo "########################################################################"
 cd "$(dirname "$0")"
 echo "pwd $(pwd)"
 
-RUN_SECONDS=4
-echo "RUN_SECONDS ${RUN_SECONDS}"
-
 echo "BATCH_UUID ${BATCH_UUID}"
 mkdir -p "batch=${BATCH_UUID}+what=rawdata"
 
