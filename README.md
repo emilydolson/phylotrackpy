@@ -26,11 +26,12 @@ Note: this library is essentially a wrapper around [Phylotracklib](https://empir
 
 ## High level usage
 
-There are three main steps in using phylotrackpy:
+There are four main steps in using phylotrackpy:
 
 - [Construct a `Systematics` object](https://phylotrackpy.readthedocs.io/en/latest/#creating-a-systematics-object)
 - [Notify the systematics object whenever anything is born](https://phylotrackpy.readthedocs.io/en/latest/#notifying-the-systematics-object-of-births)
 - [Notify the systematics object whenever anything dies](https://phylotrackpy.readthedocs.io/en/latest/#notifying-the-systematics-object-of-deaths)
+- [Import and export data](https://phylotrackpy.readthedocs.io/en/latest/#importing-and-exporting-data)
 
 For more detailed instructions, see the [documentation](https://phylotrackpy.readthedocs.io/en/latest/)
 
