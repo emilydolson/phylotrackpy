@@ -81,3 +81,64 @@ As an example (again, building on the previous examples):
 sys.remove_org(my_org.taxon)
 
 ```
+
+### Importing and exporting data
+
+Phylotrackpy has native support to load and save phylogenies via CSV files formatted according to the [Alife data standard phylogeny format](https://alife-data-standards.github.io/alife-data-standards/phylogeny.html).
+
+```py
+# save our phylogeny to file
+sys.snapshot("phylo.csv")
+
+# load a phylogeny from file
+loaded_sys = systematics.Systematics(lambda org: org.genotype)
+loaded_sys.load_from_file("phylo.csv", "id")
+```
+
+Capability to interoperate with other phylogenetic computing libraries (BioPython, DendroPy, ETE) and bioinformatics serialization schemas (newick, nexml, nexus) is provided through support from [`alifedata-phyloinformatics-convert`](https://github.com/mmore500/alifedata-phyloinformatics-convert/).
+```py
+import io
+from pathlib import Path
+
+import alifedata_phyloinformatics_convert as apc
+import Bio
+import dendropy
+import ete3 as ete
+
+
+# 1) initialize RosettaTree converter
+# ... with PhylotrackPy data
+converter = apc.RosettaTree(sys)
+# ... or from other libraries' data structures
+converter = apc.RosettaTree(
+  Bio.Phylo.read(io.StringIO("(A,B,(C,D));"), "newick"),
+)
+converter = apc.RosettaTree(
+  dendropy.Tree.get(data="(A,B,(C,D));", schema="newick"),
+)
+converter = apc.RosettaTree(
+  ete.Tree("(A,B,(C,D));"),
+)
+# ... or by deserializing from newick, nexml, or nexus formats
+converter = apc.RosettaTree.from_newick("(A,B,(C,D));")
+converter = apc.RosettaTree.from_nexml(Path("path/to/phylo.nemxl"))
+with open("path/to/phlo.nexus", "r") as fp:
+  converter = apc.RosettaTree.from_nexus(fp)
+
+# 2) transform data as desired 
+# ... coerce to PhylotrackPy data structure
+converter.as_phylotrack
+# ... coerce to other libraries' data structures
+converter.as_alife  # pandas DataFrame
+converter.as_biopython
+converter.as_dendropy
+converter.as_ete
+converter.as_networkx
+# ... serialize to standard formats
+converter.to_newick()  # returns newick string
+converter.to_nexml(Path("phylo.nexml"))  # writes to path
+with open("phylo.nexus", "w") as fp:  # writes to file object
+  converter.to_nexus(fp)
+```
+
+See the [`alifedata-phyloinformatics-convert` documentation](https://alifedata-phyloinformatics-convert.readthedocs.io/en/latest/#) for further information.
