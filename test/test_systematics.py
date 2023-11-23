@@ -1,6 +1,7 @@
 from phylotrackpy import systematics
-from pytest import approx
+from pytest import approx, mark
 from copy import deepcopy
+import numpy as np
 
 
 class ExampleOrg:
@@ -33,11 +34,22 @@ def test_systematics_by_position():
     # sys.remove_org_by_position((2,0))
 
 
-def test_systematics():
+@mark.parametrize(
+    "taxa",
+    (
+        ["hello", "hello 2"],
+        [1, 2],
+        [1.0, 2.0],
+        [[1], [1, 2]],
+        [np.array([1]), np.array([1, 2])],
+    ),
+)
+def test_systematics(taxa):
+    tax1, tax2 = taxa
     sys = systematics.Systematics(taxon_info_fun, True, True, False, False)
-    org = ExampleOrg("hello")
-    org2 = ExampleOrg("hello 2")
-    org_tax = systematics.Taxon(0, "hello")
+    org = ExampleOrg(tax1)
+    org2 = ExampleOrg(tax2)
+    org_tax = systematics.Taxon(0, tax1)
     org2_tax = sys.add_org(org2, org_tax)
     org3_tax = sys.add_org(org2)
     org4_tax = sys.add_org(org, org2_tax)

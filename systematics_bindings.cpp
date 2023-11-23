@@ -1,10 +1,15 @@
+#include <exception>
+#include <format>
+#include <iostream>
 #include <string>
 #include <tuple>
 #include <vector>
 #include <pybind11/pybind11.h>
+#include <pybind11/eval.h>
 #include <pybind11/functional.h>
 #include <pybind11/stl.h>
 #include "Empirical/include/emp/Evolve/Systematics.hpp"
+#include "Empirical/include/emp/tools/string_utils.hpp"
 
 namespace py = pybind11;
 
@@ -33,7 +38,79 @@ namespace pybind11 { namespace detail {
 //     }
 // }
 
-using taxon_info_t = std::string;
+/// Returns url encoding of value, but preserving [, ], {, }, ", and '
+std::string partial_url_encode(const std::string &value)
+{
+    std::ostringstream escaped;
+    escaped.fill('0');
+    escaped << std::hex;
+
+    for (const auto c : value)
+    {
+        // Keep alphanumeric and other accepted characters intact
+        if (
+            std::isalnum(c)
+            || c == '-'
+            || c == '_'
+            || c == '.'
+            || c == '~'
+            || c == '['
+            || c == ']'
+            || c == '{'
+            || c == '}'
+            || c == '"'
+            || c == '\''
+        )
+            escaped << c;
+        // Any other characters are percent-encoded
+        else
+        {
+            escaped << std::uppercase;
+            escaped << '%' << std::setw(2) << (static_cast<int>(c) & 0x000000FF);
+            escaped << std::nouppercase;
+        }
+    }
+
+    return escaped.str();
+}
+
+std::ostream& operator<<(std::ostream& os, const py::object &obj) {
+    auto repr = py::repr(obj).cast<std::string>();
+    if (emp::count(repr, '\'') || emp::count(repr, '"')) {
+        repr = partial_url_encode(repr);
+    } else {
+        emp::remove_whitespace(repr);
+    }
+    os << repr;
+
+    return os;
+}
+
+namespace std {
+    std::istream &operator>>(std::istream &is, py::object &obj) {
+        std::string repr;
+        is >> repr;
+        if (emp::count(repr, '\'') || emp::count(repr, '"')) {
+            repr = emp::url_decode(repr);
+        }
+
+        try {
+            const auto ast_eval = (
+            py::module::import("ast").attr("literal_eval")
+        );
+            obj = ast_eval(repr);
+        } catch (std::exception &e) {
+            std::string eval_string = std::format(
+                "exec('from numpy import *') or {}", repr
+            );
+            obj = py::eval(eval_string);
+        }
+
+        return is;
+    }
+}
+
+using taxon_info_t = py::object;
 using org_t = py::object;
 using sys_t = emp::Systematics<org_t, taxon_info_t>;
 using taxon_t = emp::Taxon<taxon_info_t>;
