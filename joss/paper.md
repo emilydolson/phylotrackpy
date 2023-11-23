@@ -44,7 +44,7 @@ This information reveals the sequences of events behind gain, loss, or maintenan
 The Phylotrack project provides libraries for tracking and analyzing phylogenies in *in silico* evolution.
 The project is composed of 1) Phylotracklib: a header-only C++ library, developed under the umbrella of the Empirical project [@ofria2020empirical], and 2) Phylotrackpy: a Python wrapper around Phylotracklib, created with Pybind11 [@pybind11].
 Both components supply a public-facing API to attach phylogenetic tracking to digital evolution systems, as well as a stand-alone interface for measuring a variety of popular phylogenetic topology metrics [@tuckerGuidePhylogeneticMetrics2017].
-The underlying algorithm design prioritizes efficiency, allowing Phylotrack to support large agent populations with rapid generational turnover.
+The underlying algorithm design prioritizes efficiency, allowing Phylotrack to support agent populations numbering in the tens of thousands with rapid generational turnover.
 The underlying C++ implementation ensures fast, memory-efficient performance, with multiple explicit features (e.g., phylogeny pruning and abstraction, etc.) for reducing the memory footprint of phylogenetic information.
 
 # Statement of Need
@@ -102,6 +102,47 @@ __Phylogenetic Topology Statistics:__ Support is provided for
 - Mean, sum, and variance pairwise distance [@clarkeQuantifyingStructuralRedundancy1998;@clarkeFurtherBiodiversityIndex2001;@webbPhylogeniesCommunityEcology2002;@tuckerGuidePhylogeneticMetrics2017]
 - Phylogenetic diversity [@faithConservationEvaluationPhylogenetic1992]
 - Sackin's index [@shao1990tree]
+
+# Profiling
+
+This section reports *in situ* runtime performance characteristics of the PhylotrackPy library.
+To measure PhylotrackPy in action, we ran a simple asexual evolutionary algorithm instrumented with systematics tracking.
+Genotypes consisted of single floating point values.
+We performed neutral selection, with 20\% of offspring mutated each generation.
+The string representation of genotypes served as the taxonomic unit for systematics tracking.
+
+We tested population sizes 10 ($10^3$), 1,000 ($10^3$), and 100,000 ($10^5$).
+Tests evaluated 60 second execution windows, with five replicates performed for each configured population size.
+Each trial concluded with a `snapshot` operation to serialize tracked records to file.
+
+Experiment trials used following system specifications:
+
+- Operating System: Fedora Linux 38 (Workstation Edition) x86_64
+- Machine: ThinkPad X1 Carbon Gen 8
+- Processor: Intel i7-10510U (8 cores) @ 4.900GHz
+- Memory: 16GB DRAM
+
+We used and the `memory_profiler` library v0.61.0 to measure process memory usage (via the `psutil` backend) and the built-in `time` module to measure elapsed time [@memory_profiler].
+Profiling data can be accessed via the Open Science Framework at <https://osf.io/52hzs/> [@foster2017open].
+Profiling scripts can be found in the PhylotrackPy module under the `profile/` directory.
+
+## Execution Speed
+
+![Execution speed across population sizes. Error bars are SE.\label{fig:time}](assets/viz=plot-timeprof+x=population-size+y=generations-per-second+ext=.png){ width=50% }
+
+Figure \ref{fig:memory} shows generations evaluated per second for each tested popultion size.At population size 10, 3,923 (s.d. 257) agent evaluations were processed per second (generations per second times population size).
+Population size 1,000 elapsed 28,386 (s.d. 741) agent evaluations per second and population size 100,000 elapsed 67,000 (s.d. 1825).
+Enhancement in agent evaluation efficiency likely arose from more effective exploitation of NumPy vectorized operations over the non-phylotrack evolutionary algorithm components.
+
+## Memory Usage
+
+![Allocated memory over 60-second execution window. Error bars are SE.\label{fig:memory}](assets/errorbar=se+hue=population-size+palette=deep+style=population-size+viz=plot-memprof+x=seconds+y=memory-mib+ext=.png){ width=50% }
+
+With extinct lineage pruning, PhylotrackPy consumes 296 MiB (s.d. 1.1 MiB) peak memory to track a population of 100,000 over the 40 (s.d. 1) generations elapsed during the 60 second execution window.
+Peak memory usage is 70.6 MiB (s.d. 0.5) at population size 10 and 71.0 MiB (s.d. 0.2) at population size 1,000.
+Figure \ref{fig:memory} shows memory use trajectories over 60 second evaluation windows for each tested population size.
+
+In most tracking applications, memory usage should be expected somewhat lower because selection typically accelerates coalescence, affording more opportunities for lineage pruning.
 
 # Future Work
 
