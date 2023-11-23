@@ -4,7 +4,7 @@ myst_parser
 pytest
 sphinx_tippy
 sphinxcontrib-bibtex
-numpy
+oldest-supported-numpy
 
 # need pin for python3.12 compatibility
 # see https://github.com/yaml/pyyaml/issues/723
