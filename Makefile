@@ -1,6 +1,6 @@
 # Makefile structure from https://jdhao.github.io/2021/08/17/pybind11_first_impression/
 
-CXX := g++
+CXX := $(shell command -v g++ 2> /dev/null || echo clang++)
 INCLUDE := $(shell python3 -m pybind11 --includes)
 FLAG := -Wall -shared -std=c++20 -fPIC -fvisibility=hidden
 SUFFIX := $(shell python3-config --extension-suffix)
