@@ -146,7 +146,7 @@ def test_phylostatistics():
 
 
 def test_loading_stats():
-    sys = systematics.Systematics(lambda x: x)
+    sys = systematics.Systematics()
     sys.load_from_file("test/assets/consolidated.csv", "id")
 
     assert sys.get_ave_depth() > 0
