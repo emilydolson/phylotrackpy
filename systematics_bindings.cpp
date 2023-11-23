@@ -604,8 +604,17 @@ PYBIND11_MODULE(systematics, m) {
             ----------
             string file_path: File path to save snapshot to.
         )mydelimiter")
-        .def("add_snapshot_fun", static_cast<void (sys_t::*) (const std::function<std::string(const taxon_t &)> &, const std::string &, const std::string &) >(&sys_t::AddSnapshotFun), R"mydelimiter(
-            This method adds a new snapshot function that will run in addition to the default functions when a snapshot is taken. A custom snapshot function should be created whenever storage and retrival of custom taxon data is desired.
+        .def(
+            "add_snapshot_fun",
+            static_cast<void (sys_t::*)(
+                const std::function<std::string(const taxon_t &)> &,
+                const std::string &,
+                const std::string &
+            )>(&sys_t::AddSnapshotFun),
+            py::arg("fun"),
+            py::arg("key"),
+            py::arg("desc") = "",
+            R"mydelimiter(This method adds a new snapshot function that will run in addition to the default functions when a snapshot is taken. A custom snapshot function should be created whenever storage and retrival of custom taxon data is desired.
 
             Custom snapshot functions must take a Taxon object as a single argument and return the data to be saved as a string. The second argument to this method is the key the custom information will be stored under in the snapshot file. Optionally, a short description of the custom information can be provided as its third argument.
 
