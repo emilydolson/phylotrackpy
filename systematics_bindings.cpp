@@ -73,25 +73,29 @@ std::string partial_url_encode(const std::string &value)
     return escaped.str();
 }
 
-std::ostream& operator<<(std::ostream& os, const py::object &obj) {
+std::string encode_pyobj(const py::object &obj) {
     auto repr = py::repr(obj).cast<std::string>();
-    if (emp::count(repr, '\'') || emp::count(repr, '"')) {
+    if (
+        emp::count(repr, ',')  // TODO -- emp csv should handle ","'s natively
+        || emp::count(repr, '\'')
+        || emp::count(repr, '"')
+        || emp::url_decode(repr) != repr
+    ) {
         repr = partial_url_encode(repr);
-    } else {
-        emp::remove_whitespace(repr);
     }
-    os << repr;
+    else emp::remove_whitespace(repr);
+    return repr;
+}
 
-    return os;
+std::string encode_taxon(const py::object &taxon) {
+    return encode_pyobj(taxon.attr("get_info")());
 }
 
 namespace std {
     std::istream &operator>>(std::istream &is, py::object &obj) {
         std::string repr;
         is >> repr;
-        if (emp::count(repr, '\'') || emp::count(repr, '"')) {
-            repr = emp::url_decode(repr);
-        }
+        repr = emp::url_decode(repr);
 
         try {
             const auto ast_eval = (
@@ -122,6 +126,13 @@ PYBIND11_MODULE(systematics, m) {
     //     .def("get_data", [](emp::datastruct::python & self, py::object & d){return self.data;}, py::return_value_policy::reference_internal)
     //     .def_readwrite("data", &emp::datastruct::python::data)
     //     ;
+
+    m.def("encode_taxon", &encode_taxon, R"mydelimiter(
+        Encode a Python object as a string that streams as a single token and can be deserialized using `eval`.
+
+        This is done by calling repr() on the object and then removing whitespace, unless the repr string contains single or double quotes.
+        In that case, the repr string is url-encoded instead of having whitespace stripped.
+        )mydelimiter");
 
     py::class_<emp::WorldPosition>(m, "WorldPosition")
         .def(py::init<size_t, size_t>())

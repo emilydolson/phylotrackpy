@@ -2,6 +2,7 @@ from phylotrackpy import systematics
 from pytest import approx, mark
 from copy import deepcopy
 import numpy as np
+import tempfile
 
 
 class ExampleOrg:
@@ -64,9 +65,41 @@ def test_systematics(taxa):
     assert(sys.get_num_active() == 3)
     assert(sys.get_num_ancestors() == 0)
 
-    assert(not sys.remove_org(org2_tax))
-    assert(sys.get_num_active() == 2)
-    assert(sys.get_num_ancestors() == 1)
+    assert not sys.remove_org(org2_tax)
+    assert sys.get_num_active() == 2
+    assert sys.get_num_ancestors() == 1
+
+
+@mark.parametrize(
+    "taxa",
+    (
+        ["hello", "hello 2"],
+        [1, 2],
+        [1.0, 2.0],
+        [[1], [1, 2]],
+        [np.array([1]), np.array([1, 2])],
+    ),
+)
+def test_taxa_serialization(taxa):
+    tax1, tax2 = taxa
+    sys = systematics.Systematics(taxon_info_fun, True, True, False, False)
+    org = ExampleOrg(tax1)
+    org2 = ExampleOrg(tax2)
+    org_tax = sys.add_org(org)
+    org2_tax = sys.add_org(org2, org_tax)
+    org3_tax = sys.add_org(org2, org_tax)
+    sys.remove_org(org_tax)
+    org4_tax = sys.add_org(org, org2_tax)
+    org5_tax = sys.add_org(org, org4_tax)
+
+    with tempfile.NamedTemporaryFile() as f:
+        f.file.close()
+        sys.add_snapshot_fun(systematics.encode_taxon, "info")
+        sys.snapshot(f.name)
+        sys = systematics.Systematics(lambda x: x, True, True, False, False)
+        sys.load_from_file(f.name)
+
+    assert sys.get_mrca().get_info() == tax1
 
 
 def test_shared_ancestor():
