@@ -35,10 +35,10 @@ articles, and such.
 
 To build and preview the documentation locally,
 
-    ```bash
-    make -C docs html
-    make -C docs serve
-    ```
+```bash
+make -C docs html
+make -C docs serve
+```
 
 You will need to load a development virtual environment first (described below).
 
