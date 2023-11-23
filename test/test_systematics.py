@@ -95,7 +95,7 @@ def test_load_data():
 
 
 def test_phylostatistics():
-    sys = systematics.Systematics(lambda x: str(x), True, True, False, False)
+    sys = systematics.Systematics(str, True, True, False, False)
 
     sys.set_update(0)
     id1 = sys.add_org(25)
