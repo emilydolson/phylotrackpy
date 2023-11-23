@@ -1,5 +1,4 @@
 #include <exception>
-#include <format>
 #include <iostream>
 #include <string>
 #include <tuple>
@@ -100,8 +99,8 @@ namespace std {
         );
             obj = ast_eval(repr);
         } catch (std::exception &e) {
-            std::string eval_string = std::format(
-                "exec('from numpy import *') or {}", repr
+            std::string eval_string = (
+                "exec('from numpy import *') or " + repr
             );
             obj = py::eval(eval_string);
         }
