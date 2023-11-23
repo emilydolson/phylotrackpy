@@ -46,6 +46,21 @@ Phylotrackpy is available through pip:
 pip install phylotrackpy
 ```
 
+To install the latest development version:
+
+```bash
+pip install git+https://github.com/emilydolson/phylotrackpy
+```
+
+To install from a local sorce copy:
+```bash
+pip install . --upgrade
+```
+
+Note that development and local installs will require local compilation of C++ bindings.
+Pre-built wheels are available with the PyPi distribution.
+See [our documentation](https://phylotrackpy.readthedocs.io/en/latest/contributing.html) for more complete information on local builds.
+
 ## Useful background information
 
 There are certain quirks associated with real-time phylogenies (especially digital ones) that you might not be used to thinking about if you're used to dealing with reconstructed phylogenies. Many of these discrepancies are the result of the very different temporal resolutions on which these types of phylogenies are measured, and the fact that the taxonomic units we work with are often at a finer resolution than species. We document some here so that they don't catch you off guard:
