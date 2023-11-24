@@ -1,16 +1,20 @@
 #!/usr/bin/env python3
+import os
 from phylotrackpy import systematics
 import pytest
 from pytest import approx, mark
 from copy import deepcopy
 import numpy as np
 import tempfile
-
+ 
+assets_path = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), 
+    "assets",
+)
 
 # wheel build CI components call this file directly
 if __name__ == "__main__":
     pytest.main()
-
 
 class ExampleOrg:
     def __init__(self, genotype):
@@ -127,7 +131,7 @@ def test_shared_ancestor():
 
 def test_load_data():
     sys = systematics.Systematics(taxon_info_fun, True, True, False, False)
-    sys.load_from_file("test/assets/systematics_snapshot.csv", "genome", True)
+    sys.load_from_file(f"{assets_path}/systematics_snapshot.csv", "genome", True)
 
     assert sys.get_num_roots() == 1
     assert sys.get_num_active() == 6
@@ -187,7 +191,7 @@ def test_phylostatistics():
 
 def test_loading_stats():
     sys = systematics.Systematics()
-    sys.load_from_file("test/assets/consolidated.csv", "id")
+    sys.load_from_file(f"{assets_path}/consolidated.csv", "id")
 
     assert sys.get_ave_depth() > 0
     # assert sys.calc_diversity() > 0
@@ -197,7 +201,7 @@ def test_loading_stats():
     assert len(sys.get_active_taxa()) > 0
     assert len(sys.get_active_taxa()) > 0  # Check for object lifetime bug
 
-    sys.load_from_file("test/assets/full.csv", "id", True, False)
+    sys.load_from_file(f"{assets_path}/full.csv", "id", True, False)
 
 
 def test_deepcopy():
