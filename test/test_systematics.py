@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from phylotrackpy import systematics
+import pytest
 from pytest import approx, mark
 from copy import deepcopy
 import numpy as np
@@ -8,8 +9,6 @@ import tempfile
 
 # wheel build CI components call this file directly
 if __name__ == "__main__":
-    import pytest
-
     pytest.main()
 
 
