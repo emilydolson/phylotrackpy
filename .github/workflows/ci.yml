@@ -61,6 +61,8 @@ jobs:
           submodules: "recursive"
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.2
+        env:
+          CIBW_TEST_REQUIRES_WINDOWS: oldest-supported-numpy==2023.10.25
 
       - uses: actions/upload-artifact@v3
         with:
