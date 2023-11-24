@@ -105,44 +105,33 @@ __Phylogenetic Topology Statistics:__ Support is provided for
 
 # Profiling
 
-This section reports *in situ* runtime performance characteristics of the PhylotrackPy library.
-To measure PhylotrackPy in action, we ran a simple asexual evolutionary algorithm instrumented with systematics tracking.
-Genotypes consisted of single floating point values.
-We performed neutral selection, with 20\% of offspring mutated each generation.
-The string representation of genotypes served as the taxonomic unit for systematics tracking.
+To assess resource usage of PhylotrackPy, we ran a simple asexual evolutionary algorithm instrumented with lineage-pruned systematics tracking.
+We performed neutral selection with a 20\% mutation probability.
+Genomes consisted of a single floating-point value, which also served as the taxonomic unit.
 
-We tested population sizes 10 ($10^3$), 1,000 ($10^3$), and 100,000 ($10^5$).
-Tests evaluated 60 second execution windows, with five replicates performed for each configured population size.
-Each trial concluded with a `snapshot` operation to serialize tracked records to file.
+We ran 60 second trials using population sizes 10, 1,000, and 100,000, with five replicates each.
+Each trial concluded with an operation to `snapshot` data to file.
 
-Experiment trials used following system specifications:
-
-- Operating System: Fedora Linux 38 (Workstation Edition) x86_64
-- Machine: ThinkPad X1 Carbon Gen 8
-- Processor: Intel i7-10510U (8 cores) @ 4.900GHz
-- Memory: 16GB DRAM
-
-We used and the `memory_profiler` library v0.61.0 to measure process memory usage (via the `psutil` backend) and the built-in `time` module to measure elapsed time [@memory_profiler].
-Profiling data can be accessed via the Open Science Framework at <https://osf.io/52hzs/> [@foster2017open].
-Profiling scripts can be found in the PhylotrackPy module under the `profile/` directory.
+We used `memory_profiler` (`psutil` backend) to measure process memory usage [@memory_profiler].
+Profiling data and hardware specifications are at <https://osf.io/52hzs/> [@foster2017open].
 
 ## Execution Speed
 
 ![Execution speed across population sizes. Error bars are SE.\label{fig:time}](assets/viz=plot-timeprof+x=population-size+y=generations-per-second+ext=.png){ width=50% }
 
-Figure \ref{fig:memory} shows generations evaluated per second for each tested popultion size.At population size 10, 3,923 (s.d. 257) agent evaluations were processed per second (generations per second times population size).
-Population size 1,000 elapsed 28,386 (s.d. 741) agent evaluations per second and population size 100,000 elapsed 67,000 (s.d. 1825).
-Enhancement in agent evaluation efficiency likely arose from more effective exploitation of NumPy vectorized operations over the non-phylotrack evolutionary algorithm components.
+Figure \ref{fig:memory} shows generations evaluated per second at each population size.
+At population size 10, 1,000, and 100,000, we observed 3,923 (s.d. 257), 28,386 (s.d. 741), and 67,000 (s.d. 1825) agent reproduction events per second.
+Efficiency gains with population size likely arose from NumPy vectorized operations used to perform mutation and selection.
 
 ## Memory Usage
 
 ![Allocated memory over 60-second execution window. Error bars are SE.\label{fig:memory}](assets/errorbar=se+hue=population-size+palette=deep+style=population-size+viz=plot-memprof+x=seconds+y=memory-mib+ext=.png){ width=50% }
 
-With extinct lineage pruning, PhylotrackPy consumes 296 MiB (s.d. 1.1 MiB) peak memory to track a population of 100,000 over the 40 (s.d. 1) generations elapsed during the 60 second execution window.
-Peak memory usage is 70.6 MiB (s.d. 0.5) at population size 10 and 71.0 MiB (s.d. 0.2) at population size 1,000.
-Figure \ref{fig:memory} shows memory use trajectories over 60 second evaluation windows for each tested population size.
+PhylotrackPy consumes 296 MiB (s.d. 1.1) peak memory to track a population of 100,000 agents over 40 (s.d. 1) generations.
+At population sizes 10 and 1,000 peak memory usage was 70.6 MiB (s.d. 0.5) and 71.0 MiB (s.d. 0.2).
+Figure \ref{fig:memory} shows memory use trajectories over 60 second trials.
 
-In most tracking applications, memory usage should be expected somewhat lower because selection typically accelerates coalescence, affording more opportunities for lineage pruning.
+Most applications should expect lower memory usage because selection typically increases opportunities for lineage pruning.
 
 # Future Work
 
