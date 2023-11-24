@@ -64,7 +64,7 @@ jobs:
         env:
           CIBW_TEST_REQUIRES_WINDOWS: oldest-supported-numpy==2022.11.19 pytest==7.0.1
           # see https://github.com/pypa/cibuildwheel/issues/621
-          CIBW_TEST_COMMAND: python -m pytest phylotrackpy/test
+          CIBW_TEST_COMMAND: python -m pytest {project}/test
 
       - uses: actions/upload-artifact@v3
         with:
