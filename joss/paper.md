@@ -49,7 +49,6 @@ The underlying C++ implementation ensures fast, memory-efficient performance, wi
 
 # Statement of Need
 
-<!-- was going to say a rich history of sophisticated phylogenetic analyses... -->
 *In silico* evolution work enjoys a rich history of phylogenetic measurement and analysis, and many systems facilitate tracking phylogenies [@ray1992evolution;@ofria2004avida;@bohm2017mabe;@de2012deap;@Garwood_REvoSim_Organism-level_simulation_2019].
 However, to our knowledge, no other general-purpose perfect phylogeny tracking library exists; prior work has used bespoke system- or framework-specific implementations.
 In contrast, Phylotrack provides ready-built tracking flexible enough to attach to any population of digital replicating entities.
@@ -66,8 +65,9 @@ These programs' purposes typically include
 - cross-referencing phylogenies with other data (e.g., spatial species distributions) [@emerson2008phylogenetic], and
 - analyzing and manipulating tree structures [@smith2020treedist;@sand2014tqdist;@sukumaran2010dendropy;@cock2009biopython].
 
-Phylotrack overlaps with these goals only in that it also provides tree statistic implementations. We chose to include this feature to facilitate fast during-simulation calculations of these metrics.
-Notably, the problem of tracking a phylogeny within an agent-based program is substantially different from the more traditional problem of reconstructing a phylogeny.
+Phylotrack overlaps with these goals only in that it also provides tree statistic implementations.
+We chose to include this feature to facilitate fast during-simulation calculations of these metrics.
+Notably, the problem of tracking a phylogeny within an agent-based program differs substantially from the more traditional problem of reconstructing a phylogeny.
 Users new to working with recorded phylogenies should refer to the Phylotrackpy documentation for notes on subtle structural differences from reconstructed phylogenies.
 
 Phylotrack has contributed to a variety of published research projects.
@@ -78,7 +78,8 @@ Phylotrackpy is newer, but it has already served as a point of comparison in the
 # Features
 
 __Lineage Recording:__
-The core functionality of Phylotrack is recording asexual phylogenies. To achieve this goal, Phylotrack need only be notified of each agent creation and destruction event.
+The core functionality of Phylotrack is recording asexual phylogenies from simulation agent creation and destruction events.
+To achieve this goal, Phylotrack must be notified of each agent creation and destruction event.
 To reduce memory overhead, extinct branches are pruned from phylogenies by default, but this feature can be disabled.
 The level of abstraction (i.e. what constitutes a taxonomic unit) can be customized via a user-provided function.
 Supplemental data about each taxonomic unit can be stored efficiently.
@@ -88,7 +89,7 @@ The worst-case time complexity is O(1) [@moreno2023lineage].
 Space complexity is harder to meaningfully calculate, but should be O(N) on average in most evolutionary scenarios (where N is population size)  [@moreno2023lineage].
 
 __Serialization:__
-Phylotrack outputs data in the Artificial Life Standard Phylogeny format [@lalejiniDataStandardsArtificial2019] to facilitate interoperability with an associated ecosystem of software converters, analyzers, visualizers.
+Phylotrack outputs data in the Artificial Life Standard Phylogeny format [@lalejiniDataStandardsArtificial2019] to facilitate interoperability with an associated ecosystem of software converters, analyzers, and visualizers.
 As these tools support conversion to bioinformatics-standard formats (e.g., Newick, phyloXML, etc.), Phylotrack phylogenies can also be analyzed with tools designed for biological data.
 Phylogeny data can be restored from file, enabling post-hoc calculation of phylogenetic topology statistics.
 
@@ -127,7 +128,7 @@ Efficiency gains with population size likely arose from NumPy vectorized operati
 
 ![Allocated memory over 60-second execution window. Error bars are SE.\label{fig:memory}](assets/errorbar=se+hue=population-size+palette=deep+style=population-size+viz=plot-memprof+x=seconds+y=memory-mib+ext=.png){ width=50% }
 
-PhylotrackPy consumes 296 MiB (s.d. 1.1) peak memory to track a population of 100,000 agents over 40 (s.d. 1) generations.
+Phylotrack consumes 296 MiB (s.d. 1.1) peak memory to track a population of 100,000 agents over 40 (s.d. 1) generations.
 At population sizes 10 and 1,000 peak memory usage was 70.6 MiB (s.d. 0.5) and 71.0 MiB (s.d. 0.2).
 Figure \ref{fig:memory} shows memory use trajectories over 60 second trials.
 
