@@ -62,7 +62,7 @@ jobs:
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.2
         env:
-          CIBW_TEST_REQUIRES_WINDOWS: oldest-supported-numpy==2022.11.19 pytest==7.2.2
+          CIBW_TEST_REQUIRES_WINDOWS: oldest-supported-numpy==2022.11.19 pytest==7.0.1
 
       - uses: actions/upload-artifact@v3
         with:
