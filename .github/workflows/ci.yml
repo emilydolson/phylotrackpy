@@ -30,7 +30,6 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install flake8 pytest pytest-cov
         # --ignore-requires-python ensures docs deps don't break install on early python versions
         if [ -f requirements.txt ]; then pip install --ignore-requires-python -r requirements.txt; fi
         pip install -e .
