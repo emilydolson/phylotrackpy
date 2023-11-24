@@ -27,7 +27,7 @@ docutils==0.18.1
     #   sphinxcontrib-bibtex
 exceptiongroup==1.2.0
     # via pytest
-flake8==6.1.0
+flake8==2.3.0
     # via -r requirements.in
 idna==3.4
     # via requests
@@ -67,6 +67,8 @@ packaging==23.0
     # via
     #   pytest
     #   sphinx
+pep8==1.7.1
+    # via flake8
 pluggy==1.0.0
     # via pytest
 pybind11==2.10.3
@@ -77,8 +79,6 @@ pybtex==0.24.0
     #   sphinxcontrib-bibtex
 pybtex-docutils==1.0.2
     # via sphinxcontrib-bibtex
-pycodestyle==2.11.1
-    # via flake8
 pyflakes==3.1.0
     # via flake8
 pygments==2.15.0

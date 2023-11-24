@@ -6,7 +6,7 @@ pytest
 sphinx_tippy
 sphinxcontrib-bibtex
 oldest-supported-numpy
-flake8
+flake8<5
 
 # need pin for python3.12 compatibility
 # see https://github.com/yaml/pyyaml/issues/723
