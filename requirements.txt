@@ -16,8 +16,10 @@ certifi==2023.7.22
     # via requests
 charset-normalizer==3.1.0
     # via requests
-coverage[toml]==7.3.2
-    # via pytest-cov
+coverage[toml]==6.2
+    # via
+    #   -c constraints.in
+    #   pytest-cov
 docutils==0.18.1
     # via
     #   myst-parser
