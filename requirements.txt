@@ -140,8 +140,10 @@ tomli==2.0.1
     #   pytest
 urllib3==1.26.18
     # via requests
-zipp==3.17.0
-    # via importlib-metadata
+zipp==2.2.1
+    # via
+    #   -r requirements.in
+    #   importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
 # numpy
