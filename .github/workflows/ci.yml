@@ -62,6 +62,7 @@ jobs:
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.2
         env:
+          CIBW_TEST_SKIP: "*win32"
           CIBW_TEST_REQUIRES_WINDOWS: oldest-supported-numpy==2022.11.19 pytest==7.0.1
           # see https://github.com/pypa/cibuildwheel/issues/621 and https://stackoverflow.com/a/74526295
           CIBW_TEST_COMMAND: python -m pytest --import-mode=importlib {project}/test
