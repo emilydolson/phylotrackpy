@@ -138,6 +138,8 @@ tomli==2.0.1
     # via
     #   coverage
     #   pytest
+typing-extensions==3.7.4.3
+    # via -r requirements.in
 urllib3==1.26.18
     # via requests
 zipp==2.2.1
