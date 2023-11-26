@@ -6,3 +6,7 @@ pytest
 sphinx_tippy
 sphinxcontrib-bibtex
 flake8<5
+typing-extensions<3.8  # for py36 compat
+zipp<3  # for py36 compat
+importlib_metadata<6  # for py36 compat
+
