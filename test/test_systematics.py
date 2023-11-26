@@ -30,12 +30,13 @@ def taxon_info_fun(org):
 
 def test_world_position():
     wp = systematics.WorldPosition(1, 0)
-    assert(wp.get_index() == 1)
-    assert(wp.get_pop_ID() == 0)
+    assert wp.get_index() == 1
+    assert wp.get_pop_ID() == 0
 
 
 def test_systematics_by_position():
     sys = systematics.Systematics(taxon_info_fun, True, True, False, True)
+    assert sys.get_store_position()
     org_pos = systematics.WorldPosition(1, 0)
     org = ExampleOrg("hello")
     sys.add_org_by_position(org, org_pos)
@@ -59,6 +60,8 @@ def test_systematics_by_position():
 def test_systematics(taxa):
     tax1, tax2 = taxa
     sys = systematics.Systematics(taxon_info_fun, True, True, False, False)
+    assert not sys.get_store_position()
+
     org = ExampleOrg(tax1)
     org2 = ExampleOrg(tax2)
     org_tax = systematics.Taxon(0, tax1)
@@ -67,14 +70,14 @@ def test_systematics(taxa):
     org4_tax = sys.add_org(org, org2_tax)
     org5_tax = sys.add_org(org, org4_tax)
 
-    assert(org2_tax.get_parent() == org_tax)
-    assert(org3_tax.get_parent() is None)
-    assert(org4_tax.get_parent() == org2_tax)
-    assert(org_tax != org2_tax)
-    assert(org4_tax != org2_tax)
-    assert(org5_tax == org4_tax)
-    assert(sys.get_num_active() == 3)
-    assert(sys.get_num_ancestors() == 0)
+    assert org2_tax.get_parent() == org_tax
+    assert org3_tax.get_parent() is None
+    assert org4_tax.get_parent() == org2_tax
+    assert org_tax != org2_tax
+    assert org4_tax != org2_tax
+    assert org5_tax == org4_tax
+    assert sys.get_num_active() == 3
+    assert sys.get_num_ancestors() == 0
 
     assert not sys.remove_org(org2_tax)
     assert sys.get_num_active() == 2
@@ -126,7 +129,7 @@ def test_shared_ancestor():
     org4_tax = sys.add_org(org4, org1_tax)
 
     shared = sys.get_shared_ancestor(org3_tax, org4_tax)
-    assert(shared == org1_tax)
+    assert shared == org1_tax
 
 
 def test_load_data():
