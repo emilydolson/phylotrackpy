@@ -5,7 +5,6 @@ myst_parser
 pytest
 sphinx_tippy
 sphinxcontrib-bibtex
-oldest-supported-numpy
 flake8<5
 
 typing-extensions<3.8  # for py36 compat
