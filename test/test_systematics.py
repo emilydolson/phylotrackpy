@@ -11,10 +11,6 @@ assets_path = os.path.join(
     "assets",
 )
 
-# wheel build CI components call this file directly
-if __name__ == "__main__":
-    pytest.main()
-
 class ExampleOrg:
     def __init__(self, genotype):
         self.genotype = genotype
@@ -44,6 +40,17 @@ def test_systematics_by_position():
     sys.add_org_by_position(child_org, child_pos, org_pos)
     sys.remove_org_by_position(org_pos)
     # sys.remove_org_by_position((2,0))
+
+
+def test_construct_systematics():
+    sys1 = systematics.Systematics(taxon_info_fun, True, True, False, True)
+    assert sys1.get_store_position()
+
+    sys2 = systematics.Systematics(taxon_info_fun, True, True, False, False)
+    assert not sys2.get_store_position()
+    assert sys2.get_store_ancestors()
+    assert not sys2.get_store_outside()
+    assert sys2.get_store_active()
 
 
 @mark.parametrize(
@@ -231,8 +238,3 @@ def test_taxon():
 #     org_tax = sys.add_org(org)
 #     org_tax.get_data().set_data({"val":4, "test": 9})
 #     assert(org_tax.get_data().data["val"] == 4)
-
-
-if __name__ == "__main__":
-    # test_loading_stats()
-    pass
