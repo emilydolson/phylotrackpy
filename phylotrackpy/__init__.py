@@ -4,7 +4,7 @@ __author__ = """Emily Dolson"""
 __email__ = 'emilydolson@gmail.com'
 __version__ = '0.1.17'
 
-import systematics
+from . import systematics
 
 __all__ = [
     "systematics",
