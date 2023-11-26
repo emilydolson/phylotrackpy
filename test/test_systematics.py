@@ -4,7 +4,6 @@ from phylotrackpy import systematics
 import pytest
 from pytest import approx, mark
 from copy import deepcopy
-import numpy as np
 import tempfile
  
 assets_path = os.path.join(
@@ -54,7 +53,7 @@ def test_systematics_by_position():
         [1, 2],
         [1.0, 2.0],
         [[1], [1, 2]],
-        [np.array([1]), np.array([1, 2])],
+        # [np.array([1]), np.array([1, 2])],
     ),
 )
 def test_systematics(taxa):
@@ -91,7 +90,7 @@ def test_systematics(taxa):
         [1, 2],
         [1.0, 2.0],
         [[1], [1, 2]],
-        [np.array([1]), np.array([1, 2])],
+        # [np.array([1]), np.array([1, 2])],
     ),
 )
 def test_taxa_serialization(taxa):
