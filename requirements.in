@@ -5,4 +5,4 @@ myst_parser
 pytest
 sphinx_tippy
 sphinxcontrib-bibtex
-flake8
+flake8<5
