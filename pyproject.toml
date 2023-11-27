@@ -8,7 +8,7 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [tool.cibuildwheel]
-test-command = "pytest -m "not nowheel" {project}"
+test-command = "pytest -m 'not nowheel' {project}"
 skip = "*musllinux*"
 test-requires = "pytest"
 before-test = "cp {project}/test/assets/* ."
