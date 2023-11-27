@@ -8,7 +8,12 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [tool.cibuildwheel]
-test-command = "pytest {project}"
+test-command = "pytest -m nowheel {project}"
 skip = "*musllinux*"
 test-requires = "pytest"
 before-test = "cp {project}/test/assets/* ."
+
+[tool.pytest.ini_options]
+markers = [
+    "nowheel"
+]

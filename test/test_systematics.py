@@ -91,20 +91,19 @@ def test_systematics(taxa):
 
 
 @mark.parametrize(
-    "taxa",
+    "orgs",
     (
         ["hello", "hello 2"],
         [1, 2],
         [1.0, 2.0],
         [[1], [1, 2]],
-        # [np.array([1]), np.array([1, 2])],
     ),
 )
-def test_taxa_serialization(taxa):
-    tax1, tax2 = taxa
+def test_taxa_serialization(orgs):
+    org_info_1, org_info_2 = orgs
     sys = systematics.Systematics(taxon_info_fun, True, True, False, False)
-    org = ExampleOrg(tax1)
-    org2 = ExampleOrg(tax2)
+    org = ExampleOrg(org_info_1)
+    org2 = ExampleOrg(org_info_2)
     org_tax = sys.add_org(org)
     org2_tax = sys.add_org(org2, org_tax)
     org3_tax = sys.add_org(org2, org_tax)
@@ -119,7 +118,13 @@ def test_taxa_serialization(taxa):
         sys = systematics.Systematics(lambda x: x, True, True, False, False)
         sys.load_from_file(f.name)
 
-    assert sys.get_mrca().get_info() == tax1
+    assert sys.get_mrca().get_info() == org_info_1
+
+
+@mark.nowheel
+def test_numpy_serialization():
+    import numpy as np
+    test_taxa_serialization([np.array([1]), np.array([1, 2])])
 
 
 def test_shared_ancestor():
