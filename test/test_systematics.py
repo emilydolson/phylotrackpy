@@ -60,7 +60,6 @@ def test_construct_systematics():
         [1, 2],
         [1.0, 2.0],
         [[1], [1, 2]],
-        # [np.array([1]), np.array([1, 2])],
     ),
 )
 def test_systematics(taxa):
@@ -88,6 +87,13 @@ def test_systematics(taxa):
     assert not sys.remove_org(org2_tax)
     assert sys.get_num_active() == 2
     assert sys.get_num_ancestors() == 1
+
+
+@mark.nowheel
+def test_systematics_numpy():
+    import numpy as np
+    taxa = [np.array([1]), np.array([1, 2])]
+    test_systematics(taxa)
 
 
 @mark.parametrize(
