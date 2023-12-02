@@ -101,28 +101,38 @@ def test_phylostatistics():
     id1 = sys.add_org(25)
     assert sys.get_average_origin_time() == 0
     assert sys.get_average_origin_time(True) == 0
+    assert sys.get_pairwise_distance(id1, id1) == approx(0)
 
     sys.set_update(6)
     id2 = sys.add_org(1, id1)
     assert sys.get_average_origin_time() == 3
     assert sys.get_average_origin_time(True) == 0
+    assert sys.get_pairwise_distance(id2, id1) == approx(1)
 
     sys.set_update(10)
     id3 = sys.add_org(26, id1)
     assert sys.get_average_origin_time() == approx(5.3333333)
     assert sys.get_average_origin_time(True) == 0
+    assert sys.get_pairwise_distance(id2, id3) == approx(2)
 
     sys.set_update(25)
     id4 = sys.add_org(27, id2)
     assert sys.get_average_origin_time() == approx(10.25)
     assert sys.get_average_origin_time(True) == 0
+    assert sys.get_pairwise_distance(id4, id3) == approx(3)
 
     sys.set_update(32)
     id5 = sys.add_org(28, id2)
     assert sys.get_average_origin_time() == approx(14.6)
     assert sys.get_average_origin_time(True) == 3
-    
+    assert sys.get_pairwise_distance(id5, id4) == approx(2)
+    assert sys.get_pairwise_distance(id5, id3) == approx(3)
+    assert sys.get_pairwise_distance(id5, id2) == approx(1)
+    assert sys.get_pairwise_distance(id5, id3, True) == approx(3)
+
     id6 = sys.add_org(30, id5)
+    assert sys.get_pairwise_distance(id6, id3, True) == approx(3)
+    assert sys.get_pairwise_distance(id6, id3) == approx(4)
 
     out_dist = sys.get_out_degree_distribution()
     assert out_dist[0] == 3
