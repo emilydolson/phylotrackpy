@@ -33,6 +33,15 @@ Phylotrackpy could always use more documentation, whether as part of the
 official Phylotrackpy docs, in docstrings, or even on the web in blog posts,
 articles, and such.
 
+To build and preview the documentation locally,
+
+```bash
+make -C docs html
+make -C docs serve
+```
+
+You will need to load a development virtual environment first (described below).
+
 ### Submit Feedback
 
 The best way to send feedback is to file an issue at [https://github.com/emilydolson/phylotrackpy/issues](https://github.com/emilydolson/phylotrackpy/issues).
@@ -60,15 +69,16 @@ Ready to contribute? Here's how to set up `phylotrackpy` for local development.
 2. Clone your fork locally:
 
     ```bash
-    git clone git@github.com:your_name_here/phylotrackpy.git
+    git clone git@github.com:your_name_here/phylotrackpy.git --recursive
+    cd phylotrackpy
     ```
 
-3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development:
+3. Create a virtual environment for local development:
 
     ```bash
-    mkvirtualenv phylotrackpy
-    cd phylotrackpy/
-    python setup.py develop
+    python3 -m venv env
+    source env/bin/activate
+    python3 -m pip install -r requirements.txt
     ```
 
 4. Create a branch for local development:
@@ -79,13 +89,18 @@ Ready to contribute? Here's how to set up `phylotrackpy` for local development.
 
    Now you can make your changes locally.
 
-5. When you're done making changes, check that your changes pass the tests:
+5. When you're done making changes, recompile the bindings and check that your changes pass the tests:
 
     ```bash
-    python setup.py test or pytest
+    make
+    python3 -m pytest
     ```
 
-   To get flake8 and tox, just pip install them into your virtualenv.
+   The project build requires a C++-20 compatible compiler.
+   If `g++` is installed it will be used by default.
+   To use an alternate compiler, run e.g., `make CXX=clang++`.
+
+   StackOverflow or a chatbot can be useful resources for tips on compiler installation if you run into issues.
 
 6. Commit your changes and push your branch to GitHub:
 
