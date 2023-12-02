@@ -526,6 +526,32 @@ PYBIND11_MODULE(systematics, m) {
             ----------
             Taxon tax: Taxon to find distance to MRCA (or subroot) of.
         )mydelimiter")
+        .def("get_pairwise_distance", [](sys_t & self, taxon_t * tax, taxon_t * tax2, bool branch_only){return self.GetPairwiseDistance(tax, tax2, branch_only);}, 
+        py::arg("tax"),
+        py::arg("tax2"),
+        py::arg("branch_only") = false,
+        R"mydelimiter(
+            This method calculates the distance between a pair of taxa.
+            This assumes the taxa share a common ancestor.
+
+            If `branch_only` is set, this method will only consider distances in terms of nodes that represent branches between two extant taxa. This is potentially useful as a comparison to real-world, biological data, where non-branching nodes cannot be inferred.
+
+            Parameters
+            ----------
+            Taxon tax: First taxon of pair to find distance between.
+            Taxon tax2: Second taxon of pair to find the distance between.
+            bool branch_only: Only counts distance in terms of nodes that represent a branch between two extant taxa.
+        )mydelimiter")
+        .def("get_pairwise_distances", static_cast<std::vector<double> (sys_t::*) (bool) const>(&sys_t::GetPairwiseDistances), R"mydelimiter(
+            This method calculates distances between all pairs of extant taxa.
+            This assumes the phylogenetic tree is fully connected.
+
+            If `branch_only` is set, this method will only consider distances in terms of nodes that represent branches between two extant taxa. This is potentially useful as a comparison to real-world, biological data, where non-branching nodes cannot be inferred.
+
+            Parameters
+            ----------
+            bool branch_only: Only counts distance in terms of nodes that represent a branch between two extant taxa.
+        )mydelimiter")
         .def("get_variance_pairwise_distance", static_cast<double (sys_t::*) (bool) const>(&sys_t::GetVariancePairwiseDistance), R"mydelimiter(
             This method calculates the variance of distance between all pairs of extant taxa. This is a measure of phylogenetic regularity :cite:p:`tucker2017guide`.
             This assumes the phylogenetic tree is fully connected. If this is not the case, it will return -1.
