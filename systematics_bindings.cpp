@@ -103,10 +103,14 @@ namespace std {
         );
             obj = ast_eval(repr);
         } catch (std::exception &e) {
-            std::string eval_string = (
-                "exec('from numpy import *') or " + repr
-            );
-            obj = py::eval(eval_string);
+            try {
+                std::string eval_string = (
+                    "exec('from numpy import *') or " + repr
+                );
+                obj = py::eval(eval_string);
+            } catch (std::exception & e2) {
+                obj = py::str(repr);
+            }
         }
 
         return is;
