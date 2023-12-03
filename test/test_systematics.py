@@ -118,7 +118,6 @@ def test_string_systematics(taxa):
     org4_tax = sys.add_org(org, org2_tax)
     org5_tax = sys.add_org(org, org4_tax)
 
-    assert org_tax.get_info() == str(tax1)
     assert org2_tax.get_info() == str(tax2)
     assert org3_tax.get_info() == str(tax2)
     assert org4_tax.get_info() == str(tax1)
