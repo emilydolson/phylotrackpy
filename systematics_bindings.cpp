@@ -117,7 +117,18 @@ namespace std {
     }
 }
 
-using taxon_info_t = py::object;
+inline bool TaxonInfo_Check(PyObject *o) { return o == o; }
+
+class taxon_info : public py::object {
+    PYBIND11_OBJECT_DEFAULT(taxon_info, object, TaxonInfo_Check)
+    public:
+    bool operator==(const taxon_info &other) const {
+        return this->equal(other);
+    }
+};
+
+
+using taxon_info_t = taxon_info;
 using org_t = py::object;
 using sys_t = emp::Systematics<org_t, taxon_info_t>;
 using taxon_t = emp::Taxon<taxon_info_t>;
