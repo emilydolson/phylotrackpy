@@ -39,7 +39,7 @@ Consequently, these populations undergo evolution [@pennock2007models], and can 
 This experimental paradigm --- used across biological modeling, artificial life, and evolutionary computation --- complements research done using *in vitro* and *in vivo* systems by enabling the user to conduct experiments that would be impossible in the lab or field [@dolsonDigitalEvolutionEcology2021].
 One key benefit is complete, exact observability.
 For example, it is possible to perfectly record the full set of parent-child relationships over the history of a population, yielding precise and accurate phylogenies (ancestry trees).
-This information reveals the sequences of events behind gain, loss, or maintenance of specific traits, and also facilitates making inferences about the underlying evolutionary dynamics of a given system [mooers1997inferring;@dolsonInterpretingTapeLife2020;@moreno2023toward].
+This information reveals the sequences of events behind gain, loss, or maintenance of specific traits, and also facilitates making inferences about the underlying evolutionary dynamics of a given system [@mooers1997inferring;@dolsonInterpretingTapeLife2020;@moreno2023toward].
 
 The Phylotrack project provides libraries for tracking and analyzing phylogenies in *in silico* evolution.
 The project is composed of 1) Phylotracklib: a header-only C++ library, developed under the umbrella of the Empirical project [@ofria2020empirical], and 2) Phylotrackpy: a Python wrapper around Phylotracklib, created with Pybind11 [@pybind11].
