@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <exception>
 #include <iostream>
 #include <string>
@@ -6,6 +7,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/eval.h>
 #include <pybind11/functional.h>
+#include <pybind11/numpy.h>
 #include <pybind11/stl.h>
 #include "Empirical/include/emp/Evolve/Systematics.hpp"
 #include "Empirical/include/emp/tools/string_utils.hpp"
@@ -117,15 +119,63 @@ namespace std {
     }
 }
 
-inline bool TaxonInfo_Check(PyObject *o) { return o == o; }
-
 class taxon_info : public py::object {
-    PYBIND11_OBJECT_DEFAULT(taxon_info, object, TaxonInfo_Check)
-    public:
+    private:
+    py::object equals_operator;
+
+    public:                                                                                           
+    PYBIND11_DEPRECATED("Use reinterpret_borrow<taxon_info>() or reinterpret_steal<taxon_info>()")  
+    taxon_info(handle h, bool is_borrowed)                                                              
+        : py::object(is_borrowed ? py::object(h, borrowed_t{}) : py::object(h, stolen_t{})) {
+            SetEqualsOperator();
+        }                
+    taxon_info(handle h, borrowed_t) : py::object(h, borrowed_t{}) {
+        SetEqualsOperator();
+    }                                       
+    taxon_info(handle h, stolen_t) : py::object(h, stolen_t{}) {;}                                           
+    PYBIND11_DEPRECATED("Use py::isinstance<py::python_type>(obj) instead")                       
+    bool check() const { return m_ptr != nullptr; }                     
+    static bool check_(handle h) { return h.ptr() != nullptr; }              
+    template <typename Policy_> /* NOLINTNEXTLINE(google-explicit-constructor) */                 
+    taxon_info(const ::pybind11::detail::accessor<Policy_> &a) : taxon_info(object(a)) {}
+
+    /* This is deliberately not 'explicit' to allow implicit conversion from object: */        
+    /* NOLINTNEXTLINE(google-explicit-constructor) */  
+    taxon_info(const object &o) : py::object(o) {                                                           
+        SetEqualsOperator();
+    }
+
+    /* NOLINTNEXTLINE(google-explicit-constructor) */                                             
+    taxon_info(object &&o) : py::object(std::move(o)) {                                                     
+        SetEqualsOperator();
+    }
+
+    taxon_info() {
+        std::cout << "default constructor" << std::endl;
+        equals_operator = py::none();
+    };
+
+    void SetEqualsOperator() {
+        if (py::isinstance<py::array>(*this)) {
+            equals_operator =  py::module_::import("numpy").attr("array_equal");
+        } else {
+            equals_operator =  this->attr("__class__").attr("__eq__");
+        }
+    }
+
     bool operator==(const taxon_info &other) const {
-        return this->equal(other);
+        return equals_operator(*this, other).cast<bool>();
     }
 };
+
+// class numpy_array : public py::array {
+//     PYBIND11_OBJECT_DEFAULT(numpy_array, array, PyArray_Check)
+//     public:
+//     bool operator==(const numpy_array &other) const {
+//         emp::vector<bool> eq = this->equal(other);
+//         return std::all_of(eq.begin(), eq.end(), [](bool x){return x;});
+//     }
+// };
 
 
 using taxon_info_t = taxon_info;
@@ -219,7 +269,7 @@ PYBIND11_MODULE(systematics, m) {
 
     py::class_<sys_t>(m, "Systematics")
         .def(py::init<std::function<taxon_info_t(org_t &)>, bool, bool, bool, bool>(), py::arg("calc_taxon") = py::eval("lambda x: x"), py::arg("store_active") = true, py::arg("store_ancestors") = true, py::arg("store_all") = false, py::arg("store_pos") = false)
-
+        // .def(py::init<std::function<numpy_array(org_t &)>, bool, bool, bool, bool>(), py::arg("calc_taxon") = py::eval("lambda x: x"), py::arg("store_active") = true, py::arg("store_ancestors") = true, py::arg("store_all") = false, py::arg("store_pos") = false)
         // Setting systematics manager state
         .def("set_calc_info_fun", static_cast<void (sys_t::*) (std::function<taxon_info_t(org_t &)>)>(&sys_t::SetCalcInfoFun), R"mydelimiter(
             Set the function used to calculate the information associated with an organism.

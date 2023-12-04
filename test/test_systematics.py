@@ -11,12 +11,13 @@ assets_path = os.path.join(
     "assets",
 )
 
+
 class ExampleOrg:
     def __init__(self, genotype):
         self.genotype = genotype
 
     def __repr__(self):
-        return "ExampleOrg object " + self.genotype
+        return "ExampleOrg object " + str(self.genotype)
 
 
 def taxon_info_fun(org):
@@ -69,7 +70,7 @@ def test_systematics(taxa):
 
     org = ExampleOrg(tax1)
     org2 = ExampleOrg(tax2)
-    org_tax = systematics.Taxon(0, tax1)
+    org_tax = sys.add_org(org)
     org2_tax = sys.add_org(org2, org_tax)
     org3_tax = sys.add_org(org2)
     org4_tax = sys.add_org(org, org2_tax)
@@ -81,11 +82,11 @@ def test_systematics(taxa):
     assert org_tax != org2_tax
     assert org4_tax != org2_tax
     assert org5_tax == org4_tax
-    assert sys.get_num_active() == 3
+    assert sys.get_num_active() == 4
     assert sys.get_num_ancestors() == 0
 
     assert not sys.remove_org(org2_tax)
-    assert sys.get_num_active() == 2
+    assert sys.get_num_active() == 3
     assert sys.get_num_ancestors() == 1
 
 
@@ -112,7 +113,7 @@ def test_string_systematics(taxa):
 
     org = tax1
     org2 = tax2
-    org_tax = systematics.Taxon(0, tax1)
+    org_tax = sys.add_org(org)
     org2_tax = sys.add_org(org2, org_tax)
     org3_tax = sys.add_org(org2)
     org4_tax = sys.add_org(org, org2_tax)
@@ -128,11 +129,11 @@ def test_string_systematics(taxa):
     assert org_tax != org2_tax
     assert org4_tax != org2_tax
     assert org5_tax == org4_tax
-    assert sys.get_num_active() == 3
+    assert sys.get_num_active() == 4
     assert sys.get_num_ancestors() == 0
 
     assert not sys.remove_org(org2_tax)
-    assert sys.get_num_active() == 2
+    assert sys.get_num_active() == 3
     assert sys.get_num_ancestors() == 1
 
 
@@ -152,7 +153,7 @@ def test_raw_systematics(taxa):
 
     org = tax1
     org2 = tax2
-    org_tax = systematics.Taxon(0, tax1)
+    org_tax = sys.add_org(org)
     org2_tax = sys.add_org(org2, org_tax)
     org3_tax = sys.add_org(org2)
     org4_tax = sys.add_org(org, org2_tax)
@@ -164,11 +165,11 @@ def test_raw_systematics(taxa):
     assert org_tax != org2_tax
     assert org4_tax != org2_tax
     assert org5_tax == org4_tax
-    assert sys.get_num_active() == 3
+    assert sys.get_num_active() == 4
     assert sys.get_num_ancestors() == 0
 
     assert not sys.remove_org(org2_tax)
-    assert sys.get_num_active() == 2
+    assert sys.get_num_active() == 3
     assert sys.get_num_ancestors() == 1
 
 
