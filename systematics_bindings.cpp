@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <exception>
 #include <iostream>
 #include <string>
@@ -6,6 +7,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/eval.h>
 #include <pybind11/functional.h>
+// #include <pybind11/numpy.h>
 #include <pybind11/stl.h>
 #include "Empirical/include/emp/Evolve/Systematics.hpp"
 #include "Empirical/include/emp/tools/string_utils.hpp"
@@ -103,17 +105,82 @@ namespace std {
         );
             obj = ast_eval(repr);
         } catch (std::exception &e) {
-            std::string eval_string = (
-                "exec('from numpy import *') or " + repr
-            );
-            obj = py::eval(eval_string);
+            try {
+                std::string eval_string = (
+                    "exec('from numpy import *') or " + repr
+                );
+                obj = py::eval(eval_string);
+            } catch (std::exception & e2) {
+                obj = py::str(repr);
+            }
         }
 
         return is;
     }
 }
 
-using taxon_info_t = py::object;
+class taxon_info : public py::object {
+    private:
+    py::object equals_operator;
+
+    public:                                                                                           
+    PYBIND11_DEPRECATED("Use reinterpret_borrow<taxon_info>() or reinterpret_steal<taxon_info>()")  
+    taxon_info(handle h, bool is_borrowed)                                                              
+        : py::object(is_borrowed ? py::object(h, borrowed_t{}) : py::object(h, stolen_t{})) {
+            SetEqualsOperator();
+        }                
+    taxon_info(handle h, borrowed_t) : py::object(h, borrowed_t{}) {
+        SetEqualsOperator();
+    }                                       
+    taxon_info(handle h, stolen_t) : py::object(h, stolen_t{}) {;}                                           
+    PYBIND11_DEPRECATED("Use py::isinstance<py::python_type>(obj) instead")                       
+    bool check() const { return m_ptr != nullptr; }                     
+    static bool check_(handle h) { return h.ptr() != nullptr; }              
+    template <typename Policy_> /* NOLINTNEXTLINE(google-explicit-constructor) */                 
+    taxon_info(const ::pybind11::detail::accessor<Policy_> &a) : taxon_info(object(a)) {}
+
+    /* This is deliberately not 'explicit' to allow implicit conversion from object: */        
+    /* NOLINTNEXTLINE(google-explicit-constructor) */  
+    taxon_info(const object &o) : py::object(o) {                                                           
+        SetEqualsOperator();
+    }
+
+    /* NOLINTNEXTLINE(google-explicit-constructor) */                                             
+    taxon_info(object &&o) : py::object(std::move(o)) {                                                     
+        SetEqualsOperator();
+    }
+
+    taxon_info() {
+        std::cout << "default constructor" << std::endl;
+        equals_operator = py::none();
+    };
+
+    void SetEqualsOperator() {
+        equals_operator = this->attr("__class__").attr("__eq__");    
+        try {
+            py::object np = py::module_::import("numpy");
+            if (py::module_::import("builtins").attr("isinstance")(*this, np.attr("ndarray"))) {
+                equals_operator = np.attr("array_equal");
+            } 
+        } catch (py::error_already_set & e) {}
+    }
+
+    bool operator==(const taxon_info &other) const {
+        return equals_operator(*this, other).cast<bool>();
+    }
+};
+
+// class numpy_array : public py::array {
+//     PYBIND11_OBJECT_DEFAULT(numpy_array, array, PyArray_Check)
+//     public:
+//     bool operator==(const numpy_array &other) const {
+//         emp::vector<bool> eq = this->equal(other);
+//         return std::all_of(eq.begin(), eq.end(), [](bool x){return x;});
+//     }
+// };
+
+
+using taxon_info_t = taxon_info;
 using org_t = py::object;
 using sys_t = emp::Systematics<org_t, taxon_info_t>;
 using taxon_t = emp::Taxon<taxon_info_t>;
@@ -204,7 +271,7 @@ PYBIND11_MODULE(systematics, m) {
 
     py::class_<sys_t>(m, "Systematics")
         .def(py::init<std::function<taxon_info_t(org_t &)>, bool, bool, bool, bool>(), py::arg("calc_taxon") = py::eval("lambda x: x"), py::arg("store_active") = true, py::arg("store_ancestors") = true, py::arg("store_all") = false, py::arg("store_pos") = false)
-
+        // .def(py::init<std::function<numpy_array(org_t &)>, bool, bool, bool, bool>(), py::arg("calc_taxon") = py::eval("lambda x: x"), py::arg("store_active") = true, py::arg("store_ancestors") = true, py::arg("store_all") = false, py::arg("store_pos") = false)
         // Setting systematics manager state
         .def("set_calc_info_fun", static_cast<void (sys_t::*) (std::function<taxon_info_t(org_t &)>)>(&sys_t::SetCalcInfoFun), R"mydelimiter(
             Set the function used to calculate the information associated with an organism.
