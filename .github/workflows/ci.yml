@@ -31,6 +31,8 @@ jobs:
     #   uses: hrishikesh-kadam/setup-lcov@v1        
     - name: Install dependencies
       run: |
+        sudo apt update -yy
+        sudo apt install -yy lcov
         python -m pip install --upgrade pip
         pip install oldest-supported-numpy==2023.10.25
         # --ignore-requires-python ensures docs deps don't break install on early python versions
