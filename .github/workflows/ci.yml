@@ -40,7 +40,7 @@ jobs:
         if [ -f requirements.txt ]; then pip install --ignore-requires-python -r requirements.txt; fi
     - name: Build phylotrackpy 
       run: |
-        python -m pip install -e . --no-build-isolation -Csetup-args=-Db_coverage=true -Cbuilddir=build
+        pip install -e . --no-build-isolation --config-settings setup-args=-Db_coverage=true --config-settings builddir=build
         ls
     - name: Lint with flake8
       run: |
