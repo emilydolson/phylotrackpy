@@ -34,7 +34,7 @@ jobs:
         sudo apt install -yy lcov
         # --ignore-requires-python ensures docs deps don't break install on early python versions
         if [ -f requirements.txt ]; then pip install --ignore-requires-python -r requirements.txt; fi
-        pip install -e . -Csetup-args=-Db_coverage=true
+        pip install -e . --no-build-isolation -Csetup-args=-Db_coverage=true -Cbuilddir=build
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
@@ -44,12 +44,13 @@ jobs:
     - name: Test with pytest
       run: |
         python -m pytest --cov=. --cov-report=lcov
-        lcov --output-file coverage.cpp --capture --directory .
-        # lcov --output-file coverage.cpp --extract coverage.cpp "*"
+        lcov --output-file coverage.cpp --capture --directory build
+        lcov --output-file coverage.cpp --extract coverage.cpp "*"
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v3
       with:
         files: "coverage.cpp, coverage.lcov"
+        verbose: true
   
 
   build_wheels:
