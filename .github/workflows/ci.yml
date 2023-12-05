@@ -34,7 +34,7 @@ jobs:
         sudo apt install -yy lcov
         # --ignore-requires-python ensures docs deps don't break install on early python versions
         if [ -f requirements.txt ]; then pip install --ignore-requires-python -r requirements.txt; fi
-        pip install -e . --no-build-isolation -Csetup-args=-Db_coverage=true -Cbuilddir=build
+        pip install -e . -Csetup-args=-Db_coverage=true -Cbuilddir=build
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
