@@ -20,7 +20,7 @@ jobs:
         python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
         os: [windows-latest, macOS-latest, ubuntu-latest]
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         submodules: "recursive"
     - name: Set up Python
@@ -47,7 +47,7 @@ jobs:
     - name: Test with pytest
       run: |
         python -m pytest --cov=. --cov-report=lcov
-        lcov --output-file coverage.cpp --capture --directory build
+        lcov --output-file coverage.cpp --capture --directory .
         lcov --output-file coverage.cpp --extract coverage.cpp "*"
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v3
