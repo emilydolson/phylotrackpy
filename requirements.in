@@ -1,10 +1,12 @@
 pybind11
 sphinx_rtd_theme
+pytest_cov
 myst_parser
 pytest
 sphinx_tippy
 sphinxcontrib-bibtex
+flake8<5
 
-# need pin for python3.12 compatibility
-# see https://github.com/yaml/pyyaml/issues/723
-pyyaml>=6.0.1
+typing-extensions<3.8  # for py36 compat
+zipp<3  # for py36 compat
+importlib_metadata<6  # for py36 compat

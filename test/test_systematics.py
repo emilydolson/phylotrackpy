@@ -1,6 +1,15 @@
+#!/usr/bin/env python3
+import os
 from phylotrackpy import systematics
-from pytest import approx
+import pytest
+from pytest import approx, mark
 from copy import deepcopy
+import tempfile
+ 
+assets_path = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), 
+    "assets",
+)
 
 
 class ExampleOrg:
@@ -8,7 +17,7 @@ class ExampleOrg:
         self.genotype = genotype
 
     def __repr__(self):
-        return "ExampleOrg object " + self.genotype
+        return "ExampleOrg object " + str(self.genotype)
 
 
 def taxon_info_fun(org):
@@ -17,12 +26,13 @@ def taxon_info_fun(org):
 
 def test_world_position():
     wp = systematics.WorldPosition(1, 0)
-    assert(wp.get_index() == 1)
-    assert(wp.get_pop_ID() == 0)
+    assert wp.get_index() == 1
+    assert wp.get_pop_ID() == 0
 
 
 def test_systematics_by_position():
     sys = systematics.Systematics(taxon_info_fun, True, True, False, True)
+    assert sys.get_store_position()
     org_pos = systematics.WorldPosition(1, 0)
     org = ExampleOrg("hello")
     sys.add_org_by_position(org, org_pos)
@@ -33,28 +43,233 @@ def test_systematics_by_position():
     # sys.remove_org_by_position((2,0))
 
 
-def test_systematics():
+def test_construct_systematics():
+    sys1 = systematics.Systematics(taxon_info_fun, True, True, False, True)
+    assert sys1.get_store_position()
+
+    sys2 = systematics.Systematics(taxon_info_fun, True, True, False, False)
+    assert not sys2.get_store_position()
+    assert sys2.get_store_ancestors()
+    assert not sys2.get_store_outside()
+    assert sys2.get_store_active()
+
+
+@mark.parametrize(
+    "taxa",
+    (
+        ["hello", "hello 2"],
+        [1, 2],
+        [1.0, 2.0],
+        [[1], [1, 2]],
+    ),
+)
+def test_systematics(taxa):
+    tax1, tax2 = taxa
     sys = systematics.Systematics(taxon_info_fun, True, True, False, False)
-    org = ExampleOrg("hello")
-    org2 = ExampleOrg("hello 2")
-    org_tax = systematics.Taxon(0, "hello")
+    assert not sys.get_store_position()
+
+    org = ExampleOrg(tax1)
+    org2 = ExampleOrg(tax2)
+    org_tax = sys.add_org(org)
     org2_tax = sys.add_org(org2, org_tax)
     org3_tax = sys.add_org(org2)
     org4_tax = sys.add_org(org, org2_tax)
     org5_tax = sys.add_org(org, org4_tax)
 
-    assert(org2_tax.get_parent() == org_tax)
-    assert(org3_tax.get_parent() is None)
-    assert(org4_tax.get_parent() == org2_tax)
-    assert(org_tax != org2_tax)
-    assert(org4_tax != org2_tax)
-    assert(org5_tax == org4_tax)
-    assert(sys.get_num_active() == 3)
-    assert(sys.get_num_ancestors() == 0)
+    assert org2_tax.get_parent() == org_tax
+    assert org3_tax.get_parent() is None
+    assert org4_tax.get_parent() == org2_tax
+    assert org_tax != org2_tax
+    assert org4_tax != org2_tax
+    assert org5_tax == org4_tax
+    assert sys.get_num_active() == 4
+    assert sys.get_num_ancestors() == 0
 
-    assert(not sys.remove_org(org2_tax))
-    assert(sys.get_num_active() == 2)
-    assert(sys.get_num_ancestors() == 1)
+    assert not sys.remove_org(org2_tax)
+    assert sys.get_num_active() == 3
+    assert sys.get_num_ancestors() == 1
+
+
+@mark.nowheel
+def test_systematics_numpy():
+    import numpy as np
+    taxa = [np.array([1]), np.array([1, 2])]
+    test_systematics(taxa)
+
+
+@mark.parametrize(
+    "taxa",
+    (
+        ["hello", "hello 2"],
+        [1, 2],
+        [1.0, 2.0],
+        [[1], [1, 2]],
+    ),
+)
+def test_string_systematics(taxa):
+    tax1, tax2 = taxa
+    sys = systematics.Systematics(lambda x: str(x), True, True, False, False)
+    assert not sys.get_store_position()
+
+    org = tax1
+    org2 = tax2
+    org_tax = sys.add_org(org)
+    org2_tax = sys.add_org(org2, org_tax)
+    org3_tax = sys.add_org(org2)
+    org4_tax = sys.add_org(org, org2_tax)
+    org5_tax = sys.add_org(org, org4_tax)
+
+    assert org2_tax.get_info() == str(tax2)
+    assert org3_tax.get_info() == str(tax2)
+    assert org4_tax.get_info() == str(tax1)
+    assert org5_tax.get_info() == str(tax1)
+    assert org2_tax.get_parent() == org_tax
+    assert org3_tax.get_parent() is None
+    assert org4_tax.get_parent() == org2_tax
+    assert org_tax != org2_tax
+    assert org4_tax != org2_tax
+    assert org5_tax == org4_tax
+    assert sys.get_num_active() == 4
+    assert sys.get_num_ancestors() == 0
+
+    assert not sys.remove_org(org2_tax)
+    assert sys.get_num_active() == 3
+    assert sys.get_num_ancestors() == 1
+
+
+@mark.parametrize(
+    "taxa",
+    (
+        ["hello", "hello 2"],
+        [1, 2],
+        [1.0, 2.0],
+        [[1], [1, 2]],
+    ),
+)
+def test_raw_systematics(taxa):
+    tax1, tax2 = taxa
+    sys = systematics.Systematics()
+    assert not sys.get_store_position()
+
+    org = tax1
+    org2 = tax2
+    org_tax = sys.add_org(org)
+    org2_tax = sys.add_org(org2, org_tax)
+    org3_tax = sys.add_org(org2)
+    org4_tax = sys.add_org(org, org2_tax)
+    org5_tax = sys.add_org(org, org4_tax)
+
+    assert org2_tax.get_parent() == org_tax
+    assert org3_tax.get_parent() is None
+    assert org4_tax.get_parent() == org2_tax
+    assert org_tax != org2_tax
+    assert org4_tax != org2_tax
+    assert org5_tax == org4_tax
+    assert sys.get_num_active() == 4
+    assert sys.get_num_ancestors() == 0
+
+    assert not sys.remove_org(org2_tax)
+    assert sys.get_num_active() == 3
+    assert sys.get_num_ancestors() == 1
+
+
+@mark.parametrize(
+    "orgs",
+    (
+        ["hello", "hello 2"],
+        [1, 2],
+        [1.0, 2.0],
+        [[1], [1, 2]],
+    ),
+)
+def test_taxa_serialization(orgs):
+    org_info_1, org_info_2 = orgs
+    sys = systematics.Systematics(taxon_info_fun, True, True, False, False)
+    org = ExampleOrg(org_info_1)
+    org2 = ExampleOrg(org_info_2)
+    org_tax = sys.add_org(org)
+    org2_tax = sys.add_org(org2, org_tax)
+    org3_tax = sys.add_org(org2, org_tax)
+    sys.remove_org(org_tax)
+    org4_tax = sys.add_org(org, org2_tax)
+    org5_tax = sys.add_org(org, org4_tax)
+
+    with tempfile.NamedTemporaryFile() as f:
+        f.file.close()
+        sys.add_snapshot_fun(systematics.encode_taxon, "info")
+        sys.snapshot(f.name)
+        sys = systematics.Systematics(lambda x: x, True, True, False, False)
+        sys.load_from_file(f.name)
+
+    assert sys.get_mrca().get_info() == org_info_1
+
+
+@mark.nowheel
+def test_numpy_serialization():
+    import numpy as np
+    test_taxa_serialization([np.array([1]), np.array([1, 2])])
+
+
+@mark.parametrize(
+    "orgs",
+    (
+        ["hello", "hello 2"],
+        [1, 2],
+        [1.0, 2.0],
+        [[1], [1, 2]],
+    ),
+)
+def test_string_taxa_serialization(orgs):
+    org_info_1, org_info_2 = orgs
+    sys = systematics.Systematics(lambda x: str(x))
+    org = org_info_1
+    org2 = org_info_2
+    org_tax = sys.add_org(org)
+    org2_tax = sys.add_org(org2, org_tax)
+    org3_tax = sys.add_org(org2, org_tax)
+    sys.remove_org(org_tax)
+    org4_tax = sys.add_org(org, org2_tax)
+    org5_tax = sys.add_org(org, org4_tax)
+
+    with tempfile.NamedTemporaryFile() as f:
+        f.file.close()
+        sys.add_snapshot_fun(lambda x: x.get_info(), "info")
+        sys.snapshot(f.name)
+        sys = systematics.Systematics(lambda x: str(x))
+        sys.load_from_file(f.name)
+
+    assert sys.get_mrca().get_info() == org_info_1
+
+
+@mark.parametrize(
+    "orgs",
+    (
+        ["hello", "hello 2"],
+        [1, 2],
+        [1.0, 2.0],
+        [[1], [1, 2]],
+    ),
+)
+def test_raw_taxa_serialization(orgs):
+    org_info_1, org_info_2 = orgs
+    sys = systematics.Systematics()
+    org = org_info_1
+    org2 = org_info_2
+    org_tax = sys.add_org(org)
+    org2_tax = sys.add_org(org2, org_tax)
+    org3_tax = sys.add_org(org2, org_tax)
+    sys.remove_org(org_tax)
+    org4_tax = sys.add_org(org, org2_tax)
+    org5_tax = sys.add_org(org, org4_tax)
+
+    with tempfile.NamedTemporaryFile() as f:
+        f.file.close()
+        sys.add_snapshot_fun(systematics.encode_taxon, "info")
+        sys.snapshot(f.name)
+        sys = systematics.Systematics()
+        sys.load_from_file(f.name)
+
+    assert sys.get_mrca().get_info() == org_info_1
 
 
 def test_shared_ancestor():
@@ -70,12 +285,12 @@ def test_shared_ancestor():
     org4_tax = sys.add_org(org4, org1_tax)
 
     shared = sys.get_shared_ancestor(org3_tax, org4_tax)
-    assert(shared == org1_tax)
+    assert shared == org1_tax
 
 
 def test_load_data():
     sys = systematics.Systematics(taxon_info_fun, True, True, False, False)
-    sys.load_from_file("test/assets/systematics_snapshot.csv", "genome", True)
+    sys.load_from_file(f"{assets_path}/systematics_snapshot.csv", "genome", True)
 
     assert sys.get_num_roots() == 1
     assert sys.get_num_active() == 6
@@ -144,8 +359,8 @@ def test_phylostatistics():
 
 
 def test_loading_stats():
-    sys = systematics.Systematics(lambda x: x)
-    sys.load_from_file("test/assets/consolidated.csv", "id")
+    sys = systematics.Systematics()
+    sys.load_from_file(f"{assets_path}/consolidated.csv", "id")
 
     assert sys.get_ave_depth() > 0
     # assert sys.calc_diversity() > 0
@@ -155,7 +370,7 @@ def test_loading_stats():
     assert len(sys.get_active_taxa()) > 0
     assert len(sys.get_active_taxa()) > 0  # Check for object lifetime bug
 
-    sys.load_from_file("test/assets/full.csv", "id", True, False)
+    sys.load_from_file(f"{assets_path}/full.csv", "id", True, False)
 
 
 def test_deepcopy():
@@ -183,8 +398,3 @@ def test_taxon():
 #     org_tax = sys.add_org(org)
 #     org_tax.get_data().set_data({"val":4, "test": 9})
 #     assert(org_tax.get_data().data["val"] == 4)
-
-
-if __name__ == "__main__":
-    # test_loading_stats()
-    pass
