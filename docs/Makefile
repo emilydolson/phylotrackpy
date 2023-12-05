@@ -1,6 +1,9 @@
 # Makefile for Sphinx documentation
 #
 
+# RE: https://github.com/emilydolson/phylotrackpy/issues/33
+export LC_ALL = en_US.UTF-8
+
 # You can set these variables from the command line.
 SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
@@ -214,3 +217,7 @@ pseudoxml:
 	$(SPHINXBUILD) -b pseudoxml $(ALLSPHINXOPTS) $(BUILDDIR)/pseudoxml
 	@echo
 	@echo "Build finished. The pseudo-XML files are in $(BUILDDIR)/pseudoxml."
+
+.PHONY: serve
+serve:
+	cd $(BUILDDIR)/html && python -m http.server

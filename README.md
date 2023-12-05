@@ -18,19 +18,23 @@ Note: this library is essentially a wrapper around [Phylotracklib](https://empir
 
 ## Features
 
-- [**Pruning**](https://phylotrackpy.readthedocs.io/en/latest/#pruning): Ability to prune out taxa that are extinct and have no extant descendants (to keep memory use under control)
-- [**Flexible taxon definitions**](https://phylotrackpy.readthedocs.io/en/latest/#flexible-taxon-definitions): Flexible control of how taxa are defined (e.g. by genotype, by phenotype, by trait, or by something more complex)
-- [**Efficiency**](https://phylotrackpy.readthedocs.io/en/latest/#efficiency): Highly efficient (implemented in C++ under the hood)
-- [**Phylostatistics**](https://phylotrackpy.readthedocs.io/en/latest/#phylostatistics-calculations): Includes various phylogenetic topology metrics
-- [**Flexible output**](https://phylotrackpy.readthedocs.io/en/latest/#flexible-output-options): Easily add columns to output files.
+- [**Pruning**](https://phylotrackpy.readthedocs.io/en/latest/features.html#pruning): Ability to prune out taxa that are extinct and have no extant descendants (to keep memory use under control)
+- [**Flexible taxon definitions**](https://phylotrackpy.readthedocs.io/en/latest/features.html#flexible-taxon-definitions): Flexible control of how taxa are defined (e.g. by genotype, by phenotype, by trait, or by something more complex)
+- [**Efficiency**](https://phylotrackpy.readthedocs.io/en/latest/features.html#efficiency): Highly efficient (implemented in C++ under the hood)
+- [**Phylostatistics**](https://phylotrackpy.readthedocs.io/en/latest/features.html#phylostatistics-calculations): Includes various phylogenetic topology metrics
+- [**Flexible output**](https://phylotrackpy.readthedocs.io/en/latest/features.html#flexible-output-options): Easily add columns to output files.
 
 ## High level usage
 
-There are three main steps in using phylotrackpy:
+There are three main steps to tracking a phylogeny using phylotrackpy:
 
-- [Construct a `Systematics` object](https://phylotrackpy.readthedocs.io/en/latest/#creating-a-systematics-object)
-- [Notify the systematics object whenever anything is born](https://phylotrackpy.readthedocs.io/en/latest/#notifying-the-systematics-object-of-births)
-- [Notify the systematics object whenever anything dies](https://phylotrackpy.readthedocs.io/en/latest/#notifying-the-systematics-object-of-deaths)
+- [Construct a `Systematics` object](https://phylotrackpy.readthedocs.io/en/latest/quickstart.html#creating-a-systematics-object)
+- [Notify the systematics object whenever anything is born](https://phylotrackpy.readthedocs.io/en/latest/quickstart.html#notifying-the-systematics-object-of-births)
+- [Notify the systematics object whenever anything dies](https://phylotrackpy.readthedocs.io/en/latest/quickstart.html#notifying-the-systematics-object-of-deaths)
+
+You may also want to:
+
+- [Import and export data](https://phylotrackpy.readthedocs.io/en/latest/quickstart.html#importing-and-exporting-data)
 
 For more detailed instructions, see the [documentation](https://phylotrackpy.readthedocs.io/en/latest/)
 
@@ -41,6 +45,21 @@ Phylotrackpy is available through pip:
 ```bash
 pip install phylotrackpy
 ```
+
+To install the latest development version:
+
+```bash
+pip install git+https://github.com/emilydolson/phylotrackpy
+```
+
+To install from a local sorce copy:
+```bash
+pip install . --upgrade
+```
+
+Note that development and local installs will require local compilation of C++ bindings.
+Pre-built wheels are available with the PyPi distribution.
+See [our documentation](https://phylotrackpy.readthedocs.io/en/latest/contributing.html) for more complete information on local builds.
 
 ## Useful background information
 

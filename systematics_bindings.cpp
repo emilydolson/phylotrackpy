@@ -1,14 +1,21 @@
+#include <algorithm>
+#include <exception>
+#include <iostream>
+#include <string>
 #include <tuple>
 #include <vector>
 #include <pybind11/pybind11.h>
+#include <pybind11/eval.h>
 #include <pybind11/functional.h>
+// #include <pybind11/numpy.h>
 #include <pybind11/stl.h>
 #include "Empirical/include/emp/Evolve/Systematics.hpp"
+#include "Empirical/include/emp/tools/string_utils.hpp"
 
 namespace py = pybind11;
 
 
-PYBIND11_DECLARE_HOLDER_TYPE(T, emp::Ptr<T>, false);
+PYBIND11_DECLARE_HOLDER_TYPE(T, emp::Ptr<T>, true);
 
 // Only needed if the type's `.get()` goes by another name
 namespace pybind11 { namespace detail {
@@ -32,7 +39,148 @@ namespace pybind11 { namespace detail {
 //     }
 // }
 
-using taxon_info_t = std::string;
+/// Returns url encoding of value, but preserving [, ], {, }, ", and '
+std::string partial_url_encode(const std::string &value)
+{
+    std::ostringstream escaped;
+    escaped.fill('0');
+    escaped << std::hex;
+
+    for (const auto c : value)
+    {
+        // Keep alphanumeric and other accepted characters intact
+        if (
+            std::isalnum(c)
+            || c == '-'
+            || c == '_'
+            || c == '.'
+            || c == '~'
+            || c == '['
+            || c == ']'
+            || c == '{'
+            || c == '}'
+            || c == '"'
+            || c == '\''
+        )
+            escaped << c;
+        // Any other characters are percent-encoded
+        else
+        {
+            escaped << std::uppercase;
+            escaped << '%' << std::setw(2) << (static_cast<int>(c) & 0x000000FF);
+            escaped << std::nouppercase;
+        }
+    }
+
+    return escaped.str();
+}
+
+std::string encode_pyobj(const py::object &obj) {
+    auto repr = py::repr(obj).cast<std::string>();
+    if (
+        emp::count(repr, ',')  // TODO -- emp csv should handle ","'s natively
+        || emp::count(repr, '\'')
+        || emp::count(repr, '"')
+        || emp::url_decode(repr) != repr
+    ) {
+        repr = partial_url_encode(repr);
+    }
+    else emp::remove_whitespace(repr);
+    return repr;
+}
+
+std::string encode_taxon(const py::object &taxon) {
+    return encode_pyobj(taxon.attr("get_info")());
+}
+
+namespace std {
+    std::istream &operator>>(std::istream &is, py::object &obj) {
+        std::string repr;
+        is >> repr;
+        repr = emp::url_decode(repr);
+
+        try {
+            const auto ast_eval = (
+            py::module::import("ast").attr("literal_eval")
+        );
+            obj = ast_eval(repr);
+        } catch (std::exception &e) {
+            try {
+                std::string eval_string = (
+                    "exec('from numpy import *') or " + repr
+                );
+                obj = py::eval(eval_string);
+            } catch (std::exception & e2) {
+                obj = py::str(repr);
+            }
+        }
+
+        return is;
+    }
+}
+
+class taxon_info : public py::object {
+    private:
+    py::object equals_operator;
+
+    public:                                                                                           
+    PYBIND11_DEPRECATED("Use reinterpret_borrow<taxon_info>() or reinterpret_steal<taxon_info>()")  
+    taxon_info(handle h, bool is_borrowed)                                                              
+        : py::object(is_borrowed ? py::object(h, borrowed_t{}) : py::object(h, stolen_t{})) {
+            SetEqualsOperator();
+        }                
+    taxon_info(handle h, borrowed_t) : py::object(h, borrowed_t{}) {
+        SetEqualsOperator();
+    }                                       
+    taxon_info(handle h, stolen_t) : py::object(h, stolen_t{}) {;}                                           
+    PYBIND11_DEPRECATED("Use py::isinstance<py::python_type>(obj) instead")                       
+    bool check() const { return m_ptr != nullptr; }                     
+    static bool check_(handle h) { return h.ptr() != nullptr; }              
+    template <typename Policy_> /* NOLINTNEXTLINE(google-explicit-constructor) */                 
+    taxon_info(const ::pybind11::detail::accessor<Policy_> &a) : taxon_info(object(a)) {}
+
+    /* This is deliberately not 'explicit' to allow implicit conversion from object: */        
+    /* NOLINTNEXTLINE(google-explicit-constructor) */  
+    taxon_info(const object &o) : py::object(o) {                                                           
+        SetEqualsOperator();
+    }
+
+    /* NOLINTNEXTLINE(google-explicit-constructor) */                                             
+    taxon_info(object &&o) : py::object(std::move(o)) {                                                     
+        SetEqualsOperator();
+    }
+
+    taxon_info() {
+        std::cout << "default constructor" << std::endl;
+        equals_operator = py::none();
+    };
+
+    void SetEqualsOperator() {
+        equals_operator = this->attr("__class__").attr("__eq__");    
+        try {
+            py::object np = py::module_::import("numpy");
+            if (py::module_::import("builtins").attr("isinstance")(*this, np.attr("ndarray"))) {
+                equals_operator = np.attr("array_equal");
+            } 
+        } catch (py::error_already_set & e) {}
+    }
+
+    bool operator==(const taxon_info &other) const {
+        return equals_operator(*this, other).cast<bool>();
+    }
+};
+
+// class numpy_array : public py::array {
+//     PYBIND11_OBJECT_DEFAULT(numpy_array, array, PyArray_Check)
+//     public:
+//     bool operator==(const numpy_array &other) const {
+//         emp::vector<bool> eq = this->equal(other);
+//         return std::all_of(eq.begin(), eq.end(), [](bool x){return x;});
+//     }
+// };
+
+
+using taxon_info_t = taxon_info;
 using org_t = py::object;
 using sys_t = emp::Systematics<org_t, taxon_info_t>;
 using taxon_t = emp::Taxon<taxon_info_t>;
@@ -45,6 +193,13 @@ PYBIND11_MODULE(systematics, m) {
     //     .def("get_data", [](emp::datastruct::python & self, py::object & d){return self.data;}, py::return_value_policy::reference_internal)
     //     .def_readwrite("data", &emp::datastruct::python::data)
     //     ;
+
+    m.def("encode_taxon", &encode_taxon, R"mydelimiter(
+        Encode a Python object as a string that streams as a single token and can be deserialized using `eval`.
+
+        This is done by calling repr() on the object and then removing whitespace, unless the repr string contains single or double quotes.
+        In that case, the repr string is url-encoded instead of having whitespace stripped.
+        )mydelimiter");
 
     py::class_<emp::WorldPosition>(m, "WorldPosition")
         .def(py::init<size_t, size_t>())
@@ -70,12 +225,7 @@ PYBIND11_MODULE(systematics, m) {
 
     // py::implicitly_convertible<std::tuple<int, int>, emp::WorldPosition>();
 
-    // The py::nodelete here might cause memory leaks if someone tries to construct
-    // a taxon without putting it in a systematics manager, but it seems necessary to
-    // avoid a segfault on destruction of the systematics manager. There's also
-    // not really any reason to ever make a taxon that you don't put in a systematics
-    // manager
-    py::class_<taxon_t, std::unique_ptr<taxon_t, py::nodelete> >(m, "Taxon")
+    py::class_<taxon_t, taxon_ptr>(m, "Taxon")
         .def(py::init<size_t, taxon_info_t>())
         .def(py::init<size_t, taxon_info_t, taxon_t*>())
         .def("__copy__",  [](const taxon_t &self) -> const taxon_t & {
@@ -120,8 +270,8 @@ PYBIND11_MODULE(systematics, m) {
         ;
 
     py::class_<sys_t>(m, "Systematics")
-        .def(py::init<std::function<taxon_info_t(org_t &)>, bool, bool, bool, bool>(), py::arg("calc_taxon"), py::arg("store_active") = true, py::arg("store_ancestors") = true, py::arg("store_all") = false, py::arg("store_pos") = false)
-
+        .def(py::init<std::function<taxon_info_t(org_t &)>, bool, bool, bool, bool>(), py::arg("calc_taxon") = py::eval("lambda x: x"), py::arg("store_active") = true, py::arg("store_ancestors") = true, py::arg("store_all") = false, py::arg("store_pos") = false)
+        // .def(py::init<std::function<numpy_array(org_t &)>, bool, bool, bool, bool>(), py::arg("calc_taxon") = py::eval("lambda x: x"), py::arg("store_active") = true, py::arg("store_ancestors") = true, py::arg("store_all") = false, py::arg("store_pos") = false)
         // Setting systematics manager state
         .def("set_calc_info_fun", static_cast<void (sys_t::*) (std::function<taxon_info_t(org_t &)>)>(&sys_t::SetCalcInfoFun), R"mydelimiter(
             Set the function used to calculate the information associated with an organism.
@@ -443,6 +593,32 @@ PYBIND11_MODULE(systematics, m) {
             ----------
             Taxon tax: Taxon to find distance to MRCA (or subroot) of.
         )mydelimiter")
+        .def("get_pairwise_distance", [](sys_t & self, taxon_t * tax, taxon_t * tax2, bool branch_only){return self.GetPairwiseDistance(tax, tax2, branch_only);}, 
+        py::arg("tax"),
+        py::arg("tax2"),
+        py::arg("branch_only") = false,
+        R"mydelimiter(
+            This method calculates the distance between a pair of taxa.
+            This assumes the taxa share a common ancestor.
+
+            If `branch_only` is set, this method will only consider distances in terms of nodes that represent branches between two extant taxa. This is potentially useful as a comparison to real-world, biological data, where non-branching nodes cannot be inferred.
+
+            Parameters
+            ----------
+            Taxon tax: First taxon of pair to find distance between.
+            Taxon tax2: Second taxon of pair to find the distance between.
+            bool branch_only: Only counts distance in terms of nodes that represent a branch between two extant taxa.
+        )mydelimiter")
+        .def("get_pairwise_distances", static_cast<std::vector<double> (sys_t::*) (bool) const>(&sys_t::GetPairwiseDistances), R"mydelimiter(
+            This method calculates distances between all pairs of extant taxa.
+            This assumes the phylogenetic tree is fully connected.
+
+            If `branch_only` is set, this method will only consider distances in terms of nodes that represent branches between two extant taxa. This is potentially useful as a comparison to real-world, biological data, where non-branching nodes cannot be inferred.
+
+            Parameters
+            ----------
+            bool branch_only: Only counts distance in terms of nodes that represent a branch between two extant taxa.
+        )mydelimiter")
         .def("get_variance_pairwise_distance", static_cast<double (sys_t::*) (bool) const>(&sys_t::GetVariancePairwiseDistance), R"mydelimiter(
             This method calculates the variance of distance between all pairs of extant taxa. This is a measure of phylogenetic regularity :cite:p:`tucker2017guide`.
             This assumes the phylogenetic tree is fully connected. If this is not the case, it will return -1.
@@ -532,8 +708,17 @@ PYBIND11_MODULE(systematics, m) {
             ----------
             string file_path: File path to save snapshot to.
         )mydelimiter")
-        .def("add_snapshot_fun", static_cast<void (sys_t::*) (const std::function<std::string(const taxon_t &)> &, const std::string &, const std::string &) >(&sys_t::AddSnapshotFun), R"mydelimiter(
-            This method adds a new snapshot function that will run in addition to the default functions when a snapshot is taken. A custom snapshot function should be created whenever storage and retrival of custom taxon data is desired.
+        .def(
+            "add_snapshot_fun",
+            static_cast<void (sys_t::*)(
+                const std::function<std::string(const taxon_t &)> &,
+                const std::string &,
+                const std::string &
+            )>(&sys_t::AddSnapshotFun),
+            py::arg("fun"),
+            py::arg("key"),
+            py::arg("desc") = "",
+            R"mydelimiter(This method adds a new snapshot function that will run in addition to the default functions when a snapshot is taken. A custom snapshot function should be created whenever storage and retrival of custom taxon data is desired.
 
             Custom snapshot functions must take a Taxon object as a single argument and return the data to be saved as a string. The second argument to this method is the key the custom information will be stored under in the snapshot file. Optionally, a short description of the custom information can be provided as its third argument.
 
@@ -560,13 +745,7 @@ PYBIND11_MODULE(systematics, m) {
         .def("update", static_cast<void (sys_t::*) ()>(&sys_t::Update), R"mydelimiter(
             Calling this method advances the tracking by one time step. This can be useful for tracking taxon survival times, as well as population positions in synchronous generation worlds.
         )mydelimiter")
-        .def("test_def", [](sys_t & self){
-            #ifdef IN_PYTHON
-                std::cout << "in python"  << std::endl;
-            #endif
-            emp_optional_throw(false);
-            std::cout << "done"  << std::endl;
-            })
+        
         // Efficiency functions
         .def("remove_before", static_cast<void (sys_t::*) (int)>(&sys_t::RemoveBefore), R"mydelimiter(
             This method removes all taxa that went extinct before the given time step, and that only have ancestors taht went extinct before the given time step. While this invalidates most tree topology metrics, it is useful when limited ancestry tracking is necessary, but complete ancestry tracking is not computationally possible.
