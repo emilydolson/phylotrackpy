@@ -157,10 +157,12 @@ class taxon_info : public py::object {
 
     void SetEqualsOperator() {
         equals_operator = this->attr("__class__").attr("__eq__");    
-        py::object np = py::module_::import("numpy");
-        if (np && py::module_::import("builtins").attr("isinstance")(*this, np.attr("ndarray"))) {
-            equals_operator = np.attr("array_equal");
-        } 
+        try {
+            py::object np = py::module_::import("numpy");
+            if (py::module_::import("builtins").attr("isinstance")(*this, np.attr("ndarray"))) {
+                equals_operator = np.attr("array_equal");
+            } 
+        } catch (py::error_already_set & e) {}
     }
 
     bool operator==(const taxon_info &other) const {
