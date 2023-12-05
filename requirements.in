@@ -1,6 +1,6 @@
 pybind11
 pytest_cov
-pytest
+pytest==7.4.3
 flake8<5
 coverage>=6.3
 
