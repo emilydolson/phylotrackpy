@@ -308,6 +308,9 @@ def test_load_data():
     for off in offspring:
         assert off.get_id() in [7, 2, 3]
 
+    sys2 = systematics.Systematics()
+    sys2.load_from_file(f"{assets_path}/extant_root.csv", "id")
+
 
 def test_phylostatistics():
     sys = systematics.Systematics(str, True, True, False, False)
