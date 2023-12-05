@@ -7,7 +7,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/eval.h>
 #include <pybind11/functional.h>
-#include <pybind11/numpy.h>
+// #include <pybind11/numpy.h>
 #include <pybind11/stl.h>
 #include "Empirical/include/emp/Evolve/Systematics.hpp"
 #include "Empirical/include/emp/tools/string_utils.hpp"
@@ -156,16 +156,11 @@ class taxon_info : public py::object {
     };
 
     void SetEqualsOperator() {
-        if (py::isinstance<py::array>(*this)) {
-            py::object np = py::module_::import("numpy");
-            if (np) {
-                equals_operator = np.attr("array_equal");
-            } else {
-                equals_operator = this->attr("__class__").attr("__eq__");    
-            }
-        } else {
-            equals_operator =  this->attr("__class__").attr("__eq__");
-        }
+        equals_operator = this->attr("__class__").attr("__eq__");    
+        py::object np = py::module_::import("numpy");
+        if (np && py::module_::import("builtins").attr("isinstance")(*this, np.attr("ndarray"))) {
+            equals_operator = np.attr("array_equal");
+        } 
     }
 
     bool operator==(const taxon_info &other) const {
