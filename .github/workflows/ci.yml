@@ -45,7 +45,7 @@ jobs:
       run: |
         python -m pytest --cov=. --cov-report=lcov
         lcov --output-file coverage.cpp --capture --directory .
-        lcov --output-file coverage.cpp --extract coverage.cpp "*"
+        # lcov --output-file coverage.cpp --extract coverage.cpp "*"
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v3
       with:
