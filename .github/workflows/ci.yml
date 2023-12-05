@@ -31,9 +31,10 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install oldest-supported-numpy==2023.10.25
+        sudo apt install -yy lcov
         # --ignore-requires-python ensures docs deps don't break install on early python versions
         if [ -f requirements.txt ]; then pip install --ignore-requires-python -r requirements.txt; fi
-        pip install -e .
+        pip install -e . -Csetup-args=-Db_coverage=true
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
@@ -42,9 +43,13 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        pytest --cov=phylotrackpy
+        python -m pytest --cov=. --cov-report=lcov
+        lcov --output-file coverage.cpp --capture --directory .
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v3
+      with:
+        file: coverage.cpp
+  
 
   build_wheels:
     name: Build wheels on ${{ matrix.os }}
