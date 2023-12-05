@@ -1,10 +1,6 @@
 pybind11
-sphinx_rtd_theme
 pytest_cov
-myst_parser
 pytest
-sphinx_tippy
-sphinxcontrib-bibtex
 flake8<5
 
 typing-extensions<3.8  # for py36 compat
