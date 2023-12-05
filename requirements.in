@@ -1,7 +1,7 @@
 pybind11
 sphinx_rtd_theme
 pytest_cov
-myst_parser
+myst_parser>=2.0.0
 pytest
 sphinx_tippy
 sphinxcontrib-bibtex

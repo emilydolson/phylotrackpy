@@ -42,6 +42,9 @@ bibtex_bibfiles = ['bibliography.bib']
 bibtex_reference_style = "author_year"
 bibtex_default_style = 'unsrt'
 
+myst_heading_anchors = 6
+myst_enable_extensions = ["attrs_block", "deflist"]
+
 autosummary_generate = True
 
 # Add any paths that contain templates here, relative to this directory.
@@ -305,4 +308,4 @@ texinfo_documents = [
 
 
 # Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {"https://docs.python.org/": None}
+intersphinx_mapping = {"python" : ("https://docs.python.org/", None)}
