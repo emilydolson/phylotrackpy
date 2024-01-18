@@ -5,6 +5,8 @@ codecov:
 ignore:
   - "usr"
   - "opt"
+  - "**/Empirical/include/emp/**"
+  - "!**/Empirical/include/emp/Evolve/*Systematics*.hpp"
 
 fixes:
   - "home/runner/work/phylotrackpy/*::phylotrackpy/"
