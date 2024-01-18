@@ -3,6 +3,7 @@ pytest_cov
 pytest
 flake8<5
 coverage>=6.3
+setuptools
 
 typing-extensions<3.8  # for py36 compat
 zipp<3  # for py36 compat
