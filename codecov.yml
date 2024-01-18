@@ -24,4 +24,4 @@ ignore:
   - "**/Empirical/include/emp/Evolve/State*.hpp"
 
 fixes:
-  - "home/runner/work/phylotrackpy/*::phylotrackpy/"
+  - "home/runner/work/phylotrackpy/*::./"
