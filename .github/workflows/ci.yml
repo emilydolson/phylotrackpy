@@ -17,10 +17,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
         os: [windows-latest, macOS-latest, ubuntu-latest]
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         submodules: "recursive"
     - name: Set up Python
@@ -33,7 +33,7 @@ jobs:
         pip install oldest-supported-numpy==2023.10.25
         # --ignore-requires-python ensures docs deps don't break install on early python versions
         if [ -f requirements.txt ]; then pip install --ignore-requires-python -r requirements.txt; fi
-        pip install -e .
+        pip install -e . 
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
@@ -42,9 +42,48 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        pytest --cov=phylotrackpy
+        python -m pytest
+  
+  coverage:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11"]
+        os: [ubuntu-latest]
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: "recursive"
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    # - name: Setup LCOV
+    #   uses: hrishikesh-kadam/setup-lcov@v1        
+    - name: Install dependencies
+      run: |
+        sudo apt update -yy
+        sudo apt install -yy lcov
+        python -m pip install --upgrade pip
+        pip install wheel
+        pip install oldest-supported-numpy==2023.10.25
+        # --ignore-requires-python ensures docs deps don't break install on early python versions
+        if [ -f requirements.txt ]; then pip install --ignore-requires-python -r requirements.txt; fi
+        rm -rf Empirical/.git
+    - name: Build phylotrackpy 
+      run: |
+        make coverage
+    - name: Test with pytest
+      run: |
+        python -m pytest --cov=. --cov-report=lcov
+        lcov --output-file coverage.cpp --capture --directory .
+        lcov --output-file coverage.cpp --extract coverage.cpp "*"
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v3
+      with:
+        files: "coverage.cpp, coverage.lcov, Empirical/include/emp/Evolve/Systematics.hpp"
+        verbose: true      
 
   build_wheels:
     name: Build wheels on ${{ matrix.os }}
