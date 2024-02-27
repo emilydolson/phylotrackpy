@@ -24,6 +24,9 @@ Note: this library is essentially a wrapper around [Phylotracklib](https://empir
 - [**Phylostatistics**](https://phylotrackpy.readthedocs.io/en/latest/features.html#phylostatistics-calculations): Includes various phylogenetic topology metrics
 - [**Flexible output**](https://phylotrackpy.readthedocs.io/en/latest/features.html#flexible-output-options): Easily add columns to output files.
 
+*Running a parallel/distributed simulation?
+Check out [hstrat](https://github.com/mmore500/hstrat), which provides an alternate parallel/distributed-friendly methodology for decentralized phylogenetic tracking.*
+
 ## High level usage
 
 There are three main steps to tracking a phylogeny using phylotrackpy:

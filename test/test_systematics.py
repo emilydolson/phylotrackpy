@@ -401,3 +401,38 @@ def test_taxon():
 #     org_tax = sys.add_org(org)
 #     org_tax.get_data().set_data({"val":4, "test": 9})
 #     assert(org_tax.get_data().data["val"] == 4)
+
+
+
+def test_synchronous_by_position():
+    sys = systematics.Systematics(taxon_info_fun, True, True, False, True)
+    sys.set_track_synchronous(True)
+    assert sys.get_track_synchronous()
+    for i in range(10):
+        org_pos = systematics.WorldPosition(i, 0)
+        org = ExampleOrg("hello" + str(i))
+        sys.add_org_by_position(org, org_pos)
+    for i in range(10):
+        org_pos = systematics.WorldPosition(i, 1)
+        parent_pos = systematics.WorldPosition(i, 0)
+        org = ExampleOrg("hello" + str(i))
+        sys.add_org_by_position(org, org_pos, parent_pos)
+    for i in range(10):
+        org_pos = systematics.WorldPosition(i, 0)
+        sys.remove_org_by_position(org_pos)
+    sys.update()
+    assert sys.get_num_active() == 10
+    assert sys.get_num_taxa() == 10
+
+    for i in range(10):
+        org_pos = systematics.WorldPosition(i, 1)
+        parent_pos = systematics.WorldPosition(i, 0)
+        org = ExampleOrg("hello" + str(i+1))
+        sys.add_org_by_position(org, org_pos, parent_pos)
+
+    for i in range(10):
+        org_pos = systematics.WorldPosition(i, 0)
+        sys.remove_org_by_position(org_pos)
+    sys.update()
+    assert sys.get_num_active() == 10
+    assert sys.get_num_taxa() == 20

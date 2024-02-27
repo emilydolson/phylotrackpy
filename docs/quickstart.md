@@ -12,7 +12,7 @@ pip install phylotrackpy
 
 ### Creating a systematics object
 
-The first step in tracking a phylogeny with phylotrackpy is to make a systematics object. The most important decision to make at this point is how to define taxa in your phylogeny (for more information, see the "flexible taxon definition" section under "features"). You can do so by passing a function to the systematics constructor which takes an organism object and returns a string that specifies a taxon.
+The first step in tracking a phylogeny with phylotrackpy is to make a systematics object. The most important decision to make at this point is how to define {term}`taxa` in your phylogeny (for more information, see the [flexible taxon definition](introduction.md#flexible-taxon-definitions) section). You can do so by passing a function to the systematics constructor which takes an organism object and returns a string that specifies a {term}`taxon<Taxon>`.
 
 For example, to build a phylogeny based on genotypes, you could do the following:
 
@@ -24,15 +24,25 @@ from phylotrackpy import systematics
 sys = systematics.Systematics(lambda org: org.genotype)
 ```
 
+If you want to base your phylogeny on raw organism objects (e.g. if your organisms are lists and you want to make a new taxon any time a list is produced that doesn't match its parent), you can rely on default arguments to the Systematics constructor (assuming your organism objects aren't anything too weird):
+
+```py
+from phylotrackpy import systematics
+
+# By default the objects being used as organisms will be
+# the basis for the phylogeny.
+sys = systematics.Systematics()
+```
+
 There are a couple of other decisions that you also need to make at this point. The first is which set of taxa to store in the systematics manager. The defaults here are most likely what you want to use, but in case they aren't, the systematics manager can be told to store or not store the following sets of taxa:
 
 - **active**: the taxa that still currently have living members. You almost certainly want to store these (without them you don't really have a phylogeny), but can technically disable them by setting the `store_active` keyword argument in the constructor to false.
 - **ancestors**: the taxa that are ancestors of active taxa. You almost certainly want to store these too (without them you don't really have a phylogeny), but can technically disable them by setting the `store_ancestors` keyword argument in the constructor to false.
 - **outside**: the taxa that are not in either of the other two groups (i.e. taxa that have gone extinct and all of their ancestors have gone extinct). If you store these, your phylogeny will get very large very fast, so doing so is generally not recommended. It is occasionally useful, though, so you can enable storing these taxa by setting the `store_all` keyword argument in the constructor to true.
 
-The second decision is slightly trickier. Once you start adding organisms to the systematics manager, it will create `Taxon` objects associated with each one to keep track of which taxon it is part of. You will need to use these taxon objects when adding future organisms, to specify which taxon their parent was part of. If you have control over your organism class, it is likely that the easiest option is to add a `self.taxon` attribute and store the taxon there. However, if you cannot add arbitrary data to your organism class, keeping track of taxon objects can get annoying. For this reason, the systematics manager gives you the option of letting it manage them. To do so, it needs a way to map individuals to taxa (since its possible there are duplicate taxa, simply running the organism to taxon function again won't work). It achieves this mapping by keeping track of each organism's position in the population. Thus, to have the systematics manager keep track of taxon objects itself, you must set the `store_pos` keyword argument in the constructor to true. You must also use the position-based versions of add_org and remove_org, and make sure to notify the systematics manager if any organism ever changes position during its lifetime for any reason.
+The second decision is slightly trickier. Once you start adding organisms to the systematics manager, it will create [`Taxon`](phylotrackpy.systematics.Taxon) objects associated with each one to keep track of which taxon it is part of. You will need to use these taxon objects when adding future organisms, to specify which taxon their parent was part of. If you have control over your organism class, it is likely that the easiest option is to add a `self.taxon` attribute and store the taxon there. However, if you cannot add arbitrary data to your organism class, keeping track of taxon objects can get annoying. For this reason, the systematics manager gives you the option of letting it manage them. To do so, it needs a way to map individuals to taxa (since its possible there are duplicate taxa, simply running the organism to taxon function again won't work). It achieves this mapping by keeping track of each organism's position in the population. Thus, to have the systematics manager keep track of taxon objects itself, you must set the `store_pos` keyword argument in the constructor to true. You must also use the position-based versions of add_org and remove_org, and make sure to notify the systematics manager if any organism ever changes position during its lifetime for any reason.
 
-Once you have created the systematics object, you just need to do two things: 1) notify it when something is born, and 2) notify it when something dies.
+Once you have created the [`Systematics`](phylotrackpy.systematics.Systematics) object, you just need to do two things: 1) notify it when something is born, and 2) notify it when something dies.
 
 ### Notifying the systematics object of births
 

@@ -170,15 +170,6 @@ class taxon_info : public py::object {
     }
 };
 
-// class numpy_array : public py::array {
-//     PYBIND11_OBJECT_DEFAULT(numpy_array, array, PyArray_Check)
-//     public:
-//     bool operator==(const numpy_array &other) const {
-//         emp::vector<bool> eq = this->equal(other);
-//         return std::all_of(eq.begin(), eq.end(), [](bool x){return x;});
-//     }
-// };
-
 
 using taxon_info_t = taxon_info;
 using org_t = py::object;
@@ -270,7 +261,22 @@ PYBIND11_MODULE(systematics, m) {
         ;
 
     py::class_<sys_t>(m, "Systematics")
-        .def(py::init<std::function<taxon_info_t(org_t &)>, bool, bool, bool, bool>(), py::arg("calc_taxon") = py::eval("lambda x: x"), py::arg("store_active") = true, py::arg("store_ancestors") = true, py::arg("store_all") = false, py::arg("store_pos") = false)
+        .def(py::init<std::function<taxon_info_t(org_t &)>, bool, bool, bool, bool>(), py::arg("calc_taxon") = py::eval("lambda x: x"), py::arg("store_active") = true, py::arg("store_ancestors") = true, py::arg("store_all") = false, py::arg("store_pos") = false, R"mydelimiter(
+            Construct a systematics manager to keep track of a phylogeny.
+
+            Parameters
+            ----------
+            func : Callable[org_t, taxon_info_t]
+                A function that takes in an organism and returns its associated taxon information.
+            store_active : bool 
+                Whether to store all taxa that are active in the population.
+            store_ancestors : bool
+                Whether to store all taxa that are the ancestors of living organisms in the population.
+            store_all : bool
+                Whether to store all dead taxa whose descendants have also died.
+            store_pos : bool 
+                Whether to store taxa by position.
+        )mydelimiter")
         // .def(py::init<std::function<numpy_array(org_t &)>, bool, bool, bool, bool>(), py::arg("calc_taxon") = py::eval("lambda x: x"), py::arg("store_active") = true, py::arg("store_ancestors") = true, py::arg("store_all") = false, py::arg("store_pos") = false)
         // Setting systematics manager state
         .def("set_calc_info_fun", static_cast<void (sys_t::*) (std::function<taxon_info_t(org_t &)>)>(&sys_t::SetCalcInfoFun), R"mydelimiter(
@@ -281,7 +287,8 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            Callable[org_t, taxon_info_t] func A function that takes in an organism and returns its associated information.
+            func : Callable[org_t, taxon_info_t]
+                A function that takes in an organism and returns its associated information.
         )mydelimiter")
         .def("set_store_active", static_cast<void (sys_t::*) (bool)>(&sys_t::SetStoreActive), R"mydelimiter(
             A setter method to configure whether to store all taxa that are active in the population.
@@ -290,7 +297,8 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            bool val Value representing whether to store all taxa that are active in the population.
+            val : bool 
+                Value representing whether to store all taxa that are active in the population.
         )mydelimiter")
         .def("set_store_ancestors", static_cast<void (sys_t::*) (bool)>(&sys_t::SetStoreAncestors), R"mydelimiter(
             A setter method to configure whether to store all taxa that are the ancestors of living organisms in the population.
@@ -299,7 +307,8 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            bool val Value representing whether to store all taxa that are the ancestors of living organisms in the population.
+            val : bool 
+                Value representing whether to store all taxa that are the ancestors of living organisms in the population.
         )mydelimiter")
         .def("set_store_outside", static_cast<void (sys_t::*) (bool)>(&sys_t::SetStoreOutside), R"mydelimiter(
             A setter method to configure whether to store all dead taxa whose descendats have also died.
@@ -308,7 +317,8 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            bool val Value representing whether to store all dead taxa whose descendats have also died.
+            val : bool
+                Value representing whether to store all dead taxa whose descendats have also died.
         )mydelimiter")
         .def("set_store_archive", static_cast<void (sys_t::*) (bool)>(&sys_t::SetArchive), R"mydelimiter(
             A setter method to configure whether to store taxa types that have become extinct.
@@ -317,7 +327,8 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            bool val Value representing whether to store taxa types that have died out.
+            val : bool 
+                Value representing whether to store taxa types that have died out.
         )mydelimiter")
         .def("set_store_position", static_cast<void (sys_t::*) (bool)>(&sys_t::SetStorePosition), R"mydelimiter(
             A setter method to configure whether to store the position of each taxa.
@@ -325,7 +336,8 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            bool val Value representing whether to store the position of each taxa.
+            val : bool 
+                Value representing whether to store the position of each taxa.
         )mydelimiter")
         .def("set_track_synchronous", static_cast<void (sys_t::*) (bool)>(&sys_t::SetTrackSynchronous), R"mydelimiter(
             A setter method to configure whether a synchronous population is being tracked. A synchronous population is one where parents must be extanct for their offspring to be born. As such, there are effectively two populations: a currently-active one, and one being created. This is in opposition to steady-state populations, where organisms might die as their offspring are born (for example, in a world where offspring replaces the parent).
@@ -334,14 +346,16 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            bool val Value representing whether a synchronous population is being tracked.
+            val : bool 
+                Value representing whether a synchronous population is being tracked.
         )mydelimiter")
         .def("set_update", static_cast<void (sys_t::*) (size_t)>(&sys_t::SetUpdate), R"mydelimiter(
             A setter method to modify the current time step. This should be used if you want PhylotrackPy to track when events occur.
 
             Parameters
             ----------
-            int update An integer value representing the current time step.
+            update : int 
+                An integer value representing the current time step.
         )mydelimiter")
 
         // Getting systematics manager state
@@ -432,21 +446,24 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            taxon_t tax The taxon to return the parent of.
+            tax : taxon 
+                The taxon to return the parent of.
         )mydelimiter")
         .def("is_taxon_at", static_cast<bool (sys_t::*) (emp::WorldPosition)>(&sys_t::IsTaxonAt), R"mydelimiter(
             Returns whether a taxon is present at the given location. This will only work if the systematics manager is set to track positions (which can be checked with `get_store_position()`).
 
             Parameters
             ----------
-            WorldPosition id Location to check for taxon.
+            id : WorldPosition
+                Location to check for taxon.
         )mydelimiter")
         .def("get_taxon_at", static_cast<emp::Ptr<taxon_t> (sys_t::*) (emp::WorldPosition)>(&sys_t::GetTaxonAt), R"mydelimiter(
             Returns the taxon at the given location, if any. This will only work if the systematics manager is set to track positions (which can be checked with `get_store_position()`).
 
             Parameters
             ----------
-            WorldPosition id Location of taxon.
+            id : WorldPosition
+                Location of taxon.
         )mydelimiter")
         .def("get_mrca", static_cast<emp::Ptr<taxon_t> (sys_t::*) () const>(&sys_t::GetMRCA), py::return_value_policy::reference_internal, R"mydelimiter(
             Returns a temporary, non-owning object (reference) representing the Most-Recent Common Ancestor of the population.
@@ -457,8 +474,10 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            taxon_t t1 Taxon to return MCRA of.
-            taxon_t t2 Taxon to return MCRA of.
+            t1 : taxon
+                Taxon to return MCRA of.
+            t2 : taxon
+                Taxon to return MCRA of.
         )mydelimiter")
 
         // Birth notification
@@ -473,14 +492,16 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            WorldPosition position: The location of the organism that died.
+            position : WorldPosition
+                The location of the organism that died.
             )mydelimiter")
         .def("remove_org", [](sys_t & self, taxon_t * tax){return self.RemoveOrg(tax);}, R"mydelimiter(
             Notify the systematics manager that an organism has died. Use this method if you are keeping track of taxon objects yourself (rather than having the systematics manager handle it by tracking position).
 
             Parameters
             ----------
-            Taxon tax: The taxon of the organism that died.
+            tax : Taxon 
+                The taxon of the organism that died.
             )mydelimiter")
         .def("remove_org_by_position_after_repro", static_cast<void (sys_t::*) (emp::WorldPosition)>(&sys_t::RemoveOrgAfterRepro), R"mydelimiter(
             Notify the systematics manager that an organism has died but that it shouldn't record the death until the next reproduction event.
@@ -492,7 +513,8 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            WorldPosition position: The location of the organism that died.
+            position : WorldPosition
+                The location of the organism that died.
             )mydelimiter")
         .def("remove_org_after_repro", [](sys_t & self, taxon_t * tax){self.RemoveOrgAfterRepro(tax);}, R"mydelimiter(
             Notify the systematics manager that an organism has died but that it shouldn't record the death until the next reproduction event.
@@ -504,21 +526,24 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            Taxon tax: The taxon of the organism that died.
+            tax : Taxon
+                The taxon of the organism that died.
             )mydelimiter")
         .def("set_next_parent", [](sys_t & self, taxon_t * tax){self.SetNextParent(tax);}, R"mydelimiter(
             Sometimes, due to the flow of your program, you may not have access to the taxon object for the parent and the offspring at the same time. In these cases, you can use set_next_parent to tell the systematics manager what the taxon of the parent of the next offspring should be. The next time you call one of the add_org methods without a specified parent, the systematics manager will used the specified taxon as the parent for that organism.
 
             Parameters
             ----------
-            Taxon tax: The taxon to set as the next parent.
+            tax : Taxon
+                The taxon to set as the next parent.
             )mydelimiter")
         .def("set_next_parent_by_position", static_cast<void (sys_t::*) (emp::WorldPosition)>(&sys_t::SetNextParent), R"mydelimiter(
             Works just like set_next_parent except for systematics managers that are tracking based on position.
 
             Parameters
             ----------
-            WorldPosition pos: The position in the world of the organism that should be the next parent.
+            pos : WorldPosition 
+                The position in the world of the organism that should be the next parent.
             )mydelimiter")
 
         // Move notification
@@ -527,8 +552,10 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            WorldPosition pos1: The position of one of the organisms being swapped.
-            WorldPosition pos2: The position of one of the organisms being swapped.
+            pos1 : WorldPosition
+                The position of one of the organisms being swapped.
+            pos2 : WorldPosition
+                The position of one of the organisms being swapped.
             )mydelimiter")
 
         // Signals
@@ -539,7 +566,8 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            Callable[[Taxon, Organism], None] fun: Function to run during new taxon creation. It must take a Taxon object corresponding to the new taxon as its first argument, and an object representing the organism the taxon was created from as its second argument.
+            fun : Callable[[Taxon, Organism], None]
+                Function to run during new taxon creation. It must take a Taxon object corresponding to the new taxon as its first argument, and an object representing the organism the taxon was created from as its second argument.
         )mydelimiter")
         .def("on_extinct", [](sys_t & self, std::function<void(emp::Ptr<taxon_t> t)> & fun){self.OnExtinct(fun);}, R"mydelimiter(
             Set a custom function that is triggered every time a taxon goes extinct.
@@ -548,7 +576,8 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            Callable[taxon_t, None] fun: Function to run during taxon destruction. It must take a `taxon_t` object corresponding to the destroyee taxon.
+            fun : Callable[[Taxon, Organism], None]  
+                Function to run during taxon destruction. It must take a `taxon_t` object corresponding to the destroyee taxon.
         )mydelimiter")
         .def("on_prune", [](sys_t & self, std::function<void(emp::Ptr<taxon_t> t)> & fun){self.OnPrune(fun);}, R"mydelimiter(
             Set a custom function that is triggered every time a taxon is pruned from the tree. This occurs when a taxon and all its descendants go extinct.
@@ -558,7 +587,8 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            Callable[taxon_t, None] fun: Function to run during taxon pruning. It must take a `taxon_t` object corresponding to the pruned taxon.
+            fun : Callable[[Taxon, Organism], None]
+                Function to run during taxon pruning. It must take a `taxon_t` object corresponding to the pruned taxon.
         )mydelimiter")
 
         // Phylostatistics
@@ -583,7 +613,8 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            Taxon tax: Taxon to find branches to MRCA (or subroot) of.
+            tax : Taxon
+                Taxon to find branches to MRCA (or subroot) of.
         )mydelimiter")
         .def("get_distance_to_root", [](sys_t & self, taxon_t * tax){return self.GetDistanceToRoot(tax);}, R"mydelimiter(
             Given a taxon, this function calculates and returns the distance to its Most-Recent Common Ancestor (or its subtree root if none is found).
@@ -591,7 +622,8 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            Taxon tax: Taxon to find distance to MRCA (or subroot) of.
+            tax : Taxon
+                Taxon to find distance to MRCA (or subroot) of.
         )mydelimiter")
         .def("get_pairwise_distance", [](sys_t & self, taxon_t * tax, taxon_t * tax2, bool branch_only){return self.GetPairwiseDistance(tax, tax2, branch_only);}, 
         py::arg("tax"),
@@ -605,9 +637,12 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            Taxon tax: First taxon of pair to find distance between.
-            Taxon tax2: Second taxon of pair to find the distance between.
-            bool branch_only: Only counts distance in terms of nodes that represent a branch between two extant taxa.
+            tax : Taxon
+                First taxon of pair to find distance between.
+            tax2 : Taxon
+                Second taxon of pair to find the distance between.
+            branch_only : bool
+                Only counts distance in terms of nodes that represent a branch between two extant taxa.
         )mydelimiter")
         .def("get_pairwise_distances", static_cast<std::vector<double> (sys_t::*) (bool) const>(&sys_t::GetPairwiseDistances), R"mydelimiter(
             This method calculates distances between all pairs of extant taxa.
@@ -617,7 +652,8 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            bool branch_only: Only counts distance in terms of nodes that represent a branch between two extant taxa.
+            branch_only : bool 
+                Only counts distance in terms of nodes that represent a branch between two extant taxa.
         )mydelimiter")
         .def("get_variance_pairwise_distance", static_cast<double (sys_t::*) (bool) const>(&sys_t::GetVariancePairwiseDistance), R"mydelimiter(
             This method calculates the variance of distance between all pairs of extant taxa. This is a measure of phylogenetic regularity :cite:p:`tucker2017guide`.
@@ -627,7 +663,8 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            bool branch_only: Only counts distance in terms of nodes that represent a branch between two extant taxa.
+            branch_only : bool 
+                Only counts distance in terms of nodes that represent a branch between two extant taxa.
         )mydelimiter")
         .def("get_mean_pairwise_distance", static_cast<double (sys_t::*) (bool) const>(&sys_t::GetMeanPairwiseDistance), R"mydelimiter(
         )mydelimiter")
@@ -639,7 +676,8 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            bool branch_only: Only counts distance in terms of nodes that represent a branch between two extant taxa.
+            branch_only : bool 
+                Only counts distance in terms of nodes that represent a branch between two extant taxa.
         )mydelimiter")
         .def("get_phylogenetic_diversity", static_cast<int (sys_t::*) () const>(&sys_t::GetPhylogeneticDiversity), R"mydelimiter(
             This method calculates the sum of edges of the Minimum Spanning Tree of the currently-active phylogenetic tree :cite:p:`faith1992conservation,winter2013phylogenetic`.
@@ -652,7 +690,8 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            bool normalize: Whether to normalize result.
+            normalize : bool
+                Whether to normalize result.
         )mydelimiter")
         .def("get_out_degree_distribution", static_cast<std::unordered_map<int, int> (sys_t::*) () const>(&sys_t::GetOutDegreeDistribution), R"mydelimiter(
             This method creates a histogram of outnode degrees. In other words, it iterates through the whole phylogenetic tree and counts the number of outgoing edges for each node, returning this data in the form of a dictionary, with keys being outnode degrees and values being counts.
@@ -665,8 +704,9 @@ PYBIND11_MODULE(systematics, m) {
             This method takes the *current* time as a parameter, in whichever units the systematics manager is using. Using a non-present time will produce innacurate results, since the only known state of the tree is the current one.
 
             Parameters
-            __________
-            double time: Current time in the appropiate units (e.g., generations, seconds, etc.)
+            ----------
+            time : double
+                Current time in the appropiate units (e.g., generations, seconds, etc.)
         )mydelimiter")
         .def("get_sum_evolutionary_distinctiveness", static_cast<double (sys_t::*) (double) const>(&sys_t::GetSumEvolutionaryDistinctiveness), R"mydelimiter(
             This method calculates the sum of evolutionary distinctiveness of all extant taxa.
@@ -674,8 +714,9 @@ PYBIND11_MODULE(systematics, m) {
             This method takes the *current* time as a parameter, in whichever units the systematics manager is using. Using a non-present time will produce innacurate results, since the only known state of the tree is the current one.
 
             Parameters
-            __________
-            double time: Current time in the appropiate units (e.g., generations, seconds, etc.)
+            ----------
+            time : double 
+                Current time in the appropiate units (e.g., generations, seconds, etc.)
         )mydelimiter")
         .def("get_variance_evolutionary_distinctiveness", static_cast<double (sys_t::*) (double) const>(&sys_t::GetVarianceEvolutionaryDistinctiveness), R"mydelimiter(
             This method calculates the variance of evolutionary distinctiveness across all extant taxa.
@@ -684,7 +725,8 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            double time: Current time in the appropiate units (e.g., generations, seconds, etc.)
+            time : double 
+                Current time in the appropiate units (e.g., generations, seconds, etc.)
         )mydelimiter")
 
         // Input
@@ -693,10 +735,14 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            string file_path: Path to file containing phylogenies to be loaded. Either absolute or relative to the Python executable.
-            string info_col: Name of file column containing taxa information. Defaults to `"info"`.
-            bool assume_leaves_extant: Whether leaves are assumed to be extant. Defaults to `True`.
-            bool adjust_total_offstring: Whether total offspring count should be adjusted for all taxa. Defaults to `True`.
+            file_path : string
+                Path to file containing phylogenies to be loaded. Either absolute or relative to the Python executable.
+            info_col : string
+                Name of file column containing taxa information. Defaults to `"info"`.
+            assume_leaves_extant : bool
+                Whether leaves are assumed to be extant. Defaults to `True`.
+            adjust_total_offstring : bool
+                Whether total offspring count should be adjusted for all taxa. Defaults to `True`.
             )mydelimiter")
 
         // Output
@@ -706,7 +752,8 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            string file_path: File path to save snapshot to.
+            file_path : string
+                File path to save snapshot to.
         )mydelimiter")
         .def(
             "add_snapshot_fun",
@@ -718,15 +765,19 @@ PYBIND11_MODULE(systematics, m) {
             py::arg("fun"),
             py::arg("key"),
             py::arg("desc") = "",
-            R"mydelimiter(This method adds a new snapshot function that will run in addition to the default functions when a snapshot is taken. A custom snapshot function should be created whenever storage and retrival of custom taxon data is desired.
+            R"mydelimiter(
+            This method adds a new snapshot function that will run in addition to the default functions when a snapshot is taken. A custom snapshot function should be created whenever storage and retrieval of custom taxon data is desired.
 
             Custom snapshot functions must take a Taxon object as a single argument and return the data to be saved as a string. The second argument to this method is the key the custom information will be stored under in the snapshot file. Optionally, a short description of the custom information can be provided as its third argument.
 
             Parameters
             ----------
-            Callable[Taxon, str] fun: Custom snapshot function, taking a Taxon object as its singular parameter, and returning the custom data as a string.
-            str key: Key to store the custom information under inside the snapshot file.
-            str desc: Optional description for the custom information.
+            fun : Callable[Taxon, str]
+                Custom snapshot function, taking a Taxon object as its singular parameter, and returning the custom data as a string.
+            key : str
+                Key to store the custom information under inside the snapshot file.
+            desc : str
+                Optional description for the custom information.
         )mydelimiter")
         .def("print_status", [](sys_t & self){self.PrintStatus();}, R"mydelimiter(
             This method prints details about the systematics manager.
@@ -738,7 +789,8 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            Taxon tax: Taxon to print the lineage of.
+            tax : Taxon
+                Taxon to print the lineage of.
         )mydelimiter")
 
         // Time tracking
@@ -752,7 +804,8 @@ PYBIND11_MODULE(systematics, m) {
 
             Parameters
             ----------
-            int ud: Time step before which to remove taxa.
+            ud : int
+                Time step before which to remove taxa.
         )mydelimiter")
         ;
 }
