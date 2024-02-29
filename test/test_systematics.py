@@ -320,18 +320,21 @@ def test_phylostatistics():
     assert sys.get_average_origin_time() == 0
     assert sys.get_average_origin_time(True) == 0
     assert sys.get_pairwise_distance(id1, id1) == approx(0)
+    assert sys.get_sum_distance() == approx(0)
 
     sys.set_update(6)
     id2 = sys.add_org(1, id1)
     assert sys.get_average_origin_time() == 3
     assert sys.get_average_origin_time(True) == 0
     assert sys.get_pairwise_distance(id2, id1) == approx(1)
+    assert sys.get_sum_distance() == approx(6)
 
     sys.set_update(10)
     id3 = sys.add_org(26, id1)
     assert sys.get_average_origin_time() == approx(5.3333333)
     assert sys.get_average_origin_time(True) == 0
     assert sys.get_pairwise_distance(id2, id3) == approx(2)
+    assert sys.get_sum_distance() == approx(16)
 
     sys.set_update(25)
     id4 = sys.add_org(27, id2)

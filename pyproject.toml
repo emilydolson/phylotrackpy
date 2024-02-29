@@ -9,9 +9,13 @@ build-backend = "setuptools.build_meta"
 
 [tool.cibuildwheel]
 test-command = "pytest -m \"not nowheel\" {project}"
-skip = "*musllinux*"
+skip = ["*musllinux*", "cp37*", "pp37*", "*i686*", "*win32*"]
 test-requires = "pytest"
 before-test = "cp {project}/test/assets/* ."
+before-all = "g++ --version"
+
+manylinux-x86_64-image = "quay.io/pypa/manylinux_2_28_x86_64"
+manylinux-pypy_x86_64-image = "quay.io/pypa/manylinux_2_28_x86_64"
 
 [tool.pytest.ini_options]
 markers = [

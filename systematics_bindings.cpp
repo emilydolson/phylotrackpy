@@ -668,6 +668,9 @@ PYBIND11_MODULE(systematics, m) {
         )mydelimiter")
         .def("get_mean_pairwise_distance", static_cast<double (sys_t::*) (bool) const>(&sys_t::GetMeanPairwiseDistance), R"mydelimiter(
         )mydelimiter")
+        .def("get_sum_distance", static_cast<double (sys_t::*) () const>(&sys_t::GetSumDistance), R"mydelimiter(
+            This method calculates the total branch length. This is a measure of community distinctness :cite:p:`webb2000exploring,clark1998artificial`.
+        )mydelimiter")
         .def("get_sum_pairwise_distance", static_cast<double (sys_t::*) (bool) const>(&sys_t::GetSumPairwiseDistance), R"mydelimiter(
             This method calculates the mean distance between all pairs of extant taxa, also known as the Average Taxonomic Diversity. This is a measure of community distinctness :cite:p:`webb2000exploring,clark1998artificial`.
             This assumes the phylogenetic tree is fully connected. If this is not the case, it will return -1.
