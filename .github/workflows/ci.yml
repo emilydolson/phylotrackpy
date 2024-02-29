@@ -93,14 +93,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-20.04, windows-2022, macos-11]
+        os: [ubuntu-22.04, windows-2022, macos-11]
 
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: "recursive"
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.16.2
+        uses: pypa/cibuildwheel@v2.16.5
       - uses: actions/upload-artifact@v3
         with:
           path: ./wheelhouse/*.whl
