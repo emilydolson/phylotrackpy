@@ -25,6 +25,8 @@ matplotlib==3.8.2
     #   -r requirements.in
     #   seaborn
     #   teeplot
+memory-profiler==0.61.0
+    # via -r requirements.in
 more-itertools==10.1.0
     # via keyname
 numpy==1.26.2
@@ -44,8 +46,10 @@ pandas==2.1.3
     #   teeplot
 phylotrackpy==0.1.17
     # via -r requirements.in
-pillow==10.1.0
+pillow==10.2.0
     # via matplotlib
+psutil==5.9.8
+    # via memory-profiler
 py==1.11.0
     # via retry
 pyparsing==3.1.1
