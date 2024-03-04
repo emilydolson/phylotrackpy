@@ -18,7 +18,7 @@ authors:
   - name: Matthew Andres Moreno
     orcid: 0000-0003-4726-4479
     affiliation: "3, 4"
-    
+
 affiliations:
  - name: Department of Computer Science and Engineering, Michigan State University, East Lansing, MI, USA
    index: 1
