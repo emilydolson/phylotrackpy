@@ -55,7 +55,7 @@ In contrast, Phylotrack provides ready-built tracking flexible enough to attach 
 
 Two other general-purpose libraries for phylogenetic record-keeping do exist: hstrat and Automated Phylogeny Over Geological Timescales (APOGeT).
 However, they provide different modes of phylogenetic instrumentation than Phylotrack does.
-Whereas Phylotrack uses a graph-based approach to perfectly record asexual phylogenies, the hstrat library implements hereditary stratigraphy, a technique for decentralized phylogenetic tracking that is approximate instead of exact [@moreno2022hstrat] (see [@moreno2023lineage] for a more thorough comparison).
+Whereas Phylotrack uses a graph-based approach to perfectly record asexual phylogenies, the hstrat library implements hereditary stratigraphy, a technique for decentralized phylogenetic tracking that is approximate instead of exact [@moreno2022hstrat] (see [@moreno2024analysis] for a more thorough comparison).
 APOGeT, in turn, focuses on tracking speciation in sexually-reproducing populations [@godin2019apoget].
 
 Vast amounts of bioinformatics-oriented phylogenetics software is also available.
@@ -83,8 +83,8 @@ The level of abstraction (i.e., what constitutes a taxonomic unit) can be custom
 Supplemental data about each taxonomic unit can be stored efficiently.
 
 Lineage recording in phylotrack is efficient.
-The worst-case time complexity is O(1) [@moreno2023lineage].
-Space complexity is harder to meaningfully calculate, but should be O(N) on average in most evolutionary scenarios (where N is population size)  [@moreno2023lineage].
+The worst-case time complexity is O(1) [@moreno2024analysis].
+Space complexity is harder to meaningfully calculate, but should be O(N) on average in most evolutionary scenarios (where N is population size) [@moreno2024analysis].
 
 __Serialization:__
 Phylotrack exports data in the Artificial Life Standard Phylogeny format [@lalejiniDataStandardsArtificial2019] that plugs into an associated ecosystem of software converters, analyzers, and visualizers.
