@@ -83,6 +83,7 @@ jobs:
       uses: codecov/codecov-action@v4
       with:
         files: "coverage.cpp, coverage.lcov, Empirical/include/emp/Evolve/Systematics.hpp"
+        token: ${CODECOV_TOKEN}
         verbose: true      
 
   build_wheels:
