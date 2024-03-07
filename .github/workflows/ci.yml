@@ -24,7 +24,7 @@ jobs:
       with:
         submodules: "recursive"
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
@@ -56,7 +56,7 @@ jobs:
       with:
         submodules: "recursive"
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
     # - name: Setup LCOV
@@ -101,7 +101,7 @@ jobs:
           submodules: "recursive"
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.5
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           path: ./wheelhouse/*.whl
 
@@ -116,7 +116,7 @@ jobs:
       - name: Build sdist
         run: pipx run build --sdist
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           path: dist/*.tar.gz
 
@@ -128,14 +128,14 @@ jobs:
     # alternatively, to publish when a GitHub Release is created, use the following rule:
     # if: github.event_name == 'release' && github.event.action == 'published'
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           # unpacks default artifact into dist/
           # if `name: artifact` is omitted, the action will create extra parent dir
           name: artifact
           path: dist
 
-      - uses: pypa/gh-action-pypi-publish@v1.5.0
+      - uses: pypa/gh-action-pypi-publish@v1.8.12
         with:
           user: __token__
           password: ${{ secrets.PYPI_API_TOKEN }}
@@ -153,7 +153,7 @@ jobs:
           # This should be the path to the paper within your repo.
           paper-path: joss/paper.md
       - name: Upload
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: paper
           # This is the output path where Pandoc will write the compiled
