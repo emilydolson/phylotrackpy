@@ -217,8 +217,8 @@ PYBIND11_MODULE(systematics, m) {
     // py::implicitly_convertible<std::tuple<int, int>, emp::WorldPosition>();
 
     py::class_<taxon_t, taxon_ptr>(m, "Taxon")
-        .def(py::init<size_t, taxon_info_t>())
-        .def(py::init<size_t, taxon_info_t, taxon_t*>())
+        // .def(py::init<size_t, taxon_info_t>())
+        // .def(py::init<size_t, taxon_info_t, taxon_t*>())
         .def("__copy__",  [](const taxon_t &self) -> const taxon_t & {
             return self;
         }, py::return_value_policy::reference_internal)

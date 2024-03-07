@@ -394,7 +394,8 @@ def test_deepcopy():
 
 
 def test_taxon():
-    tax = systematics.Taxon(0, "hello")
+    sys = systematics.Systematics(lambda x: x, True, True, False, False)
+    tax = sys.add_org("hello")
     assert tax.get_info() == "hello"
 
 
