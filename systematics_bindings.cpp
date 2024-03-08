@@ -194,7 +194,8 @@ PYBIND11_MODULE(systematics, m) {
 
     py::class_<emp::WorldPosition>(m, "WorldPosition")
         .def(py::init<size_t, size_t>())
-        // .def(py::init<std::tuple<size_t, size_t>>())
+        .def(py::init<size_t>())
+        .def(py::init([](const std::tuple<size_t, size_t> & p){return new emp::WorldPosition(std::get<0>(p), std::get<1>(p));}))
         .def("get_index", &emp::WorldPosition::GetIndex, R"mydelimiter(
             Returns the index (position within the population) represented by this WorldPosition as an int
             )mydelimiter")
@@ -214,7 +215,8 @@ PYBIND11_MODULE(systematics, m) {
             This method returns a boolean indicating whether this position is "valid" (i.e. the index is not equal to -1).
             )mydelimiter");
 
-    // py::implicitly_convertible<std::tuple<int, int>, emp::WorldPosition>();
+    py::implicitly_convertible<int, emp::WorldPosition>();
+    py::implicitly_convertible<std::tuple<int, int>, emp::WorldPosition>();
 
     py::class_<taxon_t, taxon_ptr>(m, "Taxon")
         // .def(py::init<size_t, taxon_info_t>())

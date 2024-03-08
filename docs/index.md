@@ -10,6 +10,7 @@
 
 introduction
 quickstart
+position_tracking
 context
 glossary
 misc

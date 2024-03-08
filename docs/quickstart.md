@@ -19,6 +19,13 @@ For example, to build a phylogeny based on genotypes, you could do the following
 ```py
 from phylotrackpy import systematics
 
+# Imagine we have some class where each individual's genotype is stored in a member variable called genotype.
+# Yours is probably more complicated, but here's a bare-bones example
+
+class Organism:
+  def __init__(self):
+    self.genotype = "ACTG"
+
 # Assuming that the objects being used as organisms have a member variable called genotype that stores their genotype,
 # this will created a phylogeny based on genotypes
 syst = systematics.Systematics(lambda org: org.genotype)
@@ -40,7 +47,7 @@ There are a couple of other decisions that you also need to make at this point. 
 - **ancestors**: the taxa that are ancestors of active taxa. You almost certainly want to store these too (without them you don't really have a phylogeny), but can technically disable them by setting the `store_ancestors` keyword argument in the constructor to false.
 - **outside**: the taxa that are not in either of the other two groups (i.e. taxa that have gone extinct and all of their ancestors have gone extinct). If you store these, your phylogeny will get very large very fast, so doing so is generally not recommended. It is occasionally useful, though, so you can enable storing these taxa by setting the `store_all` keyword argument in the constructor to true.
 
-The second decision is slightly trickier. Once you start adding organisms to the systematics manager, it will create [`Taxon`](phylotrackpy.systematics.Taxon) objects associated with each one to keep track of which taxon it is part of. You will need to use these taxon objects when adding future organisms, to specify which taxon their parent was part of. If you have control over your organism class, it is likely that the easiest option is to add a `self.taxon` attribute and store the taxon there. However, if you cannot add arbitrary data to your organism class, keeping track of taxon objects can get annoying. For this reason, the systematics manager gives you the option of letting it manage them. To do so, it needs a way to map individuals to taxa (since its possible there are duplicate taxa, simply running the organism to taxon function again won't work). It achieves this mapping by keeping track of each organism's position in the population. Thus, to have the systematics manager keep track of taxon objects itself, you must set the `store_pos` keyword argument in the constructor to true. You must also use the position-based versions of add_org and remove_org, and make sure to notify the systematics manager if any organism ever changes position during its lifetime for any reason.
+The second decision is slightly trickier. Once you start adding organisms to the systematics manager, it will create [`Taxon`](phylotrackpy.systematics.Taxon) objects associated with each one to keep track of which taxon it is part of. You will need to use these taxon objects when adding future organisms, to specify which taxon their parent was part of. If you have control over your organism class, it is likely that the easiest option is to add a `self.taxon` attribute and store the taxon there (demonstrated below). However, if you cannot add arbitrary data to your organism class, keeping track of taxon objects can get annoying. For this reason, the systematics manager gives you the option of letting it manage them. To do so, it needs a way to map individuals to taxa (since its possible there are duplicate taxa, simply running the organism to taxon function again won't work). It achieves this mapping by keeping track of each organism's position in the population. Thus, to have the systematics manager keep track of taxon objects itself, you must set the `store_pos` keyword argument in the constructor to true. You must also use the position-based versions of add_org and remove_org, and make sure to notify the systematics manager if any organism ever changes position during its lifetime for any reason. For more information, see the section on [position-based tracking](position_tracking)
 
 Once you have created the [`Systematics`](phylotrackpy.systematics.Systematics) object, you just need to do two things: 1) notify it when something is born, and 2) notify it when something dies.
 
@@ -101,7 +108,7 @@ Phylotrackpy has native support to load and save phylogenies via CSV files forma
 syst.snapshot("phylo.csv")
 
 # load a phylogeny from file
-loaded_sys = systematics.Systematics(lambda org: org.genotype)
+loaded_syst = systematics.Systematics(lambda org: org.genotype)
 loaded_syst.load_from_file("phylo.csv", "id")
 ```
 
