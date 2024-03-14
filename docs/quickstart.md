@@ -48,7 +48,7 @@ Once you have created the [`Systematics`](phylotrackpy.systematics.Systematics) 
 
 You must notify the systematics manager of births using the `add_org` family of functions. These functions require that you provide the newly born organism as well as either the taxon object of its parent or the position of its parent (if the systematics manager is tracking positions).
 
-Example of tracking taxa as object attributes (assume we're building on our example above, and already have created a systematics manager called `sys`):
+Example of tracking taxa as object attributes (assume we're building on our example above, and already have created a systematics manager called `syst`):
 
 ```py
 # Do whatever you would normally do to create your first organism
