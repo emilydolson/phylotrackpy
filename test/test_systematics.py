@@ -439,3 +439,25 @@ def test_synchronous_by_position():
     sys.update()
     assert sys.get_num_active() == 10
     assert sys.get_num_taxa() == 20
+
+
+#********************************************* Will be moved to another directory
+import re
+
+class Organism:
+    def __init__(self):
+        self.taxon = 1
+    def Reproduce(self):
+        return Organism()
+
+def test_quickstart():
+    with open('/phylotrackpy/docs/quickstart.md', 'r', encoding='utf-8') as file:
+        content = file.read()
+    regex = re.compile(r"```py\s(.*?)\s```", re.DOTALL | re.MULTILINE,)
+    blocks = [i for i in regex.findall(content)]
+    splitted_blocks = []
+    for i in blocks:
+        splitted_blocks.append(i.split('\\n'))
+    for i in range(len(splitted_blocks)):
+        exec(''.join(splitted_blocks[i]).strip())
+    sys.get_num_taxa()
