@@ -443,6 +443,7 @@ def test_synchronous_by_position():
 
 #********************************************* Will be moved to another directory
 import re
+import sys
 
 class Organism:
     def __init__(self):
