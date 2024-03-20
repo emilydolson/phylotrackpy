@@ -452,7 +452,7 @@ class Organism:
         return Organism()
 
 def test_quickstart():
-    with open('/phylotrackpy/docs/quickstart.md', 'r') as file:
+    with open('docs/quickstart.md', 'r') as file:
         content = file.read()
     regex = re.compile(r"```py\s(.*?)\s```", re.DOTALL | re.MULTILINE,)
     blocks = [i for i in regex.findall(content)]
