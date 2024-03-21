@@ -2,3 +2,4 @@ sphinx_rtd_theme
 myst_parser>=2.0.0
 sphinx_tippy
 sphinxcontrib-bibtex
+alifedata_phyloinformatics_convert
