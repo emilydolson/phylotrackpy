@@ -151,7 +151,6 @@ class taxon_info : public py::object {
     }
 
     taxon_info() {
-        std::cout << "default constructor" << std::endl;
         equals_operator = py::none();
     };
 
