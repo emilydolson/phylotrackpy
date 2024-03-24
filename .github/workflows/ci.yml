@@ -33,7 +33,7 @@ jobs:
         pip install oldest-supported-numpy==2023.10.25
         # --ignore-requires-python ensures docs deps don't break install on early python versions
         if [ -f requirements.txt ]; then pip install --ignore-requires-python -r requirements.txt; fi
-        if [ -f tests/requirements.txt ]; then pip install -r tests/requirements.txt; fi	
+        if [ -f tests/requirements.txt ]; then pip install --ignore-requires-python -r tests/requirements.txt; fi	
         pip install -e . 
     - name: Lint with flake8
       run: |
@@ -71,7 +71,7 @@ jobs:
         pip install oldest-supported-numpy==2023.10.25
         # --ignore-requires-python ensures docs deps don't break install on early python versions
         if [ -f requirements.txt ]; then pip install --ignore-requires-python -r requirements.txt; fi
-        if [ -f tests/requirements.txt ]; then pip install -r tests/requirements.txt; fi		
+        if [ -f tests/requirements.txt ]; then pip install --ignore-requires-python -r tests/requirements.txt; fi		
         rm -rf Empirical/.git
     - name: Build phylotrackpy 
       run: |
