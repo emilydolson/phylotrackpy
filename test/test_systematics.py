@@ -12,7 +12,7 @@ assets_path = os.path.join(
 )
 docs_path = os.path.join(
     os.path.dirname(os.path.abspath(__file__)), 
-    "docs",
+    "../docs",
 )
 
 
