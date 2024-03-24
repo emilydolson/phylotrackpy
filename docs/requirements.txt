@@ -2,4 +2,19 @@ sphinx_rtd_theme
 myst_parser>=2.0.0
 sphinx_tippy
 sphinxcontrib-bibtex
-alifedata_phyloinformatics_convert
+
+# example usage notebook
+pandas==1.5.2
+phylotrackpy==0.1.18
+colormath==3.0.0
+Bio==1.6.2
+matplotlib==3.8.3
+alifedata_phyloinformatics_convert==0.16.2
+numpy==1.23.5
+watermark==2.4.3
+ipykernel  # https://stackoverflow.com/a/76855162/17332200
+ipython-genutils  # implicit nbsphinx requirement? missing on CI
+jinja2==3.0.3  # https://github.com/d2l-ai/d2l-book/issues/46#issuecomment-1262704457
+nbconvert==6.4.2  # https://github.com/spatialaudio/nbsphinx/issues/466
+IPython
+nbsphinx

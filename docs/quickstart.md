@@ -21,7 +21,7 @@ from phylotrackpy import systematics
 
 # Assuming that the objects being used as organisms have a member variable called genotype that stores their genotype,
 # this will created a phylogeny based on genotypes
-sys = systematics.Systematics(lambda org: org.genotype)
+syst = systematics.Systematics(lambda org: org.genotype)
 ```
 
 If you want to base your phylogeny on raw organism objects (e.g. if your organisms are lists and you want to make a new taxon any time a list is produced that doesn't match its parent), you can rely on default arguments to the Systematics constructor (assuming your organism objects aren't anything too weird):
@@ -31,7 +31,7 @@ from phylotrackpy import systematics
 
 # By default the objects being used as organisms will be
 # the basis for the phylogeny.
-sys = systematics.Systematics()
+syst = systematics.Systematics()
 ```
 
 There are a couple of other decisions that you also need to make at this point. The first is which set of taxa to store in the systematics manager. The defaults here are most likely what you want to use, but in case they aren't, the systematics manager can be told to store or not store the following sets of taxa:
@@ -48,7 +48,7 @@ Once you have created the [`Systematics`](phylotrackpy.systematics.Systematics) 
 
 You must notify the systematics manager of births using the `add_org` family of functions. These functions require that you provide the newly born organism as well as either the taxon object of its parent or the position of its parent (if the systematics manager is tracking positions).
 
-Example of tracking taxa as object attributes (assume we're building on our example above, and already have created a systematics manager called `sys`):
+Example of tracking taxa as object attributes (assume we're building on our example above, and already have created a systematics manager called `syst`):
 
 ```py
 # Do whatever you would normally do to create your first organism
@@ -60,7 +60,7 @@ my_org = Organism()
 # so we do not pass a second argument/
 # add_org will return this organism's taxon object, which we
 # store in my_org.taxon for future reference
-my_org.taxon = sys.add_org(my_org)
+my_org.taxon = syst.add_org(my_org)
 
 # Assume stuff happens here that leads to my_org having offspring
 # Here, we'll pretend that our organism class has a Reproduce method that
@@ -71,7 +71,7 @@ org_2 = my_org.Reproduce()
 # Notify the systematics manager of org_2's birth. Since it has a parent,
 # we pass the taxon of that parent in as the second argument
 # Again, we store the returned taxon object in the organism for safe keeping
-org_2.taxon = sys.add_org(org_2, my_org.taxon)
+org_2.taxon = syst.add_org(org_2, my_org.taxon)
 
 ```
 
@@ -88,7 +88,7 @@ As an example (again, building on the previous examples):
 # We notify the systematics manager that this has happened by calling remove_org
 # Note that remove_org takes the taxon of the dead organism as an argument, not
 # the organism itself
-sys.remove_org(my_org.taxon)
+syst.remove_org(my_org.taxon)
 
 ```
 
@@ -98,7 +98,7 @@ Phylotrackpy has native support to load and save phylogenies via CSV files forma
 
 ```py
 # save our phylogeny to file
-sys.snapshot("phylo.csv")
+syst.snapshot("phylo.csv")
 
 # load a phylogeny from file
 loaded_sys = systematics.Systematics(lambda org: org.genotype)
@@ -118,7 +118,7 @@ import ete3 as ete
 
 # 1) initialize RosettaTree converter
 # ... with PhylotrackPy data
-converter = apc.RosettaTree(sys)
+converter = apc.RosettaTree(syst)
 # ... or from other libraries' data structures
 converter = apc.RosettaTree(
   Bio.Phylo.read(io.StringIO("(A,B,(C,D));"), "newick"),
