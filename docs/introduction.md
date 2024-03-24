@@ -32,7 +32,7 @@ from phylotrackpy import systematics
 
 # Assuming that the objects being used as organisms have a member variable called genotype that stores their genotype,
 # this will created a phylogeny based on genotypes
-sys = systematics.Systematics(lambda org: org.genotype)
+syst = systematics.Systematics(lambda org: org.genotype)
 ```
 
 ### Pruning
