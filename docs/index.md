@@ -10,6 +10,7 @@
 
 introduction
 quickstart
+example_usage
 context
 glossary
 misc
