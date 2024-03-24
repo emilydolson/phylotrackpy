@@ -10,6 +10,10 @@ assets_path = os.path.join(
     os.path.dirname(os.path.abspath(__file__)), 
     "assets",
 )
+docs_path = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), 
+    "docs",
+)
 
 
 class ExampleOrg:
@@ -452,7 +456,7 @@ class Organism:
         return Organism()
 
 def test_quickstart():
-    with open('docs/quickstart.md', 'r') as file:
+    with open(f"{docs_path}/quickstart.md", 'r') as file:
         content = file.read()
     regex = re.compile(r"```py\s(.*?)\s```", re.DOTALL | re.MULTILINE,)
     blocks = [i for i in regex.findall(content)]
