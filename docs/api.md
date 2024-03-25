@@ -1,7 +1,5 @@
 # API
 
-Partially under construction
-
 ```{eval-rst}
 .. automodule:: phylotrackpy.systematics
 .. autoclass:: Systematics

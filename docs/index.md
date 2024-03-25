@@ -11,6 +11,7 @@
 introduction
 quickstart
 position_tracking
+example_usage
 context
 glossary
 misc

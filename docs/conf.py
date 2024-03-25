@@ -36,6 +36,7 @@ extensions = [
     "myst_parser",
     "sphinx_tippy",
     "sphinxcontrib.bibtex",
+    "nbsphinx",
 ]
 
 bibtex_bibfiles = ['bibliography.bib']

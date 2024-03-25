@@ -28,9 +28,9 @@ print(f"{replicate=}, {pop_size=}")
 ##############################################################################
 population = np.random.uniform(0, 1, pop_size)
 
-sys = systematics.Systematics(str)
-taxa = np.array([sys.add_org(x) for x in population])
-assert sys.get_num_active() == pop_size
+sys_ = systematics.Systematics(str)
+taxa = np.array([sys_.add_org(x) for x in population])
+assert sys_.get_num_active() == pop_size
 
 start_time = time.time()
 
@@ -49,13 +49,13 @@ for generation in it.count():
     # elapse generation
     next_taxa = np.array(
         [
-            sys.add_org(org, taxa[selection])
+            sys_.add_org(org, taxa[selection])
             for org, selection in zip(population, selections)
         ],
     )
     assert len(next_taxa) == pop_size
     for taxon in taxa:
-        sys.remove_org(taxon)
+        sys_.remove_org(taxon)
 
     taxa = next_taxa
     population = next_population
@@ -68,7 +68,7 @@ for generation in it.count():
 batch_dir = f"batch={batch_uuid}+what=rawdata"
 os.makedirs(batch_dir, exist_ok=True)
 
-sys.snapshot(f"{batch_dir}/a=systematics+job={job_uuid}+ext=.csv")
+sys_.snapshot(f"{batch_dir}/a=systematics+job={job_uuid}+ext=.csv")
 pd.DataFrame(
     {
         "replicate": [replicate],
