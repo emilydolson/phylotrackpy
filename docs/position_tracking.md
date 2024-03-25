@@ -110,8 +110,10 @@ for i in range(pop_size):
 curr_generation = next_generation
 for i in range(pop_size):
     # We're removing from population 0, which is the default
-    sys.remove_org_by_position(i)
+    syst.remove_org_by_position(i)
     # Swap the ith element of population 0 and the ith element of population 1
     syst.swap_positions((i,0), (i,1))
 
 ```
+
+Note that we must inform the systematics manager that, when we update generations, we have removed the organisms in population 0 and swapped the positions of the organisms that were formerly in population 1 to now be in population 0.
