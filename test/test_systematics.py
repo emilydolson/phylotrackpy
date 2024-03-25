@@ -440,3 +440,14 @@ def test_synchronous_by_position():
     sys.update()
     assert sys.get_num_active() == 10
     assert sys.get_num_taxa() == 20
+
+
+def test_custom_class():
+
+    syst = systematics.Systematics(lambda org: org.genotype)
+    class Organism():
+        genotype = "ACTG"
+
+    org0 = Organism()
+    org0.genotype
+    syst.add_org(org0)
