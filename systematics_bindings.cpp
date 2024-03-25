@@ -333,7 +333,9 @@ PYBIND11_MODULE(systematics, m) {
         )mydelimiter")
         .def("set_store_position", static_cast<void (sys_t::*) (bool)>(&sys_t::SetStorePosition), R"mydelimiter(
             A setter method to configure whether to store the position of each taxa.
-            This option defaults to True.
+            This option defaults to False.
+
+            See :doc:`position_tracking` for more information
 
             Parameters
             ----------
