@@ -7,6 +7,7 @@
 ![PyPI - Wheel](https://img.shields.io/pypi/wheel/phylotrackpy)
 [![codecov](https://codecov.io/github/emilydolson/phylotrackpy/graph/badge.svg?token=ORZS21AXQM)](https://codecov.io/github/emilydolson/phylotrackpy)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10888780.svg)](https://doi.org/10.5281/zenodo.10888780)
 
 <img src=https://github.com/emilydolson/phylotrackpy/raw/main/docs/images/phylogeny.jpg width="50%" height="50%">
 
