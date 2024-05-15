@@ -23,7 +23,7 @@ Phylotrackpy is essentially a wrapper around [Phylotracklib](https://empirical--
 
 ### Julia
 
-A phylogeny tracker [writting in Julia](https://github.com/jarbus/PhylogeneticTrees.jl/tree/master) is also available.
+A phylogeny tracker [written in Julia](https://github.com/jarbus/PhylogeneticTrees.jl/tree/master) is also available.
 
 ## Features
 
