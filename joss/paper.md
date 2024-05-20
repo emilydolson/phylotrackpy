@@ -17,7 +17,7 @@ authors:
     orcid: 0000-0002-6028-2105
   - name: Matthew Andres Moreno
     orcid: 0000-0003-4726-4479
-    affiliation: "3, 4"
+    affiliation: "3, 4, 5"
 
 affiliations:
  - name: Department of Computer Science and Engineering, Michigan State University, East Lansing, MI, USA
@@ -28,6 +28,8 @@ affiliations:
    index: 3
  - name: Center for the Study of Complex Systems, University of Michigan, Ann Arbor, MI, USA
    index: 4
+- name: Michigan Institute for Data Science, University of Michigan, Ann Arbor, MI, USA
+   index: 5
 date: 10 June 2023
 bibliography: paper.bib
 ---
@@ -137,6 +139,7 @@ We plan to extend Phylotrack in a future release to allow multiple parents per t
 # Acknowledgements
 
 This research was supported in part by Michigan State University through the computational resources provided by the Institute for Cyber-Enabled Research.
+This research is based upon work supported by the Eric and Wendy Schmidt AI in Science Postdoctoral Fellowship, a Schmidt Futures program.
 
 # References
 
