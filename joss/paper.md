@@ -119,7 +119,7 @@ Profiling data and hardware specifications are at <https://osf.io/52hzs/> [@fost
 ![Execution speed across population sizes. Error bars are SE.\label{fig:time}](assets/viz=plot-timeprof+x=population-size+y=generations-per-second+ext=.png){ width=50% }
 
 Figure \ref{fig:memory} shows generations evaluated per second at each population size.
-At population size 10, 1,000, and 100,000, we observed 3,923 (s.d. 257), 28,386 (s.d. 741), and 67,000 (s.d. 1825) agent reproduction events per second.
+At population size 10, 1,000, and 100,000, we observed 3,923 (s.d. 257), 28,386 (s.d. 741), and 67,000 (s.d. 1,825) agent reproduction events per second.
 Efficiency gains with population size likely arose from NumPy vectorized operations used to perform mutation and selection.
 
 ## Memory Usage
