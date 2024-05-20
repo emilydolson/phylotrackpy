@@ -104,31 +104,28 @@ __Phylogenetic Topology Statistics:__ Support is provided for
 
 # Profiling
 
-To assess Phylotrack resource usage, we ran a simple asexual evolutionary algorithm instrumented with lineage-pruned systematics tracking.
+To assess Phylotrack performance, we ran a simple asexual evolutionary algorithm instrumented with lineage-pruned systematics tracking.
 We performed neutral selection with a 20\% mutation probability.
 Genomes consisted of a single floating-point value, which also served as the taxonomic unit.
 
 We ran 60 second trials using population sizes 10, 1,000, and 100,000, with five replicates each.
 Each trial concluded with a data export operation.
-
 We used `memory_profiler` (`psutil` backend) to measure process memory usage [@memory_profiler].
-Profiling data and hardware specifications are at <https://osf.io/52hzs/> [@foster2017open].
+Full profiling data and hardware specifications hosted via the Open Science Framework at <https://osf.io/52hzs/> [@foster2017open].
+
+![Phylotrack performance profiling results. First panel shows execution speed across population sizes. Second panel shows allocated memory over 60-second execution window. Error bars are SE.\label{fig:profiling}](assets/phylotrack-profiling.png){ width=100% }
 
 ## Execution Speed
 
-![Execution speed across population sizes. Error bars are SE.\label{fig:time}](assets/viz=plot-timeprof+x=population-size+y=generations-per-second+ext=.png){ width=50% }
-
-Figure \ref{fig:memory} shows generations evaluated per second at each population size.
+Figure \ref{fig:profiling}a shows generations evaluated per second at each population size.
 At population size 10, 1,000, and 100,000, we observed 3,923 (s.d. 257), 28,386 (s.d. 741), and 67,000 (s.d. 1,825) agent reproduction events per second.
 Efficiency gains with population size likely arose from NumPy vectorized operations used to perform mutation and selection.
 
 ## Memory Usage
 
-![Allocated memory over 60-second execution window. Error bars are SE.\label{fig:memory}](assets/errorbar=se+hue=population-size+palette=deep+style=population-size+viz=plot-memprof+x=seconds+y=memory-mib+ext=.png){ width=50% }
-
 Phylotrack consumes 296 MiB (s.d. 1.1) peak memory to track a population of 100,000 agents over 40 (s.d. 1) generations.
 At population sizes 10 and 1,000 peak memory usage was 70.6 MiB (s.d. 0.5) and 71.0 MiB (s.d. 0.2).
-Figure \ref{fig:memory} shows memory use trajectories over 60 second trials.
+Figure \ref{fig:memory}b shows memory use trajectories over 60 second trials.
 
 Most applications should expect lower memory usage because selection typically increases opportunities for lineage pruning.
 
