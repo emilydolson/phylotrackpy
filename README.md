@@ -103,6 +103,28 @@ The above image represents an actual phylogeny measured from digital evolution. 
 
 Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md).
 
+## Citing
+
+If Phylotrack contributes to a scientific publication, please cite it as
+
+> Dolson, E., Rodriguez-Papa, S., & Moreno, M. A. (2024). Phylotrack: C++ and Python libraries for in silico phylogenetic tracking. arXiv preprint arXiv:2405.09389. https://doi.org/10.48550/arXiv.2405.09389
+
+```bibtex
+@misc{dolson2024phylotrack,
+      doi={10.48550/arXiv.2405.09389},
+      url={https://arxiv.org/abs/2405.09389},
+      title={Phylotrack: C++ and Python libraries for in silico phylogenetic tracking},
+      author={Emily Dolson and Santiago Rodriguez-Papa and Matthew Andres Moreno},
+      year={2024},
+      eprint={2405.09389},
+      archivePrefix={arXiv},
+      primaryClass={q-bio.PE}
+}
+```
+
+Consider also citing [pybind11](https://pybind11.readthedocs.io/en/stable/faq.html#how-to-cite-this-project) if you are using PhylotrackPy.
+And don't forget to leave a [star on GitHub](https://github.com/emilydolson/phylotrackpy/stargazers)!
+
 ## Developers
 
 - [Emily Dolson](https://emilyldolson.com) (lead developer)
