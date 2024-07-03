@@ -18,7 +18,6 @@ authors:
   - name: Matthew Andres Moreno
     orcid: 0000-0003-4726-4479
     affiliation: "3, 4, 5"
-
 affiliations:
  - name: Department of Computer Science and Engineering, Michigan State University, East Lansing, MI, USA
    index: 1
@@ -28,7 +27,7 @@ affiliations:
    index: 3
  - name: Center for the Study of Complex Systems, University of Michigan, Ann Arbor, MI, USA
    index: 4
-- name: Michigan Institute for Data Science, University of Michigan, Ann Arbor, MI, USA
+ - name: Michigan Institute for Data Science, University of Michigan, Ann Arbor, MI, USA
    index: 5
 date: 10 June 2023
 bibliography: paper.bib
