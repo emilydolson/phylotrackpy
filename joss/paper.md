@@ -39,7 +39,7 @@ Consequently, these populations undergo evolution [@pennock2007models], and can 
 This experimental paradigm --- used across biological modeling, artificial life, and evolutionary computation --- complements research done using *in vitro* and *in vivo* systems by enabling experiments that would be impossible in the lab or field [@dolsonDigitalEvolutionEcology2021].
 One key benefit is complete, exact observability.
 For example, it is possible to perfectly record all parent-child relationships across simulation history, yielding complete phylogenies (ancestry trees).
-This information reveals when traits were gained or lost, and also facilitates inference of underlying evolutionary dynamics [@mooers1997inferring;@dolsonInterpretingTapeLife2020;@moreno2023toward].
+This information reveals when traits were gained or lost, and also facilitates inference of underlying evolutionary dynamics [@mooers1997inferring;@dolsonInterpretingTapeLife2020;@moreno2024ecology].
 
 The Phylotrack project provides libraries for tracking and analyzing phylogenies in *in silico* evolution.
 The project is composed of 1) Phylotracklib: a header-only C++ library, developed under the umbrella of the Empirical project [@ofria2020empirical], and 2) Phylotrackpy: a Python wrapper around Phylotracklib, created with Pybind11 [@pybind11].
@@ -119,7 +119,7 @@ Profiling data and hardware specifications are at <https://osf.io/52hzs/> [@fost
 ![Execution speed across population sizes. Error bars are SE.\label{fig:time}](assets/viz=plot-timeprof+x=population-size+y=generations-per-second+ext=.png){ width=50% }
 
 Figure \ref{fig:memory} shows generations evaluated per second at each population size.
-At population size 10, 1,000, and 100,000, we observed 3,923 (s.d. 257), 28,386 (s.d. 741), and 67,000 (s.d. 1825) agent reproduction events per second.
+At population size 10, 1,000, and 100,000, we observed 3,923 (s.d. 257), 28,386 (s.d. 741), and 67,000 (s.d. 1,825) agent reproduction events per second.
 Efficiency gains with population size likely arose from NumPy vectorized operations used to perform mutation and selection.
 
 ## Memory Usage
