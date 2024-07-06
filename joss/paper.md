@@ -42,7 +42,11 @@ Although phylogenetic data from *in vivo* systems is growing ever more fine-grai
 Indeed, in digital populations it is possible to perfectly record all parent-child relationships across history, yielding complete phylogenies (ancestry trees).
 This information reveals when traits were gained or lost, and also facilitates inference of underlying evolutionary dynamics [@mooers1997inferring;@dolsonInterpretingTapeLife2020;@moreno2024ecology].
 
-Such capability is of great value to phylogenetics research. While backward-time models such as coalescent-based approaches are powerful, there are many scenarios that they cannot support, necessitating the use of forward-time evolutionary models [@hallerSLiMForwardGenetic2019]. Thus, research agendas that require predicting the phylogenetic patterns that would result from a given evolutionary process would benefit greatly from a way to track phylogenies in forward-time *in silico* evolution models or experiments. Currently, such tracking is implemented on a case-by-case basis for each individual digital model system. As efficient phylogenetic tracking is non-trivial to implement, this approach represents a research bottleneck.
+Such capability is of great value to phylogenetics research.
+While backward-time models such as coalescent-based approaches are powerful, there are many scenarios that they cannot support, necessitating the use of forward-time evolutionary models [@hallerSLiMForwardGenetic2019].
+Thus, research agendas that require predicting the phylogenetic patterns that would result from a given evolutionary process would benefit greatly from a way to track phylogenies in forward-time *in silico* evolution. 
+Currently, such tracking is implemented case-by-case in individual digital model systems.
+As efficient phylogenetic tracking is non-trivial to implement, this *status quo* burdens research workloads.
 
 To solve this problem, we have developed the Phylotrack project, which provides libraries for tracking and analyzing phylogenies in *in silico* evolution.
 The project is composed of 1) Phylotracklib: a header-only C++ library, developed under the umbrella of the Empirical project [@ofria2020empirical], and 2) Phylotrackpy: a Python wrapper around Phylotracklib, created with Pybind11 [@pybind11].
