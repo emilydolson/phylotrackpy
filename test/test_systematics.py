@@ -10,6 +10,10 @@ assets_path = os.path.join(
     os.path.dirname(os.path.abspath(__file__)), 
     "assets",
 )
+docs_path = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), 
+    "../docs",
+)
 
 
 class ExampleOrg:
@@ -441,7 +445,6 @@ def test_synchronous_by_position():
     assert sys.get_num_active() == 10
     assert sys.get_num_taxa() == 20
 
-
 def test_custom_class():
 
     syst = systematics.Systematics(lambda org: org.genotype)
@@ -451,3 +454,25 @@ def test_custom_class():
     org0 = Organism()
     org0.genotype
     syst.add_org(org0)
+
+#********************************************* Will be moved to another directory
+import re
+import sys
+
+class Organism:
+    def __init__(self):
+        self.taxon = 1
+    def Reproduce(self):
+        return Organism()
+
+def test_quickstart():
+    with open(f"{docs_path}/quickstart.md", 'r') as file:
+        content = file.read()
+    regex = re.compile(r"```py\s(.*?)\s```", re.DOTALL | re.MULTILINE,)
+    blocks = [i for i in regex.findall(content)]
+    splitted_blocks = []
+    for i in blocks:
+        splitted_blocks.append(i.split('\\n'))
+    for i in range(len(splitted_blocks)):
+        exec(''.join(splitted_blocks[i]).strip())
+    sys.get_num_taxa()
