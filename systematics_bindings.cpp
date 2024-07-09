@@ -418,7 +418,7 @@ PYBIND11_MODULE(systematics, m) {
         .def("get_num_roots", static_cast<size_t (sys_t::*) () const>(&sys_t::GetNumRoots), R"mydelimiter(
             Returns the number of independent phylogenies currently being tracked.
         )mydelimiter")
-        .def("get_next_id", static_cast<size_t (sys_t::*) () const>(&sys_t::GetNextID), R"mydelimiter(
+        .def("get_next_id", static_cast<uint64_t (sys_t::*) () const>(&sys_t::GetNextID), R"mydelimiter(
             Returns the ID of the next taxon that will be created.
         )mydelimiter")
         .def("get_ave_depth", static_cast<double (sys_t::*) () const>(&sys_t::GetAveDepth), R"mydelimiter(

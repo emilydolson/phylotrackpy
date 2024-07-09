@@ -291,7 +291,7 @@ def test_shared_ancestor():
 def test_bad_load():
     sys = systematics.Systematics(taxon_info_fun, True, True, False, False)
     with raises(RuntimeError):
-        sys.load_from_file(f"fake.file.path", "genome", True)
+        sys.load_from_file("fake.file.path", "genome", True)
 
 
 def test_load_data():
