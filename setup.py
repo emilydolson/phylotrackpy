@@ -4,7 +4,6 @@ from pybind11 import get_cmake_dir
 # Available at setup time due to pyproject.toml
 from pybind11.setup_helpers import Pybind11Extension, build_ext
 from setuptools import setup
-import glob
 
 __version__ = "0.2.2"
 
@@ -19,7 +18,7 @@ __version__ = "0.2.2"
 
 ext_modules = [
     Pybind11Extension("phylotrackpy.systematics",
-        ["phylotrackpy/systematics_bindings.cpp"],
+        ["systematics_bindings.cpp"],
         # Example: passing in the version to the compiled code
         define_macros = [('VERSION_INFO', __version__), ("EMP_OPTIONAL_THROW_ON", 1)],
         cxx_std=20
@@ -40,6 +39,5 @@ setup(
     cmdclass={"build_ext": build_ext},
     zip_safe=False,
     python_requires=">=3.7",
-    packages=['phylotrackpy'],
-    headers=sorted(glob.glob("Empirical/**/*.hpp", recursive=True))
+    packages=['phylotrackpy']
 )
