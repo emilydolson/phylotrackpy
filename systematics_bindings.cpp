@@ -412,7 +412,7 @@ PYBIND11_MODULE(systematics, m) {
             Returns the number of total taxa.
             Empirically, this is equal to the number of taxa in the current phylogenetic tree, plus the number of extinct taxa with no living descendants.
         )mydelimiter")
-        .def("get_max_depth", static_cast<int (sys_t::*) () >(&sys_t::GetMaxDepth), R"mydelimiter(
+        .def("get_max_depth", static_cast<int (sys_t::*) () const>(&sys_t::GetMaxDepth), R"mydelimiter(
             Returns the lineage length (phylogenetic depth) from time zero to the active taxon with the longest lineage.
         )mydelimiter")
         .def("get_num_roots", static_cast<size_t (sys_t::*) () const>(&sys_t::GetNumRoots), R"mydelimiter(
@@ -438,10 +438,10 @@ PYBIND11_MODULE(systematics, m) {
             Returns a reference to the set of outside taxa.
             These are extinct taxa with extinct descendants.
         )mydelimiter")
-        .def("get_next_parent", static_cast<emp::Ptr<taxon_t> (sys_t::*) ()>(&sys_t::GetNextParent), py::return_value_policy::reference_internal, R"mydelimiter(
+        .def("get_next_parent", static_cast<emp::Ptr<taxon_t> (sys_t::*) () const>(&sys_t::GetNextParent), py::return_value_policy::reference_internal, R"mydelimiter(
             Returns the taxon that corresponds to the parent of the next taxon. This will only be set if parents are being specified through calls to `set_next_parent()`.
         )mydelimiter")
-        .def("get_most_recent", static_cast<emp::Ptr<taxon_t> (sys_t::*) ()>(&sys_t::GetMostRecent), py::return_value_policy::reference_internal, R"mydelimiter(
+        .def("get_most_recent", static_cast<emp::Ptr<taxon_t> (sys_t::*) () const>(&sys_t::GetMostRecent), py::return_value_policy::reference_internal, R"mydelimiter(
             Returns the most recently-created taxon.
         )mydelimiter")
         .def("parent", [](sys_t & self, taxon_t * tax){return self.Parent(tax);}, py::return_value_policy::reference_internal, R"mydelimiter(
@@ -452,7 +452,7 @@ PYBIND11_MODULE(systematics, m) {
             tax : taxon 
                 The taxon to return the parent of.
         )mydelimiter")
-        .def("is_taxon_at", static_cast<bool (sys_t::*) (emp::WorldPosition)>(&sys_t::IsTaxonAt), R"mydelimiter(
+        .def("is_taxon_at", static_cast<bool (sys_t::*) (emp::WorldPosition) const>(&sys_t::IsTaxonAt), R"mydelimiter(
             Returns whether a taxon is present at the given location. This will only work if the systematics manager is set to track positions (which can be checked with `get_store_position()`).
 
             Parameters
@@ -460,7 +460,7 @@ PYBIND11_MODULE(systematics, m) {
             id : WorldPosition
                 Location to check for taxon.
         )mydelimiter")
-        .def("get_taxon_at", static_cast<emp::Ptr<taxon_t> (sys_t::*) (emp::WorldPosition)>(&sys_t::GetTaxonAt), R"mydelimiter(
+        .def("get_taxon_at", static_cast<emp::Ptr<taxon_t> (sys_t::*) (emp::WorldPosition) const>(&sys_t::GetTaxonAt), R"mydelimiter(
             Returns the taxon at the given location, if any. This will only work if the systematics manager is set to track positions (which can be checked with `get_store_position()`).
 
             Parameters
