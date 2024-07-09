@@ -660,7 +660,7 @@ PYBIND11_MODULE(systematics, m) {
         )mydelimiter")
         .def("get_variance_pairwise_distance", static_cast<double (sys_t::*) (bool) const>(&sys_t::GetVariancePairwiseDistance), R"mydelimiter(
             This method calculates the variance of distance between all pairs of extant taxa. This is a measure of phylogenetic regularity :cite:p:`tucker2017guide`.
-            This assumes the phylogenetic tree is fully connected. If this is not the case, it will return -1.
+            If the phylogenetic tree is fully connected, will return the variance of the distances that are not infinite.
 
             If `branch_only` is set, this method will only consider distances in terms of nodes that represent branches between two extant taxa. This is potentially useful as a comparison to real-world, biological data, where non-branching nodes cannot be inferred.
 
@@ -670,13 +670,21 @@ PYBIND11_MODULE(systematics, m) {
                 Only counts distance in terms of nodes that represent a branch between two extant taxa.
         )mydelimiter")
         .def("get_mean_pairwise_distance", static_cast<double (sys_t::*) (bool) const>(&sys_t::GetMeanPairwiseDistance), R"mydelimiter(
+            This method calculates the mean distance between all pairs of extant taxa. This is a measure of phylogenetic divergence :cite:p:`tucker2017guide`.
+            If the phylogenetic tree is fully connected, will return the mean of the distances that are not infinite.
+            If `branch_only` is set, this method will only consider distances in terms of nodes that represent branches between two extant taxa. This is potentially useful as a comparison to real-world, biological data, where non-branching nodes cannot be inferred.
+
+            Parameters
+            ----------
+            branch_only : bool 
+                Only counts distance in terms of nodes that represent a branch between two extant taxa.
         )mydelimiter")
         .def("get_sum_distance", static_cast<double (sys_t::*) () const>(&sys_t::GetSumDistance), R"mydelimiter(
             This method calculates the total branch length. This is a measure of community distinctness :cite:p:`webb2000exploring,clark1998artificial`.
         )mydelimiter")
         .def("get_sum_pairwise_distance", static_cast<double (sys_t::*) (bool) const>(&sys_t::GetSumPairwiseDistance), R"mydelimiter(
             This method calculates the mean distance between all pairs of extant taxa, also known as the Average Taxonomic Diversity. This is a measure of community distinctness :cite:p:`webb2000exploring,clark1998artificial`.
-            This assumes the phylogenetic tree is fully connected. If this is not the case, it will return -1.
+            If the phylogenetic tree is fully connected, will return the sum of the distances that are not infinite.
 
             If `branch_only` is set, this method will only consider distances in terms of nodes that represent branches between two extant taxa. This is potentially useful as a comparison to real-world, biological data, where non-branching nodes cannot be inferred.
 

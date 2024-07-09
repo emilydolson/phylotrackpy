@@ -374,7 +374,7 @@ def test_loading_stats():
     sys = systematics.Systematics()
 
     # Test empty Colless
-    assert sys.GetCollessLikeIndex() == 0
+    assert sys.colless_like_index() == 0
 
     sys.load_from_file(f"{assets_path}/consolidated.csv", "id")
 
