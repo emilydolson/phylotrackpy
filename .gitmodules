@@ -1,4 +1,4 @@
 [submodule "Empirical"]
-	path = Empirical
+	path = phylotrackpy/Empirical
 	url = https://github.com/devosoft/Empirical.git
 	branch = mabe-systematics
