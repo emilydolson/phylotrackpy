@@ -128,7 +128,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+        with:
+          submodules: "recursive"        
       - name: Build sdist
         run: |
           python3 -m venv env
