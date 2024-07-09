@@ -123,6 +123,31 @@ jobs:
           name: cibw-sdist
           path: dist/*.tar.gz
 
+  # Regression test borrowed from https://github.com/mmore500/hstrat/blob/ba7b19d0f0561303b6bf789d5024a323aa5993fc/.github/workflows/ci.yaml#L201
+  packaging-sdist:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: "recursive"        
+      - name: Build sdist
+        run: |
+          python3 -m venv env
+          source env/bin/activate
+          python3 -m pip install -r requirements.txt
+          python3 setup.py sdist
+          tree dist
+          deactivate
+      - name: Upgrade pip
+        run: python3 -m pip install pip --upgrade
+      - name: Install from sdist
+        run: python3 -m pip install dist/*.tar.gz
+      - name: Test install
+        run: |
+          find . -type f -name '*.py' -exec rm {} \;
+          python3 -c "import phylotrackpy; print(phylotrackpy.__version__)"
+
   upload_pypi:
     needs: [build_wheels, build_sdist, test]
     runs-on: ubuntu-latest
