@@ -19,7 +19,7 @@ __version__ = "0.2.2"
 
 ext_modules = [
     Pybind11Extension("phylotrackpy.systematics",
-        ["systematics_bindings.cpp"] + sorted(glob.glob("Empirical/**", recursive=True)),
+        ["systematics_bindings.cpp"] + sorted(glob.glob("Empirical/**/*.hpp", recursive=True)),
         # Example: passing in the version to the compiled code
         define_macros = [('VERSION_INFO', __version__), ("EMP_OPTIONAL_THROW_ON", 1)],
         cxx_std=20
