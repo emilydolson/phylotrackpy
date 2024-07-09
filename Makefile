@@ -18,7 +18,7 @@ debug:
 	$(CXX) $(FLAG) $(DEBUG_flags) $(INCLUDE) systematics_bindings.cpp -o phylotrackpy/systematics$(SUFFIX)
 
 coverage:
-	$(CXX) $(FLAG) $(INCLUDE) -DNDEBUG -fprofile-arcs -ftest-coverage --coverage systematics_bindings.cpp -o phylotrackpy/systematics$(SUFFIX)
+	$(CXX) $(FLAG) $(INCLUDE) -DNDEBUG -DEMP_OPTIONAL_THROW_ON -fprofile-arcs -ftest-coverage --coverage systematics_bindings.cpp -o phylotrackpy/systematics$(SUFFIX)
 
 clean:
 	rm -rf phylotrackpy/systematics$(SUFFIX)

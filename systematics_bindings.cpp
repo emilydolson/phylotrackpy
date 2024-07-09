@@ -412,13 +412,13 @@ PYBIND11_MODULE(systematics, m) {
             Returns the number of total taxa.
             Empirically, this is equal to the number of taxa in the current phylogenetic tree, plus the number of extinct taxa with no living descendants.
         )mydelimiter")
-        .def("get_max_depth", static_cast<int (sys_t::*) () >(&sys_t::GetMaxDepth), R"mydelimiter(
+        .def("get_max_depth", static_cast<int (sys_t::*) () const>(&sys_t::GetMaxDepth), R"mydelimiter(
             Returns the lineage length (phylogenetic depth) from time zero to the active taxon with the longest lineage.
         )mydelimiter")
         .def("get_num_roots", static_cast<size_t (sys_t::*) () const>(&sys_t::GetNumRoots), R"mydelimiter(
             Returns the number of independent phylogenies currently being tracked.
         )mydelimiter")
-        .def("get_next_id", static_cast<size_t (sys_t::*) () const>(&sys_t::GetNextID), R"mydelimiter(
+        .def("get_next_id", static_cast<uint64_t (sys_t::*) () const>(&sys_t::GetNextID), R"mydelimiter(
             Returns the ID of the next taxon that will be created.
         )mydelimiter")
         .def("get_ave_depth", static_cast<double (sys_t::*) () const>(&sys_t::GetAveDepth), R"mydelimiter(
@@ -438,10 +438,10 @@ PYBIND11_MODULE(systematics, m) {
             Returns a reference to the set of outside taxa.
             These are extinct taxa with extinct descendants.
         )mydelimiter")
-        .def("get_next_parent", static_cast<emp::Ptr<taxon_t> (sys_t::*) ()>(&sys_t::GetNextParent), py::return_value_policy::reference_internal, R"mydelimiter(
+        .def("get_next_parent", static_cast<emp::Ptr<taxon_t> (sys_t::*) () const>(&sys_t::GetNextParent), py::return_value_policy::reference_internal, R"mydelimiter(
             Returns the taxon that corresponds to the parent of the next taxon. This will only be set if parents are being specified through calls to `set_next_parent()`.
         )mydelimiter")
-        .def("get_most_recent", static_cast<emp::Ptr<taxon_t> (sys_t::*) ()>(&sys_t::GetMostRecent), py::return_value_policy::reference_internal, R"mydelimiter(
+        .def("get_most_recent", static_cast<emp::Ptr<taxon_t> (sys_t::*) () const>(&sys_t::GetMostRecent), py::return_value_policy::reference_internal, R"mydelimiter(
             Returns the most recently-created taxon.
         )mydelimiter")
         .def("parent", [](sys_t & self, taxon_t * tax){return self.Parent(tax);}, py::return_value_policy::reference_internal, R"mydelimiter(
@@ -452,7 +452,7 @@ PYBIND11_MODULE(systematics, m) {
             tax : taxon 
                 The taxon to return the parent of.
         )mydelimiter")
-        .def("is_taxon_at", static_cast<bool (sys_t::*) (emp::WorldPosition)>(&sys_t::IsTaxonAt), R"mydelimiter(
+        .def("is_taxon_at", static_cast<bool (sys_t::*) (emp::WorldPosition) const>(&sys_t::IsTaxonAt), R"mydelimiter(
             Returns whether a taxon is present at the given location. This will only work if the systematics manager is set to track positions (which can be checked with `get_store_position()`).
 
             Parameters
@@ -460,7 +460,7 @@ PYBIND11_MODULE(systematics, m) {
             id : WorldPosition
                 Location to check for taxon.
         )mydelimiter")
-        .def("get_taxon_at", static_cast<emp::Ptr<taxon_t> (sys_t::*) (emp::WorldPosition)>(&sys_t::GetTaxonAt), R"mydelimiter(
+        .def("get_taxon_at", static_cast<emp::Ptr<taxon_t> (sys_t::*) (emp::WorldPosition) const>(&sys_t::GetTaxonAt), R"mydelimiter(
             Returns the taxon at the given location, if any. This will only work if the systematics manager is set to track positions (which can be checked with `get_store_position()`).
 
             Parameters
@@ -660,7 +660,7 @@ PYBIND11_MODULE(systematics, m) {
         )mydelimiter")
         .def("get_variance_pairwise_distance", static_cast<double (sys_t::*) (bool) const>(&sys_t::GetVariancePairwiseDistance), R"mydelimiter(
             This method calculates the variance of distance between all pairs of extant taxa. This is a measure of phylogenetic regularity :cite:p:`tucker2017guide`.
-            This assumes the phylogenetic tree is fully connected. If this is not the case, it will return -1.
+            If the phylogenetic tree is fully connected, will return the variance of the distances that are not infinite.
 
             If `branch_only` is set, this method will only consider distances in terms of nodes that represent branches between two extant taxa. This is potentially useful as a comparison to real-world, biological data, where non-branching nodes cannot be inferred.
 
@@ -670,13 +670,21 @@ PYBIND11_MODULE(systematics, m) {
                 Only counts distance in terms of nodes that represent a branch between two extant taxa.
         )mydelimiter")
         .def("get_mean_pairwise_distance", static_cast<double (sys_t::*) (bool) const>(&sys_t::GetMeanPairwiseDistance), R"mydelimiter(
+            This method calculates the mean distance between all pairs of extant taxa. This is a measure of phylogenetic divergence :cite:p:`tucker2017guide`.
+            If the phylogenetic tree is fully connected, will return the mean of the distances that are not infinite.
+            If `branch_only` is set, this method will only consider distances in terms of nodes that represent branches between two extant taxa. This is potentially useful as a comparison to real-world, biological data, where non-branching nodes cannot be inferred.
+
+            Parameters
+            ----------
+            branch_only : bool 
+                Only counts distance in terms of nodes that represent a branch between two extant taxa.
         )mydelimiter")
         .def("get_sum_distance", static_cast<double (sys_t::*) () const>(&sys_t::GetSumDistance), R"mydelimiter(
             This method calculates the total branch length. This is a measure of community distinctness :cite:p:`webb2000exploring,clark1998artificial`.
         )mydelimiter")
         .def("get_sum_pairwise_distance", static_cast<double (sys_t::*) (bool) const>(&sys_t::GetSumPairwiseDistance), R"mydelimiter(
             This method calculates the mean distance between all pairs of extant taxa, also known as the Average Taxonomic Diversity. This is a measure of community distinctness :cite:p:`webb2000exploring,clark1998artificial`.
-            This assumes the phylogenetic tree is fully connected. If this is not the case, it will return -1.
+            If the phylogenetic tree is fully connected, will return the sum of the distances that are not infinite.
 
             If `branch_only` is set, this method will only consider distances in terms of nodes that represent branches between two extant taxa. This is potentially useful as a comparison to real-world, biological data, where non-branching nodes cannot be inferred.
 

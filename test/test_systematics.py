@@ -2,7 +2,7 @@
 import os
 from phylotrackpy import systematics
 import pytest
-from pytest import approx, mark
+from pytest import approx, mark, raises
 from copy import deepcopy
 import tempfile
  
@@ -288,6 +288,12 @@ def test_shared_ancestor():
     assert shared == org1_tax
 
 
+def test_bad_load():
+    sys = systematics.Systematics(taxon_info_fun, True, True, False, False)
+    with raises(RuntimeError):
+        sys.load_from_file("fake.file.path", "genome", True)
+
+
 def test_load_data():
     sys = systematics.Systematics(taxon_info_fun, True, True, False, False)
     sys.load_from_file(f"{assets_path}/systematics_snapshot.csv", "genome", True)
@@ -366,6 +372,10 @@ def test_phylostatistics():
 
 def test_loading_stats():
     sys = systematics.Systematics()
+
+    # Test empty Colless
+    assert sys.colless_like_index() == 0
+
     sys.load_from_file(f"{assets_path}/consolidated.csv", "id")
 
     assert sys.get_ave_depth() > 0
@@ -375,8 +385,15 @@ def test_loading_stats():
     assert sys.get_variance_evolutionary_distinctiveness(32766) > 0
     assert len(sys.get_active_taxa()) > 0
     assert len(sys.get_active_taxa()) > 0  # Check for object lifetime bug
+    
+    sys2 = systematics.Systematics()
+    sys2.load_from_file(f"{assets_path}/full.csv", "id", True, False)
 
-    sys.load_from_file(f"{assets_path}/full.csv", "id", True, False)
+
+def test_pairwise_hang():
+    syst = systematics.Systematics(lambda x: x)
+    syst.load_from_file(f"{assets_path}/hang_test.csv", "id", True)
+    syst.get_mean_pairwise_distance(True)
 
 
 def test_deepcopy():
