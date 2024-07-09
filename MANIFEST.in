@@ -1,2 +1,2 @@
 include systematics_bindings.cpp
-recursive-include *.hpp
+recursive-include Empirical *.hpp
