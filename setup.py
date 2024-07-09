@@ -41,5 +41,5 @@ setup(
     zip_safe=False,
     python_requires=">=3.7",
     packages=['phylotrackpy'],
-    headers=sorted(glob.glob("phylotrackpy/Empirical/**/*.hpp", recursive=True))
+    headers=sorted(glob.glob("Empirical/**/*.hpp", recursive=True))
 )
