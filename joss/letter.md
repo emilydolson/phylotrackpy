@@ -4,6 +4,7 @@ We are pleased to submit our manuscript "Phylotrack: C++ and Python libraries fo
 
 Phylotrack is an efficient, flexible software library for tracking and analyzing phylogenies in computational agent-based evolutionary simulations.
 It fills an important gap by offering a general-purpose solution for phylogeny tracking within end-users' own simulation code.
+We believe Phylotrack will be of particular interest to readers of Bioinformatics because it will support their efforts to build 1) ground truth phylogenies reflecting complex evolutionary scenarios for the purpose of validating phylogeny reconstruction algorithms, and 2) null models supporting inferences about evolutionary regimes drawn from observed phylogenetic patterns.
 Key features include:
 
 - efficient C++ implementation with Python bindings;
@@ -24,6 +25,7 @@ Due to historical reasons, the C++ back-end for Phylotrack is hosted within the 
 Empirical was recently published in JOSS, in the following article <https://doi.org/10.21105/joss.06617>.
 However, Phylotrack is noted as a separate scholarly effort and specifically excluded from the scope of that publication.
 For further detail, discussion on this topic during the Empirical pre-review process may be viewed [here](https://github.com/openjournals/joss-reviews/issues/6151#issuecomment-1866887518).
+A related pre-print (cited in our paper) describes the pruning algorithm that is implemented in Phylotrack on a purely theoretical level: <https://arxiv.org/abs/2403.00246>.
 
 We appreciate your consideration of our manuscript and look forward to your response.
 
