@@ -210,8 +210,7 @@ We also look forward to expanding Phylotrack's portfolio of natively-implemented
 
 # Acknowledgements
 
-This research was supported in part by Michigan State University through the computational resources provided by the Institute for Cyber-Enabled Research.
-This research is based upon work supported by the Eric and Wendy Schmidt AI in Science Postdoctoral Fellowship, a Schmidt Futures program.
+This research was supported by Michigan State University through the computational resources provided by the Institute for Cyber-Enabled Research; and the Eric and Wendy Schmidt AI in Science Postdoctoral Fellowship, a Schmidt Futures program \[to MAM\].
 
 # References
 
