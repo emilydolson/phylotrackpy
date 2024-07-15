@@ -27,7 +27,7 @@ affiliations:
     index: 3
   - name: Center for the Study of Complex Systems, University of Michigan, Ann Arbor, MI, 48103, USA
     index: 4
-  - name: Michigan Institute for Data Science, University of Michigan, Ann Arbor, MI, 48103, USA
+  - name: Michigan Institute for Data Science and AI in Society, University of Michigan, Ann Arbor, MI, 48103, USA
     index: 5
 date: 10 June 2023
 bibliography: paper.bib
