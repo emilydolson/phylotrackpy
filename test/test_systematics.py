@@ -468,3 +468,26 @@ def test_custom_class():
     org0 = Organism()
     org0.genotype
     syst.add_org(org0)
+
+
+def test_collapse_unifurcations():
+    org_info_1, org_info_2 = [1, 2]
+    sys = systematics.Systematics(taxon_info_fun, True, True, False, False)
+    assert sys.get_collapse_unifurcations() is False
+    sys.set_collapse_unifurcations(True)
+    assert sys.get_collapse_unifurcations() is True
+    org = ExampleOrg(org_info_1)
+    org2 = ExampleOrg(org_info_2)
+    org_tax = sys.add_org(org)
+    org2_tax = sys.add_org(org2, org_tax)
+    org3_tax = sys.add_org(org2, org_tax)
+    sys.remove_org(org_tax)
+    org4_tax = sys.add_org(org, org2_tax)
+    org5_tax = sys.add_org(org, org4_tax)
+    assert sys.get_num_ancestors() == 1
+    sys.remove_org(org2_tax)
+    assert sys.get_num_ancestors() == 1
+    sys.remove_org(org4_tax)
+    assert sys.get_num_ancestors() == 1
+    sys.remove_org(org5_tax)
+    assert sys.get_num_ancestors() == 0
