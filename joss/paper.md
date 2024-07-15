@@ -19,15 +19,15 @@ authors:
     orcid: 0000-0003-4726-4479
     affiliation: "3, 4, 5"
 affiliations:
-  - name: Department of Computer Science and Engineering, Michigan State University, East Lansing, MI, USA
+  - name: Department of Computer Science and Engineering, Michigan State University, East Lansing, MI, 48823, USA
     index: 1
-  - name: Ecology, Evolution, and Behavior, Michigan State University, East Lansing, MI, USA
+  - name: Ecology, Evolution, and Behavior, Michigan State University, East Lansing, MI, 48823, USA
     index: 2
-  - name: Department of Ecology and Evolutionary Biology, University of Michigan, Ann Arbor, MI, USA
+  - name: Department of Ecology and Evolutionary Biology, University of Michigan, Ann Arbor, MI, 48103 USA
     index: 3
-  - name: Center for the Study of Complex Systems, University of Michigan, Ann Arbor, MI, USA
+  - name: Center for the Study of Complex Systems, University of Michigan, Ann Arbor, MI, 48103, USA
     index: 4
-  - name: Michigan Institute for Data Science, University of Michigan, Ann Arbor, MI, USA
+  - name: Michigan Institute for Data Science, University of Michigan, Ann Arbor, MI, 48103, USA
     index: 5
 date: 10 June 2023
 bibliography: paper.bib
