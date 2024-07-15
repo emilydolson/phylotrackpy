@@ -352,6 +352,18 @@ PYBIND11_MODULE(systematics, m) {
             val : bool 
                 Value representing whether a synchronous population is being tracked.
         )mydelimiter")
+        .def("set_collapse_unifurcations", static_cast<void (sys_t::*) (bool)>(&sys_t::SetCollapseUnifurcations), R"mydelimiter(
+            A setter method to configure whether unifurcations (sequences of extinct parents with exactly one offspring taxon)
+            should be collapsed (i.e. extinct taxon with one offspring will be removed and the offspring's parent will be set to be 
+            what was formerly its grandparent). This setting will save space and be more consistent with a lot of biological representations
+            but will sacrifice information.
+            This option defaults to False.
+
+            Parameters
+            ----------
+            val : bool 
+                Value representing whether to collapse unifurcations
+        )mydelimiter")        
         .def("set_update", static_cast<void (sys_t::*) (size_t)>(&sys_t::SetUpdate), R"mydelimiter(
             A setter method to modify the current time step. This should be used if you want PhylotrackPy to track when events occur.
 
@@ -387,6 +399,10 @@ PYBIND11_MODULE(systematics, m) {
             The accuracy of the tracking depends on this option being correctly set.
             It is recommended to verify this setting before any tracking.
             Can be set using the `set_track_synchronous()` method.
+        )mydelimiter")
+        .def("get_collapse_unifurcations", static_cast<bool (sys_t::*) () const>(&sys_t::GetCollapseUnifurcations), R"mydelimiter(
+            Whether the Systematics Manager is configured to collapse unifurcations.
+            Can be set using the `set_collapse_unifurcations()` method.
         )mydelimiter")
         .def("get_update", static_cast<size_t (sys_t::*) () const>(&sys_t::GetUpdate), R"mydelimiter(
             Returns the current timestep of the simulation.
