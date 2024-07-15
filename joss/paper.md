@@ -37,7 +37,7 @@ bibliography: paper.bib
 
 ## Summary
 
-Phylotrack provides efficient C++ and Python libraries for tracking and analyzing phylogenies in *in silico* evolutionary simulations.
+Phylotrack provides efficient C++ and Python libraries for tracking and analyzing phylogenies generated *in silico*.
 It offers flexible configuration of operational taxonomic units, memory-saving pruning of extinct lineages, and calculation of common phylogeny metrics.
 
 ## Availability and Implementation
