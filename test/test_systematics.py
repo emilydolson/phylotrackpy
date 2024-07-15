@@ -39,6 +39,10 @@ def test_systematics_by_position():
     child_pos = systematics.WorldPosition(2, 0)
     child_org = ExampleOrg("hello2")
     sys.add_org_by_position(child_org, child_pos, org_pos)
+    assert sys.get_taxon_at(org_pos).get_info() == "hello"
+    sys.swap_positions(child_pos, org_pos)
+    assert sys.get_taxon_at(org_pos).get_info() == "hello2"
+    sys.swap_positions(child_pos, org_pos)
     sys.remove_org_by_position(org_pos)
     # sys.remove_org_by_position((2,0))
 
