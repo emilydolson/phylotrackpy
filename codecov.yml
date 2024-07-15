@@ -6,6 +6,7 @@ ignore:
   - "usr"
   - "opt"
   - "home"
+  - "Empirical/third-party/**"
   - "Empirical/include/emp/b*/**"
   - "Empirical/include/emp/c*/**"
   - "Empirical/include/emp/d*/**"
