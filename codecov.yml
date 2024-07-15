@@ -5,6 +5,7 @@ codecov:
 ignore:
   - "usr"
   - "opt"
+  - "home"
   - "Empirical/include/emp/b*/**"
   - "Empirical/include/emp/c*/**"
   - "Empirical/include/emp/d*/**"
