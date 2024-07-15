@@ -33,6 +33,28 @@ date: 10 June 2023
 bibliography: paper.bib
 ---
 
+# Abstract
+
+## Summary
+
+Phylotrack provides efficient C++ and Python libraries for tracking and analyzing phylogenies in *in silico* evolutionary simulations.
+It offers flexible configuration of operational taxonomic units, memory-saving pruning of extinct lineages, and calculation of common phylogeny metrics.
+
+## Availability and Implementation
+
+Source code is freely available on GitHub (<https://github.com/emilydolson/phylotrackpy>) and archived via Zenodo (<https://doi.org/10.5281/zenodo.10888780>).
+The *phylotrackpy* Python package can be installed via PyPI (<https://pypi.org/project/phylotrackpy/>).
+Documentation hosted on ReadTheDocs (<https://phylotrackpy.readthedocs.io/>).
+Phylotrack is provided under the MIT License.
+
+## Contact
+
+Emily Dolson, <dolsonem@msu.edu>
+
+## Supplementary Information
+
+Profiling data are available via the Open Science Framework at <https://osf.io/52hzs/>.​​​​​​​​​​​​​​​​
+
 # Introduction
 
 *In silico* evolution instantiates the processes of heredity, variation, and differential reproductive success (the three "ingredients" for evolution by natural selection) within digital populations of computational agents.
