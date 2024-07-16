@@ -105,10 +105,10 @@ Supplemental data about each taxonomic unit can be stored efficiently.
 Top panels of Figure \ref{fig:composite} overview Phylotrack's two core operations: taxon creation and removal.
 On simulation startup, end-users report founding agents to Phylotrack.
 Each is assigned a Taxon ID.
-Subsequently, as shown in Figure \ref{fig:composite}a, user code informs Phylotrack of simulation reproduction events as they occur.
+Subsequently, as shown in Figure \ref{fig:composite}A, user code informs Phylotrack of simulation reproduction events as they occur.
 Given (1) the parent's Taxon ID and (2) the offspring's taxonomic traits (e.g., genome for genotype-level tracking, trait vector for phenotype-level tracking, etc.), Phylotrack returns a Taxon ID for the offspring.
 If the offspring's taxonomic traits match its parent, their Taxon ID will be identical; otherwise, Phylotrack assigns the offspring a new Taxon ID.
-Figure \ref{fig:composite}b shows the other primary Phylotrack operation, taxon removal.
+Figure \ref{fig:composite}B shows the other primary Phylotrack operation, taxon removal.
 Each time simulation discards an agent, user code reports its Taxon ID to Phylotrack.
 If no extant agents carry that Taxon ID and the Taxon ID has no extant descendants, Phylotrack conducts a pruning operation, deleting corresponding lineage records to reclaim memory (unless the user has disabled pruning).
 
@@ -152,7 +152,7 @@ Full profiling data and hardware specifications hosted via the Open Science Fram
 
 ### Execution Speed
 
-Figure \ref{fig:composite}c shows generations evaluated per second at each population size.
+Figure \ref{fig:composite}C shows generations evaluated per second at each population size.
 At population size 10, 1,000, and 100,000, we observed 3,923 (s.d. 257), 28,386 (s.d. 741), and 67,000 (s.d. 1,825) agent reproduction events per second.
 Efficiency gains with population size likely arose from NumPy vectorized operations used to perform mutation and selection.
 
@@ -160,7 +160,7 @@ Efficiency gains with population size likely arose from NumPy vectorized operati
 
 Phylotrack consumes 296 MiB (s.d. 1.1) peak memory to track a population of 100,000 agents over 40 (s.d. 1) generations.
 At population sizes 10 and 1,000, peak memory usage was 70.6 MiB (s.d. 0.5) and 71.0 MiB (s.d. 0.2).
-Figure \ref{fig:composite}d shows memory use trajectories over 60-second trials.
+Figure \ref{fig:composite}D shows memory use trajectories over 60-second trials.
 
 Most applications should expect lower memory usage because selection typically increases opportunities for lineage pruning.
 
