@@ -53,7 +53,7 @@ Emily Dolson, <dolsonem@msu.edu>
 
 ## Supplementary Information
 
-Profiling data are available via the Open Science Framework at <https://osf.io/52hzs/>.​​​​​​​​​​​​​​​​
+Profiling data are available via the Open Science Framework at <https://osf.io/52hzs/>.
 
 # Introduction
 
@@ -66,7 +66,7 @@ This information reveals when traits were gained or lost, and also facilitates i
 
 Such capability is of great value to phylogenetics research.
 While backward-time models such as coalescent-based approaches are powerful, there are many scenarios that they cannot support, necessitating the use of forward-time evolutionary models [@hallerSLiMForwardGenetic2019].
-Thus, research agendas that require predicting the phylogenetic patterns that would result from a given evolutionary process would benefit greatly from a way to track phylogenies in forward-time *in silico* evolution. 
+Thus, research agendas that require predicting the phylogenetic patterns that would result from a given evolutionary process would benefit greatly from a way to track phylogenies in forward-time *in silico* evolution.
 Currently, such tracking is implemented case-by-case in individual digital model systems.
 As efficient phylogenetic tracking is non-trivial to implement, this *status quo* burdens research workloads.
 
