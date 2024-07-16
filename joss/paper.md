@@ -62,7 +62,7 @@ Consequently, these populations undergo evolution [@pennock2007models], and can 
 This experimental paradigm --- used across biological modeling, artificial life, and evolutionary computation --- complements research done using *in vitro* and *in vivo* systems by enabling experiments that would be impossible in the lab or field [@dolsonDigitalEvolutionEcology2021].
 Although phylogenetic data from *in vivo* systems is growing ever more fine-grained [@konno2022deep], complete, exact observability remains a key benefit of computational methods.
 Indeed, in digital populations it is possible to perfectly record all parent-child relationships across history, yielding complete phylogenies (ancestry trees).
-This information reveals when traits were gained or lost, and also facilitates inference of underlying evolutionary dynamics [@mooers1997inferring;@dolsonInterpretingTapeLife2020;@moreno2024ecology].
+This information reveals when traits were gained or lost, and also facilitates inference of underlying evolutionary dynamics [@mooers1997inferring;@dolsonInterpretingTapeLife2020;@moreno2024ecology;@lewinsohnStatedependentEvolutionaryModels2023a;@Scott2018].
 
 Such capability is of great value to phylogenetics research.
 While backward-time models such as coalescent-based approaches are powerful, there are many scenarios that they cannot support, necessitating the use of forward-time evolutionary models [@hallerSLiMForwardGenetic2019].
