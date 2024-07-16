@@ -94,7 +94,7 @@ Phylotrackpy is newer, but it has already served as a point of comparison in the
 
 ![Phylotrack lineage recording operations and performance profiling results. Panel A overviews taxon creation, in which end-user simulation code reports an agent birth to Phylotrack. Panel B overviews taxon removal, in which end-user simulation code reports an agent death to Phylotrack. Note that panels A and B differ in configured operational taxonomic unit. In the first, individual agents define the taxonomic unit and, in the second, agent phenotype classes define the taxonomic unit. Panel C shows execution speed across population sizes. Panel D shows allocated memory over a 60-second execution window. Error bars are SE. \label{fig:composite}](assets/phylotrack-composite.png){ width=85% }
 
-## Lineage Recording:
+## Lineage Recording
 The core functionality of Phylotrack is to record asexual phylogenies from simulation agent creation and destruction events.
 To improve memory efficiency, extinct branches are pruned from phylogenies by default, but this feature can be disabled.
 Further efficiency can be gained by coarsening the level of abstraction applied (i.e., what constitutes a taxonomic unit).
@@ -118,14 +118,14 @@ In pruning-enabled tracking, taxon removal is amortized O(1).
 Space complexity is harder to calculate meaningfully, but should be O(N) on average in most evolutionary scenarios (where N is population size).
 For details, refer to @moreno2024analysis.
 
-## Serialization:
+## Serialization
 
 Phylotrack exports data in the Artificial Life Standard Phylogeny format [@lalejiniDataStandardsArtificial2019].
 This format integrates with an associated ecosystem of software converters, analyzers, and visualizers.
 Existing tools support easy conversion to bioinformatics-standard formats (e.g., Newick, phyloXML, etc.) [@moreno2024apc], allowing Phylotrack phylogenies to be analyzed with tools designed for biological data.
 Phylogeny data can be restored from file, enabling post-hoc calculation of phylogenetic topology statistics.
 
-## Phylogenetic Topology Statistics: 
+## Phylogenetic Topology Statistics
 
 Support is provided for
 
