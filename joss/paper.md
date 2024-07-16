@@ -99,7 +99,7 @@ Applications typically include
 - inferring phylogenies from extant organisms (and sometimes fossils) [@challa2019phylogenetic],
 - sampling phylogenies from theoretical models of population and species dynamics [@stadler2011simulating],
 - cross-referencing phylogenies with other data (e.g., spatial species distributions) [@emerson2008phylogenetic], and
-- analyzing and manipulating tree structures [@smith2020treedist;@sand2014tqdist;@sukumaran2010dendropy;@cock2009biopython].
+- analyzing and manipulating tree structures [@smith2020treedist;@sand2014tqdist;@moreno2024dendropy;@cock2009biopython].
 
 Phylotrack overlaps with these goals only in that it also provides tree statistic implementations.
 We chose to include this feature to facilitate fast during-simulation calculations of these metrics.
