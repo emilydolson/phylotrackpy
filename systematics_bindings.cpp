@@ -602,7 +602,7 @@ PYBIND11_MODULE(systematics, m) {
             Set a custom function that is triggered every time a taxon is pruned from the tree. This occurs when a taxon and all its descendants go extinct.
             The function must take a single argument: a `taxon_t` object representing the taxon getting pruned.
             The custom function will be triggered at the beginning of the taxon pruning process.
-            This allows the user to customize the way objects are represented interlally by the systematics manager, or to implement extra bookkeeping functionality.
+            This allows the user to customize the way objects are represented internally by the systematics manager, or to implement extra bookkeeping functionality.
 
             Parameters
             ----------

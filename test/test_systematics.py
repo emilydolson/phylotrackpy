@@ -51,7 +51,11 @@ def test_systematics_by_position():
     assert sys.is_taxon_at(child_pos) is True
     sys.add_org_by_position(org, org_pos, child_pos)
     assert sys.is_taxon_at(child_pos) is False
-    # sys.remove_org_by_position((2,0))
+    sys.set_next_parent_by_position(org_pos)
+    assert sys.get_next_parent() == sys.get_taxon_at(org_pos)
+    sys.add_org_by_position(ExampleOrg("test"), child_pos)
+    assert sys.get_taxon_at(child_pos).get_parent() == sys.get_taxon_at(org_pos)
+    assert sys.get_next_parent() is None
 
 
 def test_construct_systematics():
@@ -502,3 +506,25 @@ def test_collapse_unifurcations():
     assert sys.get_num_ancestors() == 1
     sys.remove_org(org5_tax)
     assert sys.get_num_ancestors() == 0
+
+
+tax_sum = 0
+
+
+def test_on_prune():
+    sys = systematics.Systematics(lambda x: x, True, True, False, False)
+
+    def prune_fun(x):
+        global tax_sum
+        tax_sum += x.get_info()
+    
+    sys.on_prune(prune_fun)
+    tax1 = sys.add_org(1)
+    tax2 = sys.add_org(2, tax1)
+    tax3 = sys.add_org(3, tax2)
+    sys.remove_org(tax2)
+    assert tax_sum == 0
+    sys.remove_org(tax3)
+    assert tax_sum == 5
+    sys.remove_org(tax1)
+    assert tax_sum == 6
