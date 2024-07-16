@@ -38,12 +38,19 @@ def test_systematics_by_position():
     sys.add_org_by_position(org, org_pos)
     child_pos = systematics.WorldPosition(2, 0)
     child_org = ExampleOrg("hello2")
+    assert sys.is_taxon_at(child_pos) is False
     sys.add_org_by_position(child_org, child_pos, org_pos)
+    assert sys.is_taxon_at(child_pos) is True
     assert sys.get_taxon_at(org_pos).get_info() == "hello"
     sys.swap_positions(child_pos, org_pos)
     assert sys.get_taxon_at(org_pos).get_info() == "hello2"
     sys.swap_positions(child_pos, org_pos)
     sys.remove_org_by_position(org_pos)
+    assert sys.is_taxon_at(org_pos) is False
+    sys.remove_org_by_position_after_repro(child_pos)
+    assert sys.is_taxon_at(child_pos) is True
+    sys.add_org_by_position(org, org_pos, child_pos)
+    assert sys.is_taxon_at(child_pos) is False
     # sys.remove_org_by_position((2,0))
 
 
