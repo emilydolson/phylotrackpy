@@ -53,7 +53,7 @@ Emily Dolson, <dolsonem@msu.edu>
 
 ## Supplementary Information
 
-Profiling data are available via the Open Science Framework at <https://osf.io/52hzs/>.​​​​​​​​​​​​​​​​
+Profiling data are available via the Open Science Framework at <https://osf.io/52hzs/>.
 
 # Introduction
 
@@ -62,11 +62,11 @@ Consequently, these populations undergo evolution [@pennock2007models], and can 
 This experimental paradigm --- used across biological modeling, artificial life, and evolutionary computation --- complements research done using *in vitro* and *in vivo* systems by enabling experiments that would be impossible in the lab or field [@dolsonDigitalEvolutionEcology2021].
 Although phylogenetic data from *in vivo* systems is growing ever more fine-grained [@konno2022deep], complete, exact observability remains a key benefit of computational methods.
 Indeed, in digital populations it is possible to perfectly record all parent-child relationships across history, yielding complete phylogenies (ancestry trees).
-This information reveals when traits were gained or lost, and also facilitates inference of underlying evolutionary dynamics [@mooers1997inferring;@dolsonInterpretingTapeLife2020;@moreno2024ecology].
+This information reveals when traits were gained or lost, and also facilitates inference of underlying evolutionary dynamics [@mooers1997inferring;@dolsonInterpretingTapeLife2020;@moreno2024ecology;@lewinsohnStatedependentEvolutionaryModels2023a;@Scott2018].
 
 Such capability is of great value to phylogenetics research.
 While backward-time models such as coalescent-based approaches are powerful, there are many scenarios that they cannot support, necessitating the use of forward-time evolutionary models [@hallerSLiMForwardGenetic2019].
-Thus, research agendas that require predicting the phylogenetic patterns that would result from a given evolutionary process would benefit greatly from a way to track phylogenies in forward-time *in silico* evolution. 
+Thus, research agendas that require predicting the phylogenetic patterns that would result from a given evolutionary process would benefit greatly from a way to track phylogenies in forward-time *in silico* evolution.
 Currently, such tracking is implemented case-by-case in individual digital model systems.
 As efficient phylogenetic tracking is non-trivial to implement, this *status quo* burdens research workloads.
 
@@ -99,7 +99,7 @@ Applications typically include
 - inferring phylogenies from extant organisms (and sometimes fossils) [@challa2019phylogenetic],
 - sampling phylogenies from theoretical models of population and species dynamics [@stadler2011simulating],
 - cross-referencing phylogenies with other data (e.g., spatial species distributions) [@emerson2008phylogenetic], and
-- analyzing and manipulating tree structures [@smith2020treedist;@sand2014tqdist;@sukumaran2010dendropy;@cock2009biopython].
+- analyzing and manipulating tree structures [@smith2020treedist;@sand2014tqdist;@moreno2024dendropy;@cock2009biopython].
 
 Phylotrack overlaps with these goals only in that it also provides tree statistic implementations.
 We chose to include this feature to facilitate fast during-simulation calculations of these metrics.
@@ -114,9 +114,9 @@ Phylotrackpy is newer, but it has already served as a point of comparison in the
 
 # Methods
 
-![Phylotrack lineage recording operations. First panel shows taxon creation, in which end-user simulation code reports an agent birth to Phylotrack. Second panel shows taxon removal, in which end-user simulation code reports an agent death to Phylotrack. Note that, in first and second panels differ in configured operational taxonomic unit. In the first, individual agents define the taxonomic unit and, in the second, agent phenotype classes define the taxonomic unit. \label{fig:schematic}](assets/phylotrack-schematic.png){ width=70% }
+![Phylotrack lineage recording operations and performance profiling results. Panel A overviews taxon creation, in which end-user simulation code reports an agent birth to Phylotrack. Panel B overviews taxon removal, in which end-user simulation code reports an agent death to Phylotrack. Note that panels A and B differ in configured operational taxonomic unit. In the first, individual agents define the taxonomic unit and, in the second, agent phenotype classes define the taxonomic unit. Panel C shows execution speed across population sizes. Panel D shows allocated memory over a 60-second execution window. Error bars are SE. \label{fig:composite}](assets/phylotrack-composite.png){ width=85% }
 
-## Lineage Recording:
+## Lineage Recording
 The core functionality of Phylotrack is to record asexual phylogenies from simulation agent creation and destruction events.
 To improve memory efficiency, extinct branches are pruned from phylogenies by default, but this feature can be disabled.
 Further efficiency can be gained by coarsening the level of abstraction applied (i.e., what constitutes a taxonomic unit).
@@ -124,13 +124,13 @@ Configurability of the operational taxonomic unit, in addition, helps users coll
 For instance, recent work on phylometric signals of evolutionary conditions found substantial qualitative differences in phylometrics collected from individual- versus genotype-level tracking [@moreno2024ecology].
 Supplemental data about each taxonomic unit can be stored efficiently.
 
-Figure \ref{fig:schematic} overviews Phylotrack's two core operations: taxon creation and removal.
+Top panels of Figure \ref{fig:composite} overview Phylotrack's two core operations: taxon creation and removal.
 On simulation startup, end-users report founding agents to Phylotrack.
 Each is assigned a Taxon ID.
-Subsequently, as shown in Figure \ref{fig:schematic}a, user code informs Phylotrack of simulation reproduction events as they occur.
+Subsequently, as shown in Figure \ref{fig:composite}A, user code informs Phylotrack of simulation reproduction events as they occur.
 Given (1) the parent's Taxon ID and (2) the offspring's taxonomic traits (e.g., genome for genotype-level tracking, trait vector for phenotype-level tracking, etc.), Phylotrack returns a Taxon ID for the offspring.
 If the offspring's taxonomic traits match its parent, their Taxon ID will be identical; otherwise, Phylotrack assigns the offspring a new Taxon ID.
-Figure \ref{fig:schematic}b shows the other primary Phylotrack operation, taxon removal.
+Figure \ref{fig:composite}B shows the other primary Phylotrack operation, taxon removal.
 Each time simulation discards an agent, user code reports its Taxon ID to Phylotrack.
 If no extant agents carry that Taxon ID and the Taxon ID has no extant descendants, Phylotrack conducts a pruning operation, deleting corresponding lineage records to reclaim memory (unless the user has disabled pruning).
 
@@ -140,14 +140,14 @@ In pruning-enabled tracking, taxon removal is amortized O(1).
 Space complexity is harder to calculate meaningfully, but should be O(N) on average in most evolutionary scenarios (where N is population size).
 For details, refer to @moreno2024analysis.
 
-## Serialization:
+## Serialization
 
 Phylotrack exports data in the Artificial Life Standard Phylogeny format [@lalejiniDataStandardsArtificial2019].
 This format integrates with an associated ecosystem of software converters, analyzers, and visualizers.
 Existing tools support easy conversion to bioinformatics-standard formats (e.g., Newick, phyloXML, etc.) [@moreno2024apc], allowing Phylotrack phylogenies to be analyzed with tools designed for biological data.
 Phylogeny data can be restored from file, enabling post-hoc calculation of phylogenetic topology statistics.
 
-## Phylogenetic Topology Statistics: 
+## Phylogenetic Topology Statistics
 
 Support is provided for
 
@@ -172,11 +172,9 @@ Each trial concluded with a data export operation.
 We used `memory_profiler` (`psutil` backend) to measure process memory usage [@memory_profiler].
 Full profiling data and hardware specifications hosted via the Open Science Framework at <https://osf.io/52hzs/> [@foster2017open].
 
-![Phylotrack performance profiling results. First panel shows execution speed across population sizes. Second panel shows allocated memory over a 60-second execution window. Error bars are SE.\label{fig:profiling}](assets/phylotrack-profiling.png){ width=100% }
-
 ### Execution Speed
 
-Figure \ref{fig:profiling}a shows generations evaluated per second at each population size.
+Figure \ref{fig:composite}C shows generations evaluated per second at each population size.
 At population size 10, 1,000, and 100,000, we observed 3,923 (s.d. 257), 28,386 (s.d. 741), and 67,000 (s.d. 1,825) agent reproduction events per second.
 Efficiency gains with population size likely arose from NumPy vectorized operations used to perform mutation and selection.
 
@@ -184,7 +182,7 @@ Efficiency gains with population size likely arose from NumPy vectorized operati
 
 Phylotrack consumes 296 MiB (s.d. 1.1) peak memory to track a population of 100,000 agents over 40 (s.d. 1) generations.
 At population sizes 10 and 1,000, peak memory usage was 70.6 MiB (s.d. 0.5) and 71.0 MiB (s.d. 0.2).
-Figure \ref{fig:memory}b shows memory use trajectories over 60-second trials.
+Figure \ref{fig:composite}D shows memory use trajectories over 60-second trials.
 
 Most applications should expect lower memory usage because selection typically increases opportunities for lineage pruning.
 
