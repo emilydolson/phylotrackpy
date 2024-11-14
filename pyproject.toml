@@ -8,6 +8,8 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [tool.cibuildwheel]
+# Enable free-threaded support
+free-threaded-support = true
 test-command = "pytest -m \"not nowheel\" {project}"
 skip = ["*musllinux*", "cp37*", "pp37*", "cp38*", "pp38*", "*i686*", "*win32*"]
 test-requires = "pytest"
