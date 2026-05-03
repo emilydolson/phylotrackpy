@@ -8,4 +8,4 @@ There are certain quirks associated with real-time phylogenies that you might no
 
 ![An example of a full digital evolution phylogeny](images/FullPhylogeny.png)
 
-The above image represents an actual phylogeny measured from digital evolution. Each rectangle represents a different taxon. It's position along the x axis represents the span of time it existed for. Note that there are often sections along a single branch where multiple taxa coexisted for a period of time. Circles represent extant taxa at the end of this run.
+The above image represents an actual phylogeny measured from digital evolution. Each rectangle represents a different taxon. Its position along the x axis represents the span of time it existed for. Note that there are often sections along a single branch where multiple taxa coexisted for a period of time. Circles represent extant taxa at the end of this run.
